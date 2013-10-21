@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Jonathan Kingston development blog]]></title>
+  <link href="http://jonathanKingston.github.io/atom.xml" rel="self"/>
+  <link href="http://jonathanKingston.github.io/"/>
+  <updated>2013-10-21T18:17:14+01:00</updated>
+  <id>http://jonathanKingston.github.io/</id>
+  <author>
+    <name><![CDATA[Jonathan Kingston]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Pushing restart on blogging]]></title>
+    <link href="http://jonathanKingston.github.io/blog/2013/10/21/pushing-restart-on-blogging/"/>
+    <updated>2013-10-21T15:35:00+01:00</updated>
+    <id>http://jonathanKingston.github.io/blog/2013/10/21/pushing-restart-on-blogging</id>
+    <content type="html"><![CDATA[<p>I have been inspired to write blogs over the years, without over making more than several posts before quitting.</p>
+
+<p>A post by Joe Armstrong hit home and made me realise I should just get on and start writing:
+<a href="http://joearms.github.io/2013/03/28/jekyll-is-great.html">Joe Armstrong &ndash; Jekyll is great</a></p>
+
+<p>I&rsquo;m not expecting to have much interest however man needs a place to rant.</p>
+
+<p>This is mainly what I will be using this blog for mainly ranting and perhaps some talk about development.</p>
+]]></content>
+  </entry>
+  
+</feed>

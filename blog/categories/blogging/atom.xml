@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: blogging | Jonathan Kingston development blog]]></title>
+  <title><![CDATA[Category: blogging | Jonathan Kingston]]></title>
   <link href="http://jonathanKingston.github.io/blog/categories/blogging/atom.xml" rel="self"/>
   <link href="http://jonathanKingston.github.io/"/>
-  <updated>2013-10-21T18:17:14+01:00</updated>
+  <updated>2013-10-21T19:26:59+01:00</updated>
   <id>http://jonathanKingston.github.io/</id>
   <author>
     <name><![CDATA[Jonathan Kingston]]></name>

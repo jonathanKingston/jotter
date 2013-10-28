@@ -3,14 +3,14 @@ layout: post
 title: "Trialing laravel PHP"
 date: 2013-10-25 01:29
 comments: true
-categories: [PHP, framework, Laravel]
+categories: [PHP, framework, Laravel, First impressions]
 published: false
 ---
 
 
 Laravel was suggested to me last week and I have only just got time to take a look at it properly.
 
-The framework is set out in a similar direction to Rails so it seems pretty familiar.
+The framework has a similar structure to Rails so it seems pretty familiar to me so far. In making this article I created a [test laravel git repo](https://github.com/jonathanKingston/laravel-test) for the REST laravel application I had made.
 
 Initial install
 ---------------
@@ -31,7 +31,7 @@ I then setup an area to play around with in apache:
     sudo touch /etc/apache2/sites-available/laravel-test
 
 I edited the file to have the following config:
-{% codeblock laverel-test %}
+{% codeblock laravel-test %}
 Listen 8080
 
 <VirtualHost *:8080>
@@ -69,9 +69,12 @@ I then ran the following to set the required permissions:
 
 Quick start guide
 -----------------
-Leaves a lot to be desired, not promoting new developers REST or at least explaining using REST would be more desired later.
-Controllers are not even mentioned either.
+The laravel quick start guide I think could flow better.
+The guide doesn't mention the benefits of seperating out code into controllers.
+New developers are not suggested that [REST resourceful routing](http://laravel.com/docs/controllers#resource-controllers) would be better later, I actually found this feature hard to find even though I was faily sure the framework supported it.
 There is not a detailed enough explanation to how to setup a web server to securely use the framework.
+
+As a guide it doesn't seem like it would promote good development practice for new developers.
 
 Templates
 ---------
@@ -113,12 +116,12 @@ Changing the PostgreSQL default password if you have not already:
     \password postgres
     create database database;
 
-
 Forms
 -----
 
-Forms look like they could do with a lot of work, they appear to just be a form output tool.
-Having used formHandler on a regular basis recently the forms in Laravel appear to be far weaker than that.
+Forms look like they could do with a lot of work, as this is a modern framework I was expecting something more powerful than [Rails forms](http://guides.rubyonrails.org/form_helpers.html).
+Having used [FormHandler](http://search.cpan.org/~gshank/HTML-FormHandler-0.40053/lib/HTML/FormHandler.pm) in Perl on a regular basis the forms in Laravel appear to be far weaker than that.
+Anyway, we are left with something that is a PHP clone of Rails here, it does the job.
 
 Migrations
 ----------
@@ -166,27 +169,61 @@ I then populated the controller code:
 
 Building the templates
 ----------------------
-For our controller we now need some templates:
+For the controller I then needed to build the following templates:
+-   app/views/test/index.blade.php
+-   app/views/test/edit.blade.php
+-   app/views/test/show.blade.php
+-   app/views/test/create.blade.php
+-   app/views/test/destroy.blade.php
+
+I also made the templates extend from a template 'layout':
+{% codeblock %}
+{% raw %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Test application</title>
+  </head>
+  <body>
+    @yield('content')
+  </body>
+</html>
+{% endraw %}
+{% endcodeblock %}
 
 
-{{ Form::open(array('url' => 'test')) }}
-    {{ Form::label('email', 'E-Mail Address') }}
-{{ Form::close() }}
+{% codeblock %}
+{% raw %}
+@extends('layout')
+
+@section('content')
+  <h1>Edit test {{ $test->id }}</h1>
+
+  {{ Form::model($test, array('action' => array('testController@update', $test->id), 'method' => 'put')) }}
+    <div>{{ Form::label('name', 'Test name') }} {{ Form::text('name') }}</div>
+    <div>{{ Form::label('description', 'Description') }} {{ Form::textarea('description') }}</div>
+    {{ Form::submit() }}
+  {{ Form::close() }}
+
+  {{ link_to_action('testController@index', 'Show all') }}
+@endsection
+{% endraw %}
+{% endcodeblock %}
+
+I was happy to see several [Helpers](http://laravel.com/docs/helpers#urls) for producing links and URL's this is an absolute must for templates to keep links fresh and easy to maintain on a larger site.
+
+[See all the rest of the template code I used.](https://github.com/jonathanKingston/laravel-test/tree/master/app/views/test)
 
 ORM wrapper
 -----------
 
+The ORM wrapper seems easy enough to follow for beginners, following the same direction as most other frameworks.
 
 
 Improvements
 ------------
 
-Documentation, key parts of the framework are less documented that far less important parts.
-
-Open questions
---------------
-So far I have the current questions that I need to answer:
-
-- Is there a way to uniformly handle different content types in the conroller.
-- Are there built in validations for forms?
-- Why do the Laravel code samples use spaces but the code in the framework use tabs?
+-   Documentation, key parts of the framework are less documented that far less important parts.
+-   Add in the ability to do FormHandler style forms which can render forms, validate and connect to the model.
+-   Stronger content-type response handling like [respond_with in Rails](http://apidock.com/rails/ActionController/MimeResponds/respond_with)
+-   Why do the Laravel code samples use spaces but the code in the framework use tabs? (Pick one - please)

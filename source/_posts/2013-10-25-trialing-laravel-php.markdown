@@ -221,11 +221,7 @@ The ORM wrapper seems easy enough to follow for beginners, following the same di
 
 However the Laravel docs shows how to use validations but not where they should be placed or what best practices are. I have decided to hook in with model so only one place defines the database validation.
 
-I added the following code to my model;
-
--  This adds in a boot method which allows the model to define hooks.
--  I then use this for validating the model saving (Before updating or storing).
--  The validator is saved to the model so the controller can acess it.
+I added the following code to my model:
 
 {% codeblock %}
 {% raw %}
@@ -248,9 +244,12 @@ I added the following code to my model;
 {% endraw %}
 {% endcodeblock %}
 
-In the controller I then use:
+-  This adds in a boot method which allows the model to define hooks. [More info on the boot method and events](http://laravel.com/docs/eloquent#model-events).
+-  I then use the boot method for adding in a saving hook (Before INSERT or UPDATE) using `Test::saving(`.
+-  The anonymous function then validates the input of the model and saves it to the parameter `$model->validator`
+-  The return value of the anonymous function used in the hook `$model->validator->passes()` will return true or false which when false will prevent the model being saved.
 
-Check out the [Validator API](http://laravel.com/docs/validation#error-messages-and-views) for more info.
+In the controller I then use:
 
 {% codeblock %}
 {% raw %}
@@ -263,6 +262,8 @@ if ($test->validator->fails()) {
 return Redirect::action('testController@show', array($test->id));
 {% endraw %}
 {% endcodeblock %}
+
+Check out the [Validator API](http://laravel.com/docs/validation#error-messages-and-views) for more info.
 
 I then modified the template to show the errors:
 {% codeblock %}

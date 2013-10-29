@@ -373,14 +373,7 @@ Anyway, we are left with something that is a PHP clone of Rails here, it does th
 
 <p>However the Laravel docs shows how to use validations but not where they should be placed or what best practices are. I have decided to hook in with model so only one place defines the database validation.</p>
 
-<p>I added the following code to my model;</p>
-
-<ul>
-<li>This adds in a boot method which allows the model to define hooks.</li>
-<li>I then use this for validating the model saving (Before updating or storing).</li>
-<li>The validator is saved to the model so the controller can acess it.</li>
-</ul>
-
+<p>I added the following code to my model:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -416,9 +409,15 @@ Anyway, we are left with something that is a PHP clone of Rails here, it does th
 </span><span class='line'>  }</span></code></pre></td></tr></table></div></figure>
 
 
-<p>In the controller I then use:</p>
+<ul>
+<li>This adds in a boot method which allows the model to define hooks. <a href="http://laravel.com/docs/eloquent#model-events">More info on the boot method and events</a>.</li>
+<li>I then use the boot method for adding in a saving hook (Before INSERT or UPDATE) using <code>Test::saving(</code>.</li>
+<li>The anonymous function then validates the input of the model and saves it to the parameter <code>$model-&gt;validator</code></li>
+<li>The return value of the anonymous function used in the hook <code>$model-&gt;validator-&gt;passes()</code> will return true or false which when false will prevent the model being saved.</li>
+</ul>
 
-<p>Check out the <a href="http://laravel.com/docs/validation#error-messages-and-views">Validator API</a> for more info.</p>
+
+<p>In the controller I then use:</p>
 
 <figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -435,6 +434,8 @@ Anyway, we are left with something that is a PHP clone of Rails here, it does th
 </span><span class='line'>}
 </span><span class='line'>return Redirect::action('testController@show', array($test->id));</span></code></pre></td></tr></table></div></figure>
 
+
+<p>Check out the <a href="http://laravel.com/docs/validation#error-messages-and-views">Validator API</a> for more info.</p>
 
 <p>I then modified the template to show the errors:</p>
 
@@ -513,14 +514,14 @@ I think overall it seems a far leaner framework than CakePHP and with most of th
   </header>
 
 
-  <div class="entry-content"><p>I have been inspired to write blogs over the years, without over making more than several posts before quitting.</p>
+  <div class="entry-content"><p>I have been inspired to write blogs over the years, without ever making more than several posts before quitting.</p>
 
 <p>A post by Joe Armstrong hit home and made me realise I should just get on and start writing:
 <a href="http://joearms.github.io/2013/03/28/jekyll-is-great.html">Joe Armstrong &ndash; Jekyll is great</a></p>
 
-<p>I&rsquo;m not expecting to have much interest however man needs a place to rant.</p>
+<p>I&rsquo;m not expecting to have much interest however: man needs a place to rant.</p>
 
-<p>This is mainly what I will be using this blog for mainly ranting and perhaps some talk about development.</p>
+<p>This is what I will be using this blog for mainly ranting and perhaps some talk about development.</p>
 </div>
   
   

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Laravel | Jonathan Kingston]]></title>
   <link href="http://jonathanKingston.github.io/blog/categories/laravel/atom.xml" rel="self"/>
   <link href="http://jonathanKingston.github.io/"/>
-  <updated>2013-10-29T02:57:32+00:00</updated>
+  <updated>2013-10-29T17:12:48+00:00</updated>
   <id>http://jonathanKingston.github.io/</id>
   <author>
     <name><![CDATA[Jonathan Kingston]]></name>
@@ -44,59 +44,34 @@ sudo mv composer.phar /usr/local/bin/composer
 </code></pre>
 
 <p>I then edited the file to have the following config:
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>laravel-test </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Listen 8080&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>&lt;VirtualHost *:8080>&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>    ServerAdmin webmaster@localhost
-</span><span class='line'>
-</span><span class='line'>    DocumentRoot /home/jonathan/workspace/laravel-test/public
-</span><span class='line'>    &lt;Directory /home/jonathan/workspace/laravel-test/public&gt;
-</span><span class='line'>            RewriteEngine On
-</span><span class='line'>            Options Indexes FollowSymLinks MultiViews
-</span><span class='line'>            AllowOverride All
-</span><span class='line'>            Order allow,deny
-</span><span class='line'>            allow from all
-</span><span class='line'>    &lt;/Directory&gt;
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>    ErrorLog ${APACHE_LOG_DIR}/error.log
-</span><span class='line'>
-</span><span class='line'>    # Possible values include: debug, info, notice, warn, error, crit,
-</span><span class='line'>    # alert, emerg.
-</span><span class='line'>    LogLevel warn
-</span><span class='line'>
-</span><span class='line'>    CustomLog ${APACHE_LOG_DIR}/access.log combined
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>&lt;/VirtualHost></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+{% codeblock laravel-test %}
+Listen 8080</p>
+
+<p><VirtualHost *:8080></p>
+
+<pre><code>    ServerAdmin webmaster@localhost
+
+    DocumentRoot /home/jonathan/workspace/laravel-test/public
+    &lt;Directory /home/jonathan/workspace/laravel-test/public&gt;
+            RewriteEngine On
+            Options Indexes FollowSymLinks MultiViews
+            AllowOverride All
+            Order allow,deny
+            allow from all
+    &lt;/Directory&gt;
+
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</code></pre>
+
+<p></VirtualHost>
+{% endcodeblock %}</p>
 
 <p>I then ran the following to enable the site:</p>
 
@@ -132,11 +107,11 @@ There is not a detailed enough explanation to how to setup a web server to secur
 
 <p>Twig would use:</p>
 
-<pre><code>
+<pre><code>{% raw %}
 {% block main %}
    this is a test.
 {% endblock %}
-
+{% endraw %}
 </code></pre>
 
 <p>I personally find this easier to read, luckily it looks like you can use Twig in Laravel with <a href="https://github.com/rcrowe/TwigBridge">TwigBridge</a>.</p>
@@ -182,7 +157,7 @@ Anyway, we are left with something that is a PHP clone of Rails here, it does th
 </code></pre>
 
 <p>Here is a sample database I created:
-</p>
+{% raw %}</p>
 
 <pre><code>Schema::create('test', function($table)
 {
@@ -193,7 +168,7 @@ Anyway, we are left with something that is a PHP clone of Rails here, it does th
 });
 </code></pre>
 
-<p></p>
+<p>{% endraw %}</p>
 
 <p>Now lets run the migrations:</p>
 
@@ -214,26 +189,18 @@ Anyway, we are left with something that is a PHP clone of Rails here, it does th
 
 <p>I then populated the controller code:</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>    public function index()
-</span><span class='line'>    {
-</span><span class='line'>            $tests = Test::all();
-</span><span class='line'>            return View::make('test/index', array('tests' =&gt; $tests));
-</span><span class='line'>    }
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+<p>{% codeblock %}
+{% raw %}</p>
+
+<pre><code>    public function index()
+    {
+            $tests = Test::all();
+            return View::make('test/index', array('tests' =&gt; $tests));
+    }
+</code></pre>
+
+<p>{% endraw %}
+{% endcodeblock %}</p>
 
 <h2>Building the templates</h2>
 
@@ -249,70 +216,47 @@ Anyway, we are left with something that is a PHP clone of Rails here, it does th
 
 
 <p>I also made the templates extend from a template &lsquo;layout&rsquo;:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;!DOCTYPE html>
-</span><span class='line'>&lt;html>
-</span><span class='line'>  &lt;head>&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>&lt;title&gt;Test application&lt;/title&gt;
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>  &lt;/head>
-</span><span class='line'>  &lt;body>&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>@yield('content')
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>  &lt;/body>
-</span><span class='line'>&lt;/html></span></code></pre></td></tr></table></div></figure></notextile></div></p>
+{% codeblock %}
+{% raw %}
+&lt;!DOCTYPE html>
+<html>
+  <head></p>
+
+<pre><code>&lt;title&gt;Test application&lt;/title&gt;
+</code></pre>
+
+<p>  </head>
+  <body></p>
+
+<pre><code>@yield('content')
+</code></pre>
+
+<p>  </body>
+</html>
+{% endraw %}
+{% endcodeblock %}</p>
 
 <p>Here is the edit action that I used:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>@extends(&lsquo;layout&rsquo;)&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>@section(&lsquo;content&rsquo;)
-</span><span class='line'>  &lt;h1>Edit test {{ $test->id }}&lt;/h1>&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>  {{ Form::model($test, array(&lsquo;action&rsquo; => array(&lsquo;testController@update&rsquo;, $test->id), &lsquo;method&rsquo; => &lsquo;put&rsquo;)) }}&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>&lt;div&gt;{{ Form::label('name', 'Test name') }} {{ Form::text('name') }}&lt;/div&gt;
-</span><span class='line'>&lt;div&gt;{{ Form::label('description', 'Description') }} {{ Form::textarea('description') }}&lt;/div&gt;
-</span><span class='line'>{{ Form::submit() }}
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>  {{ Form::close() }}&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>  {{ link_to_action(&lsquo;testController@index&rsquo;, &lsquo;Show all&rsquo;) }}
-</span><span class='line'>@endsection</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+{% codeblock %}
+{% raw %}
+@extends(&lsquo;layout&rsquo;)</p>
+
+<p>@section(&lsquo;content&rsquo;)
+  <h1>Edit test {{ $test->id }}</h1></p>
+
+<p>  {{ Form::model($test, array(&lsquo;action&rsquo; => array(&lsquo;testController@update&rsquo;, $test->id), &lsquo;method&rsquo; => &lsquo;put&rsquo;)) }}</p>
+
+<pre><code>&lt;div&gt;{{ Form::label('name', 'Test name') }} {{ Form::text('name') }}&lt;/div&gt;
+&lt;div&gt;{{ Form::label('description', 'Description') }} {{ Form::textarea('description') }}&lt;/div&gt;
+{{ Form::submit() }}
+</code></pre>
+
+<p>  {{ Form::close() }}</p>
+
+<p>  {{ link_to_action(&lsquo;testController@index&rsquo;, &lsquo;Show all&rsquo;) }}
+@endsection
+{% endraw %}
+{% endcodeblock %}</p>
 
 <p>I was happy to see several <a href="http://laravel.com/docs/helpers#urls">Helpers</a> for producing links and URL&rsquo;s this is an absolute must for templates to keep links fresh and easy to maintain on a larger site.</p>
 
@@ -324,104 +268,76 @@ Anyway, we are left with something that is a PHP clone of Rails here, it does th
 
 <p>However the Laravel docs shows how to use validations but not where they should be placed or what best practices are. I have decided to hook in with model so only one place defines the database validation.</p>
 
-<p>I added the following code to my model;</p>
+<p>I added the following code to my model:</p>
+
+<p>{% codeblock %}
+{% raw %}
+  public $validator;</p>
+
+<p>  public $rules = array(</p>
+
+<pre><code>'name' =&gt; 'Required|Min:3|Alpha'
+</code></pre>
+
+<p>  );</p>
+
+<p>  public static function boot() {</p>
+
+<pre><code>parent::boot();
+
+//Add in saving hook to prevent database being saved
+Test::saving(function ($model) {
+  $model-&gt;validator = Validator::make($model-&gt;toArray(), $model-&gt;rules);
+
+  return $model-&gt;validator-&gt;passes();
+});
+</code></pre>
+
+<p>  }
+{% endraw %}
+{% endcodeblock %}</p>
 
 <ul>
-<li>This adds in a boot method which allows the model to define hooks.</li>
-<li>I then use this for validating the model saving (Before updating or storing).</li>
-<li>The validator is saved to the model so the controller can acess it.</li>
+<li>This adds in a boot method which allows the model to define hooks. <a href="http://laravel.com/docs/eloquent#model-events">More info on the boot method and events</a>.</li>
+<li>I then use the boot method for adding in a saving hook (Before INSERT or UPDATE) using <code>Test::saving(</code>.</li>
+<li>The anonymous function then validates the input of the model and saves it to the parameter <code>$model-&gt;validator</code></li>
+<li>The return value of the anonymous function used in the hook <code>$model-&gt;validator-&gt;passes()</code> will return true or false which when false will prevent the model being saved.</li>
 </ul>
 
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>public $validator;&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>  public $rules = array(&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>'name' =&gt; 'Required|Min:3|Alpha'
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>  );&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>  public static function boot() {&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>parent::boot();
-</span><span class='line'>
-</span><span class='line'>//Add in saving hook to prevent database being saved
-</span><span class='line'>Test::saving(function ($model) {
-</span><span class='line'>  $model-&gt;validator = Validator::make($model-&gt;toArray(), $model-&gt;rules);
-</span><span class='line'>
-</span><span class='line'>  return $model-&gt;validator-&gt;passes();
-</span><span class='line'>});
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>  }</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
 <p>In the controller I then use:</p>
+
+<p>{% codeblock %}
+{% raw %}
+$test = Test::find($id);
+$test->update(array(&lsquo;name&rsquo; => Input::get(&lsquo;name&rsquo;), &lsquo;description&rsquo; => Input::get(&lsquo;description&rsquo;)));</p>
+
+<p>if ($test->validator->fails()) {
+  return Redirect::action(&lsquo;testController@edit&rsquo;, array($test->id))&ndash;>withInput()&ndash;>withErrors($test->validator);
+}
+return Redirect::action(&lsquo;testController@show&rsquo;, array($test->id));
+{% endraw %}
+{% endcodeblock %}</p>
 
 <p>Check out the <a href="http://laravel.com/docs/validation#error-messages-and-views">Validator API</a> for more info.</p>
 
-<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>$test = Test::find($id);
-</span><span class='line'>$test->update(array(&lsquo;name&rsquo; => Input::get(&lsquo;name&rsquo;), &lsquo;description&rsquo; => Input::get(&lsquo;description&rsquo;)));&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>if ($test->validator->fails()) {
-</span><span class='line'>  return Redirect::action(&lsquo;testController@edit&rsquo;, array($test->id))&ndash;>withInput()&ndash;>withErrors($test->validator);
-</span><span class='line'>}
-</span><span class='line'>return Redirect::action(&lsquo;testController@show&rsquo;, array($test->id));</span></code></pre></td></tr></table></div></figure></notextile></div></p>
-
 <p>I then modified the template to show the errors:
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>@if ( $errors->count() > 0 )
-</span><span class='line'>  &lt;p>The following errors have occurred:&lt;/p>&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;p>  &lt;ul>
-</span><span class='line'>  @foreach( $errors->all() as $message )&lt;/p>
-</span><span class='line'>
-</span><span class='line'>&lt;pre>&lt;code>&lt;li&gt;{{ $message }}&lt;/li&gt;
-</span><span class='line'>&lt;/code>&lt;/pre>
-</span><span class='line'>
-</span><span class='line'>&lt;p>  @endforeach
-</span><span class='line'>  &lt;/ul>
-</span><span class='line'>@endif</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+{% codeblock %}
+{% raw %}
+@if ( $errors->count() > 0 )
+  <p>The following errors have occurred:</p></p>
+
+<p>  <ul>
+  @foreach( $errors->all() as $message )</p>
+
+<pre><code>&lt;li&gt;{{ $message }}&lt;/li&gt;
+</code></pre>
+
+<p>  @endforeach
+  </ul>
+@endif
+{% endraw %}
+{% endcodeblock %}</p>
 
 <p>The $errors will be populated from the redirect in the controller from <code>withErrors</code> and the forms will be populated with the erronous form input from the <code>withInput</code> method call too.</p>
 

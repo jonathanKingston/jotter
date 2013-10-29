@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: First impressions | Jonathan Kingston]]></title>
+  <link href="http://jonathanKingston.github.io/blog/categories/first-impressions/atom.xml" rel="self"/>
+  <link href="http://jonathanKingston.github.io/"/>
+  <updated>2013-10-29T17:12:48+00:00</updated>
+  <id>http://jonathanKingston.github.io/</id>
+  <author>
+    <name><![CDATA[Jonathan Kingston]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Trialling laravel PHP]]></title>
+    <link href="http://jonathanKingston.github.io/blog/2013/10/25/trialing-laravel-php/"/>
+    <updated>2013-10-25T01:29:00+01:00</updated>
+    <id>http://jonathanKingston.github.io/blog/2013/10/25/trialing-laravel-php</id>
+    <content type="html"><![CDATA[<p>Laravel was suggested to me last week and I have only just got time to take a look at it properly.</p>
+
+<p>The framework has a similar structure to Rails so it seems pretty familiar to me so far. In making this article I created a <a href="https://github.com/jonathanKingston/laravel-test">test REST laravel application</a>.</p>
+
+<h2>Initial install</h2>
+
+<p>Firstly I needed to install everything as my machine has recently decided to need rebuilding, I needed to install PHP and composer etc.</p>
+
+<pre><code>sudo apt-get install php5
+curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
+</code></pre>
+
+<p>Setting up a new instance is then quick and simple with:</p>
+
+<pre><code>composer create-project laravel/laravel laravel-test --prefer-dist
+</code></pre>
+
+<h3>Setup a new site in Apache</h3>
+
+<p>I then setup an area to play around with in Apache:</p>
+
+<pre><code>sudo touch /etc/apache2/sites-available/laravel-test
+</code></pre>
+
+<p>I then edited the file to have the following config:
+{% codeblock laravel-test %}
+Listen 8080</p>
+
+<p><VirtualHost *:8080></p>
+
+<pre><code>    ServerAdmin webmaster@localhost
+
+    DocumentRoot /home/jonathan/workspace/laravel-test/public
+    &lt;Directory /home/jonathan/workspace/laravel-test/public&gt;
+            RewriteEngine On
+            Options Indexes FollowSymLinks MultiViews
+            AllowOverride All
+            Order allow,deny
+            allow from all
+    &lt;/Directory&gt;
+
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+
+    # Possible values include: debug, info, notice, warn, error, crit,
+    # alert, emerg.
+    LogLevel warn
+
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</code></pre>
+
+<p></VirtualHost>
+{% endcodeblock %}</p>
+
+<p>I then ran the following to enable the site:</p>
+
+<pre><code>sudo a2ensite laravel-test;
+sudo a2enmod rewrite;
+sudo service apache2 reload;
+</code></pre>
+
+<p>I then ran the following to set the required permissions:</p>
+
+<pre><code>sudo chmod -R 777 app/storage;
+</code></pre>
+
+<h2>Quick start guide</h2>
+
+<p>The laravel quick start guide I think could flow better.
+The guide doesn&rsquo;t mention the benefits of separating out code into controllers.
+New developers are not suggested that <a href="http://laravel.com/docs/controllers#resource-controllers">REST resourceful routing</a> would be better later, I actually found this feature hard to find even though I was fairly sure the framework supported it.
+There is not a detailed enough explanation to how to setup a web server to securely use the framework.</p>
+
+<p>As a guide it doesn&rsquo;t seem like it would promote good development practice for new developers.</p>
+
+<h2>Templates</h2>
+
+<p>The <a href="http://laravel.com/docs/templates">Blade</a> templates remind me of <a href="http://www.ruby-doc.org/stdlib-2.0.0/libdoc/erb/rdoc/ERB.html">Erb</a> and <a href="http://twig.sensiolabs.org/">Twig</a> templates, so far they seem a little weird but certainly no <a href="http://www.template-toolkit.org">Template Toolkit</a>.</p>
+
+<p>I am however a little perplexed as to why Laravel has created another template engine when Twig appears to have the same goals and instead of using this:</p>
+
+<pre><code>@section('main')
+  this is a test.
+@endsection
+</code></pre>
+
+<p>Twig would use:</p>
+
+<pre><code>{% raw %}
+{% block main %}
+   this is a test.
+{% endblock %}
+{% endraw %}
+</code></pre>
+
+<p>I personally find this easier to read, luckily it looks like you can use Twig in Laravel with <a href="https://github.com/rcrowe/TwigBridge">TwigBridge</a>.</p>
+
+<h2>Config changes</h2>
+
+<p>I changed my database to PostgreSQL rather than mySQL opening <code>app/config/database.php</code>:</p>
+
+<pre><code>        'default' =&gt; 'pgsql',
+</code></pre>
+
+<p>Also modifying the config further down for pgsql.</p>
+
+<h3>New DB setup</h3>
+
+<p>Making sure we have the database installed:</p>
+
+<pre><code>sudo apt-get install postgresql-9.1;
+sudo apt-get install php5-pgsql;
+</code></pre>
+
+<p>Changing the PostgreSQL default password if you have not already:</p>
+
+<pre><code>sudo -u postgres psql postgres;
+
+\password postgres
+create database database;
+</code></pre>
+
+<h2>Forms</h2>
+
+<p>Forms look like they could do with a lot of work, as this is a modern framework I was expecting something more powerful than <a href="http://guides.rubyonrails.org/form_helpers.html">Rails forms</a>.
+Having used <a href="http://search.cpan.org/~gshank/HTML-FormHandler-0.40053/lib/HTML/FormHandler.pm">FormHandler</a> in Perl on a regular basis the forms in Laravel appear to be far weaker than that.
+Anyway, we are left with something that is a PHP clone of Rails here, it does the job.</p>
+
+<h2>Migrations</h2>
+
+<p>For a corporate environment of any size, having the ability to roll back and forward database structures is very powerful.</p>
+
+<p>Laravel provides migrate in the artisan command:</p>
+
+<pre><code>php artisan migrate:make create_test_table
+</code></pre>
+
+<p>Here is a sample database I created:
+{% raw %}</p>
+
+<pre><code>Schema::create('test', function($table)
+{
+    $table-&gt;increments('id');
+    $table-&gt;string('name');
+    $table-&gt;text('description');
+    $table-&gt;timestamps();
+});
+</code></pre>
+
+<p>{% endraw %}</p>
+
+<p>Now lets run the migrations:</p>
+
+<pre><code>php artisan migrate
+</code></pre>
+
+<h2>Controller</h2>
+
+<p>I then setup a sample controller:</p>
+
+<pre><code>php artisan controller:make testController
+</code></pre>
+
+<p>Then setup the route to link to this controller making it a <a href="http://laravel.com/docs/controllers#resource-controllers">resource controller</a>:</p>
+
+<pre><code>Route::resource('test', 'testController');
+</code></pre>
+
+<p>I then populated the controller code:</p>
+
+<p>{% codeblock %}
+{% raw %}</p>
+
+<pre><code>    public function index()
+    {
+            $tests = Test::all();
+            return View::make('test/index', array('tests' =&gt; $tests));
+    }
+</code></pre>
+
+<p>{% endraw %}
+{% endcodeblock %}</p>
+
+<h2>Building the templates</h2>
+
+<p>For the controller I then needed to build the following template s:</p>
+
+<ul>
+<li> app/views/test/index.blade.php</li>
+<li> app/views/test/edit.blade.php</li>
+<li> app/views/test/show.blade.php</li>
+<li> app/views/test/create.blade.php</li>
+<li> app/views/test/destroy.blade.php</li>
+</ul>
+
+
+<p>I also made the templates extend from a template &lsquo;layout&rsquo;:
+{% codeblock %}
+{% raw %}
+&lt;!DOCTYPE html>
+<html>
+  <head></p>
+
+<pre><code>&lt;title&gt;Test application&lt;/title&gt;
+</code></pre>
+
+<p>  </head>
+  <body></p>
+
+<pre><code>@yield('content')
+</code></pre>
+
+<p>  </body>
+</html>
+{% endraw %}
+{% endcodeblock %}</p>
+
+<p>Here is the edit action that I used:
+{% codeblock %}
+{% raw %}
+@extends(&lsquo;layout&rsquo;)</p>
+
+<p>@section(&lsquo;content&rsquo;)
+  <h1>Edit test {{ $test->id }}</h1></p>
+
+<p>  {{ Form::model($test, array(&lsquo;action&rsquo; => array(&lsquo;testController@update&rsquo;, $test->id), &lsquo;method&rsquo; => &lsquo;put&rsquo;)) }}</p>
+
+<pre><code>&lt;div&gt;{{ Form::label('name', 'Test name') }} {{ Form::text('name') }}&lt;/div&gt;
+&lt;div&gt;{{ Form::label('description', 'Description') }} {{ Form::textarea('description') }}&lt;/div&gt;
+{{ Form::submit() }}
+</code></pre>
+
+<p>  {{ Form::close() }}</p>
+
+<p>  {{ link_to_action(&lsquo;testController@index&rsquo;, &lsquo;Show all&rsquo;) }}
+@endsection
+{% endraw %}
+{% endcodeblock %}</p>
+
+<p>I was happy to see several <a href="http://laravel.com/docs/helpers#urls">Helpers</a> for producing links and URL&rsquo;s this is an absolute must for templates to keep links fresh and easy to maintain on a larger site.</p>
+
+<p><a href="https://github.com/jonathanKingston/laravel-test/tree/master/app/views/test">See all the rest of the template code I used.</a></p>
+
+<h2>ORM wrapper</h2>
+
+<p>The ORM wrapper seems easy enough to follow for beginners, following the same direction as most other frameworks.</p>
+
+<p>However the Laravel docs shows how to use validations but not where they should be placed or what best practices are. I have decided to hook in with model so only one place defines the database validation.</p>
+
+<p>I added the following code to my model:</p>
+
+<p>{% codeblock %}
+{% raw %}
+  public $validator;</p>
+
+<p>  public $rules = array(</p>
+
+<pre><code>'name' =&gt; 'Required|Min:3|Alpha'
+</code></pre>
+
+<p>  );</p>
+
+<p>  public static function boot() {</p>
+
+<pre><code>parent::boot();
+
+//Add in saving hook to prevent database being saved
+Test::saving(function ($model) {
+  $model-&gt;validator = Validator::make($model-&gt;toArray(), $model-&gt;rules);
+
+  return $model-&gt;validator-&gt;passes();
+});
+</code></pre>
+
+<p>  }
+{% endraw %}
+{% endcodeblock %}</p>
+
+<ul>
+<li>This adds in a boot method which allows the model to define hooks. <a href="http://laravel.com/docs/eloquent#model-events">More info on the boot method and events</a>.</li>
+<li>I then use the boot method for adding in a saving hook (Before INSERT or UPDATE) using <code>Test::saving(</code>.</li>
+<li>The anonymous function then validates the input of the model and saves it to the parameter <code>$model-&gt;validator</code></li>
+<li>The return value of the anonymous function used in the hook <code>$model-&gt;validator-&gt;passes()</code> will return true or false which when false will prevent the model being saved.</li>
+</ul>
+
+
+<p>In the controller I then use:</p>
+
+<p>{% codeblock %}
+{% raw %}
+$test = Test::find($id);
+$test->update(array(&lsquo;name&rsquo; => Input::get(&lsquo;name&rsquo;), &lsquo;description&rsquo; => Input::get(&lsquo;description&rsquo;)));</p>
+
+<p>if ($test->validator->fails()) {
+  return Redirect::action(&lsquo;testController@edit&rsquo;, array($test->id))&ndash;>withInput()&ndash;>withErrors($test->validator);
+}
+return Redirect::action(&lsquo;testController@show&rsquo;, array($test->id));
+{% endraw %}
+{% endcodeblock %}</p>
+
+<p>Check out the <a href="http://laravel.com/docs/validation#error-messages-and-views">Validator API</a> for more info.</p>
+
+<p>I then modified the template to show the errors:
+{% codeblock %}
+{% raw %}
+@if ( $errors->count() > 0 )
+  <p>The following errors have occurred:</p></p>
+
+<p>  <ul>
+  @foreach( $errors->all() as $message )</p>
+
+<pre><code>&lt;li&gt;{{ $message }}&lt;/li&gt;
+</code></pre>
+
+<p>  @endforeach
+  </ul>
+@endif
+{% endraw %}
+{% endcodeblock %}</p>
+
+<p>The $errors will be populated from the redirect in the controller from <code>withErrors</code> and the forms will be populated with the erronous form input from the <code>withInput</code> method call too.</p>
+
+<h2>Improvements</h2>
+
+<ul>
+<li>Documentation, key parts of the framework are less documented than far less important parts.</li>
+<li>Add in the ability to do FormHandler style forms which can render forms, validate and connect to the model.</li>
+<li>Stronger content-type response handling like <a href="http://apidock.com/rails/ActionController/MimeResponds/respond_with">respond_with in Rails</a></li>
+<li>Why do the Laravel code samples use spaces but the code in the framework use tabs? (Pick one &ndash; please)</li>
+<li>Scaffolding &ndash; yes it will make things look even more like Rails however it is a brilliant beginner tool and with the ability to customise the generated code for bigger projects it makes creating new wireframes is very fast.</li>
+</ul>
+
+
+<h2>Conclusion</h2>
+
+<p>I am happy to see that the famework is fairly extendable, I didn&rsquo;t look into what the extension mechanisms are like and what popular extension code quality was.
+I think overall it seems a far leaner framework than CakePHP and with most of the ability of Rails. I think being a youngish framework still, more could be done to improve the setup, documentation and tools.</p>
+]]></content>
+  </entry>
+  
+</feed>

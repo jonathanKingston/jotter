@@ -15,7 +15,7 @@ I don't really think JavaScript is the best used for producing layout but it see
 
 ## The rise of the CSS framework
  
-You only have to sift through some of some of the modern framework's code to realise that there is a units problem at hand here.
+You only have to sift through some of the modern framework's code to realise that there is a units problem at hand here.
 The frameworks I have had a chance to work with have all had the issue of mixing units and having to constantly specify dimensions.
  
 The problem I see is code like this:
@@ -59,7 +59,7 @@ This can, however, be fixed by using [rem](http://www.w3.org/TR/css3-values/#rem
   </div>
 ```
 
-Which when run in a browser demonstrates that it stays consistent size for all levels in the DOM.
+Which when run in a browser demonstrates that rem units stay a consistent size for all levels in the DOM.
 
 The great news is rem units actually solves the issue here. However, in wades Internet Explorer 8, which doesn't support rem units - if you need to support IE 8 then we need to look elsewhere for an alternative solution.
 

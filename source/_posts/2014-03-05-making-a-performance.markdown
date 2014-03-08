@@ -9,19 +9,19 @@ categories:
 
 ## Don't over optimise to early
  
-A common trend I see more in JavaScript than in any other language is to over optimise every line of code.
-This comes in two flavours:
--    Optimising to the most least lines of code
+A common trend I see more in JavaScript, than in any other language is to over optimise every line of code.
+This comes many flavours but the two most common are:
+-    Optimising to the least lines of code
 -    Optimising to code to be most performant
  
 ## Performant code
- 
+
 Scope of the project is really important here, if we were making an in-browser game then there may be justification to getting the most optimal code for the browser.
  
 Most websites, **do not** require the level of interaction that developers expect to warrant optimising for the computer.
  
-Having code that can be diagnosed easier is smaller isolated components is much easier to improve performance when it is needed in a much safer manner.
- 
+Having code that can be diagnosed easier in smaller isolated components, is much easier to improve performance in a much safer manner, when the performance is needed.
+
 Over optimising early looks a lot like this:
  
 ```
@@ -51,6 +51,7 @@ Over optimising early looks a lot like this:
   ];
   var chosenPost = findPost(posts, 'Optimisation scandal');
 ```
+
 In the example above, the coder as attempted to improve performance by making the method not search through the posts the second time round.
 Firstly this code increases application risk for two factors:
 -    Introducing while loops in this nature are poorly understood, the [off by one error](http://en.wikipedia.org/wiki/Off-by-one_error) happens here easily.
@@ -97,3 +98,10 @@ The problems I expect new programmers for the above code are:
 -    What is checked in the if statement `thing && thing2 && thing3`
      -    If either of the three variables is set to: false, null, undefined, NaN, 0, or '' then this test would fail
 -    Remembering to insert brackets or commas after each statement in the if once another statement is required
+
+
+## Clear coding standards help
+
+One of the main reasons I have become so interested in [ESLint](http://eslint.org/), is because it will allow for strict coding standards that are not interpreted differently.
+
+Personally I would prefer to codify a set of coding standards as much as possible. This is mostly down to experience of seeing so many developers not follow standards.

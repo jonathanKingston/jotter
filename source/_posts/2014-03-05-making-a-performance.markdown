@@ -10,6 +10,7 @@ categories:
  
 A common trend I see more in JavaScript, than in any other language is to over optimise every line of code.
 This comes in many flavours but the two most common are:
+
 -    Optimising to the least lines of code
 -    Optimising code to be most performant
  
@@ -53,16 +54,18 @@ Over optimising early looks a lot like this:
 
 In the example above, the coder has attempted to improve performance by making the method not search through the posts the second time round.
 Firstly, this code increases application risk due to two factors:
+
 -    Introducing while loops of this nature are poorly understood, the [off by one error](http://en.wikipedia.org/wiki/Off-by-one_error) happens here easily.
 -    Adding in caching introduces other risks:
      -    It is easy for developers to skip over these lines of code
      -    Cache rules can become sullied with lots of conditionals
      -    This stops the method being [indempotent](http://en.wikipedia.org/wiki/Idempotence): developers can easily mess with the global variable and cause issues.
 
-What is also worth commenting on here - is actually, these lines of code [do not always](http://jsperf.com/loops/145) give the performance improvement developers expect.
+What is also worth commenting on here is actually, these lines of code [do not always](http://jsperf.com/loops/145) give the performance improvement developers expect.
 Until the need for an optimisation has been proven and the performance improvement has also been proved, I would always leave them out, unless the coding style expects them.
 
 The questions I try to ask myself when writing an optimisation is:
+
 -    How long will it take to implement?
 -    How hard does it make the code to read?
 -    How much time will is save the user?
@@ -92,6 +95,7 @@ Reducing key presses leads to code that is harder to maintain and also comprehen
 ```
  
 The problems I expect new programmers to encounter with the above code are:
+
 -    They may be unsure regarding what thing - thing4 get declared as
 -    Difficulty understanding where [ASI](http://ecma262-5.com/ELS5_Section_7.htm#Section_7.9.1)(Automatic Semicolon Insertion) rules come into play
 -    Comprehension of where if statements terminate

@@ -56,11 +56,11 @@ In the example above, the coder as attempted to improve performance by making th
 Firstly this code increases application risk for two factors:
 -    Introducing while loops in this nature are poorly understood, the [off by one error](http://en.wikipedia.org/wiki/Off-by-one_error) happens here easily.
 -    Adding in caching is another introduced risk:
-     -    it's easy to skip over these lines of code
+     -    It's easy to skip over these lines of code
      -    Cache rules can become sullied with lots of conditionals
      -    This stops the method being [indempotent](http://en.wikipedia.org/wiki/Idempotence), developers can easily mess with the global variable and cause issues.
  
-What is also worth commenting on here is actually these lines of code [don't always](http://jsperf.com/loops/145) give the performance improvement developers expect.
+What is also worth commenting on here, is actually these lines of code [don't always](http://jsperf.com/loops/145) give the performance improvement developers expect.
 Until proven the need for an optimisation and proven the performance improvement I would always leave them out, unless the coding style expects them.
  
 The questions I try to ask myself when writing an optimisation is:
@@ -78,7 +78,8 @@ Write speed, for a programmer is a factor, however it isn't the only one.
 For teams working together on the same code base, comprehension speed I would argue, is actually the most important. 
  
 When a programmer starts at your company, junior or senior. It is likely there will be a lot of training for the new starter either for themselves, or with another programmer.
- 
+For every simplification to programmers write speed, comes an increase in comprehension and traning required.
+
 Reducing key presses leads to code that is harder to maintain and also comprehend:
  
 ```

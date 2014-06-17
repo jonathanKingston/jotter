@@ -8,7 +8,7 @@ categories: [JavaScript, ECMAScript, XMLHttpRequest, SPA, Single Page Applicatio
 So having written enough heavy AJAX applications I can tell you that a massive frustration is that there is
 not any ability to detect natively when the browser follows a redirect over AJAX, this makes handling redirection difficult in the client.
 
-Some might suggest that we should invest further into using web sockets or cometing instead of AJAX. However using AJAX seems to fit better
+Some might suggest that we should invest further into using web sockets or someting instead of AJAX. However using AJAX seems to fit better
 with well established MVC web frameworks that are able to respond with JSON or XML.
 This will allow us to copy over much of the existing sites functionality without making many changes on the server side.
 

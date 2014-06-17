@@ -120,13 +120,13 @@ Myth is in it's early stages, but even so it's clear this style of CSS developme
 
 ## Future developments for Myth
 
-I would like to see the following:
+I would like to see the following (Edited with latest improvements):
 
 -    It would be great if I could configure a per browser output
      -    Selective browser extensions, currently it supports browser auto-prefixing like: `-webkit-transition: opacity 1s;` output instead of just the corresponding browser specified
      -    Provide the least amount of fixes for modern browsers
--    Choose to auto-follow @include and compile all files into one .css file
--    Output source maps
+-    ~~Choose to auto-follow @import and compile all files into one .css file~~
+-    ~~[output source maps](https://github.com/segmentio/myth/issues/44)~~
 -    Allow to declare what screen size the user is to strip out media queries that are not relevant
 
 

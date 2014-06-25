@@ -13,7 +13,7 @@ article {
 
 
 body {
-  header {
+  header[role=banner] {
     background-color: #639;
     background-color: rebeccapurple;
     h2 {

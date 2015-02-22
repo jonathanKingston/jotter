@@ -3,7 +3,7 @@ layout: post
 title: "Why I now love CSS Values and Units module"
 date: 2014-03-03 21:29
 comments: true
-categories: 
+categories: [CSS, colour]
 ---
 
 ## What I first thought

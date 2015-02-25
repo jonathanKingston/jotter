@@ -30,7 +30,7 @@ Elements are nested under the Shadow host n1.
 
 Once rendered, elements that are not a Shadow route are nested under the DOM insertion point `<content>`
 
-```
+```html
 <my-element><!-- Shadow host -->
   <"shadow-tree"><!-- A non element -->
     <div class="title">Some text</div>
@@ -102,7 +102,7 @@ However we can vastly simplify this for the most common usage with custom elemen
   - Or if the template has a `<content>` tag the elements are inserted within that.
 
 Assuming we have some code building the custom elements (see final example), the following code:
-```
+```html
 <template id="mycustomelement">
   <div>
     <content></content>
@@ -115,7 +115,7 @@ Assuming we have some code building the custom elements (see final example), the
 ```
 
 Will result in the following DOM tree:
-```
+```html
 <my-custom-element>
   <div>
     <b>Hello</b>
@@ -131,29 +131,29 @@ Registering a new component is our first step to getting to the design set out a
 
 Let's register a new component called `product-demo` and register it to the global `window.productDemo`.
 
-```
-  //Create a custom element that extends from the base HTMLElement
-  var productDemoPrototype = Object.create(HTMLElement.prototype);
+```javascript
+//Create a custom element that extends from the base HTMLElement
+var productDemoPrototype = Object.create(HTMLElement.prototype);
 
-  //Register the element name to the window
-  window[productDemo] = document.registerElement('product-demo', {prototype: productDemoPrototype});
+//Register the element name to the window
+window.productDemo = document.registerElement('product-demo', {prototype: productDemoPrototype});
 ```
 
 We can use the element before we define it in the JavaScript as HTML5 allows for custom elements that are not defined yet. However if we define custom behaviour to the `window.productDemo` once the element is created this behaviour get applied to the element.
 
 Customising the new element becomes simple with the new method [createdCallback](http://www.w3.org/TR/custom-elements/#dfn-created-callback) on the defined element. The callback is triggered when a new element instance is created, this gives us the ability to add custom behaviour on initialisation.
 
-```
-  window.productDemo.createdCallback = function () {
-    console.log('New product-demo created');
-  };
+```javascript
+window.productDemo.createdCallback = function () {
+  console.log('New product-demo created');
+};
 ```
 
 ### Attaching a template
 
 Web Components doesn't require us to use `<template>` tags however they make writing the innards of a shadow simpler by being in a self contained placeholder.
 
-```
+```html
 <template>
   <h2>Product name</h2>
   <div>
@@ -162,7 +162,7 @@ Web Components doesn't require us to use `<template>` tags however they make wri
 ```
 
 Templates are just a simple blueprint for DOM nodes that have to be cloned to be inserted into the DOM:
-```
+```javascript
 var template = document.querySelector(templateSelector);
 var clone = document.importNode(template.content, true);
 document.body.appendChild(clone);
@@ -174,7 +174,7 @@ The problem with this is that however complex the template, there is nothing dyn
 
 [Element.createShadowRoot](http://w3c.github.io/webcomponents/spec/shadow/#widl-Element-createShadowRoot-ShadowRoot) creates a shadow root on the element.
 
-```
+```javascript
 Element.createShadowRoot();
 ```
 
@@ -188,7 +188,7 @@ Styles within the shadow DOM are scoped to the **Shadow root** rather than docum
 
 Styles from the outside of the shadow are unable to select into the shadow unless using the selectors defined below. This means that as a template author I can't select by mistake the innards of the shadow which means the components become very self contained. Rules like `color` will be inherited into the shadow unless the shadow defines it's own rules for those properties which would take a higher specificity.
 
-```
+```css
 //This has a shadow DOM applied
 my-component {
   color: red;
@@ -305,7 +305,7 @@ function generateComponent(elementName, tagName, templateSelector, postCreateCal
 
 This sets up a new component which has a shadow DOM within it, the template specified will be inserted into shadow DOM which the function also sets up.
 
-```
+```html
 <my-element>
   <"Shadow tree">
     Template nodes here
@@ -351,7 +351,7 @@ generateComponent('MyHeadingElement', 'my-heading', '#myheadingtemplate', functi
 ```
 
 Define the component templates:
-```
+```html
 <template id="myheadingtemplate">
   <div>
     <i class="icon"></i>
@@ -386,7 +386,7 @@ Define the component templates:
 >However the idea is that most components should be kept small so who knows this may become the common form as practices evolve.
 
 Our actual template using the elements:
-```
+```html
 <my-block>
   <my-block heading-icon="user" heading="My important heading" >
     <div>Lorem ipsum</div>

@@ -19,7 +19,7 @@ Even when all browsers do support the technology it is probably always safe to a
 ## Pinning behaviour to the browser
 
 The web itself was designed to be stateless and so since lots of statefull technology solutions have been added on top, some of the new forms of security are in this realm and are also called **TOFU security** or trust on first use; obviously all modern tech needs a hipster name.
-**TOFU** is actually an old concept that came from SSH, by acknowledging you know a site, you are entrusting it on your first use. Despite it's usage in browsers is not as secure as SSH, it is however another way to prevent a server from being stolen by an attacker after it was first used.
+**TOFU** is actually an old concept that came from SSH, by acknowledging you know a site, you are entrusting it on your first use. Despite its usage in browsers is not as secure as SSH, it is however another way to prevent a server from being stolen by an attacker after it was first used.
 
 ![Tofu](/images/clientsecurity/tofu.jpg)
 
@@ -62,7 +62,7 @@ This prevents any information leaks by URLs by using this header, this reduces t
 ## Ensuring our content is correct
 [(SRI) Sub Resource Integrity](http://www.w3.org/TR/SRI/) Is a way to ensure that content served to the browser is of a known content shape.
 Sites serving integrity attributes, prevent browsers from executing the sub resources unless they match the identity specified in the HTML.
-This prevents scripts from being overridden with malicious content, it's primary application is content served over a CDN, however it doesn't harm making attackers lives harder.
+This prevents scripts from being overridden with malicious content, its primary application is content served over a CDN, however it doesn't harm making attackers lives harder.
 
 Another use case is restricting the content served from third parties, most sites often load many widgets and scripts from other sources - All of which may not remain secure over time.
 The developers of the application may not have a choice over if the resource is loaded on the site, for example it could be a primary revenue stream for the site.

@@ -116,7 +116,7 @@ h3 {
 ```
 [Example CSS Myth font recalculation](http://jonathankingston.github.io/mythhub/?m=%3Aroot+%7B%0D%0A++var-base-font%3A+0.75rem%3B%0D%0A%7D%0D%0A%0D%0Ah1+%7B%0D%0A++font-size%3A+calc%28var%28base-font%29+*+2%29%3B%0D%0A%7D%0D%0A%0D%0Ah2+%7B%0D%0A++font-size%3A+calc%28var%28base-font%29+*+1.75%29%3B%0D%0A%7D%0D%0A%0D%0Ah3+%7B%0D%0A++font-size%3A+calc%28var%28base-font%29+*+1.5%29%3B%0D%0A%7D)
 
-Myth is in it's early stages, but even so it's clear this style of CSS development could be the most future-proof.
+Myth is in its early stages, but even so it's clear this style of CSS development could be the most future-proof.
 
 ## Future developments for Myth
 

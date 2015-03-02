@@ -186,7 +186,7 @@ Scoped styles are the main advantage to Shadow DOM in that the selectors exposed
 
 Styles within the shadow DOM are scoped to the **Shadow root** rather than document wide as they normally would be.
 
-Styles from the outside of the shadow are unable to select into the shadow unless using the selectors defined below. This means that as a template author I can't select by mistake the innards of the shadow which means the components become very self contained. Rules like `color` will be inherited into the shadow unless the shadow defines it's own rules for those properties which would take a higher specificity.
+Styles from the outside of the shadow are unable to select into the shadow unless using the selectors defined below. This means that as a template author I can't select by mistake the innards of the shadow which means the components become very self contained. Rules like `color` will be inherited into the shadow unless the shadow defines its own rules for those properties which would take a higher specificity.
 
 ```css
 //This has a shadow DOM applied

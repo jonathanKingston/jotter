@@ -2,6 +2,7 @@
 layout: post
 title: "VALIDATE me baby"
 date: 2014-07-10 21:22
+updated: 2015-03-13 00:00
 comments: true
 categories: [JavaScript, ideas, HTML, development]
 ---
@@ -9,6 +10,8 @@ categories: [JavaScript, ideas, HTML, development]
 There are many times that I have been writing sites with the desire for the client side to call the server in a [safe](http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.1) and [idempotent](http://en.wikipedia.org/wiki/Idempotence) way with a request body for sending more data than a `GET` can, or data that can't be recorded via referral logs.
 
 Even when or if the new [Form HTTP extensions specification](http://www.w3.org/TR/form-http-extensions/) gets approval and adoption for the basic HTTP methods, we still lack a clear way to send over requests with server side impact.
+
+<!-- more -->
 
 ## Proposal
 This proposal is for browsers and servers to support a new HTTP verb `VALIDATE` and adding a new HTML form parameter `methodfor` so that browsers can safely send validation requests to the server.

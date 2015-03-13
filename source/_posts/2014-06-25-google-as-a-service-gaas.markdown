@@ -2,6 +2,7 @@
 layout: post
 title: "Google as a Service (GaaS)"
 date: 2014-06-25 08:50
+updated: 2015-03-13 00:00
 comments: true
 categories: [google, cloud, services, tech, development]
 ---
@@ -10,6 +11,8 @@ Google appears to be pushing further into the open internet platform in a land g
 This article covers some of what we might see at [Google I/O](https://www.google.com/events/io) but also some of which could even be for next year. Google seem to want to close the gap between the open internet and native applications, retrofitting much of the tech that is provided in native applications into web based offerings. I would likely argue this is to win over some of the adopters of [Apple's new Swift offering](https://developer.apple.com/swift/) but also backed by consumer to corporate offerings that markets using "Google for Everything"
 
 The latest Google I/O talks seem to be very much focused on the developers this time: probably to counter the new Swift language by Apple but also to push more of Google's platform to the early adopters. So, we are seeing less consumer and business announcements this year and instead a focus on a long game of developer adoptions for an array of new Google services.
+
+<!-- more -->
 
 # Backing the open internet
 Google is investing further time and money into being an open platform which gives developers the confidence that the tech they integrate with should hopefully stay longer than heavy investment in Google APIs. They are also spending a lot of time bridging the open internet divide with Android as it brings further contention to the closed source application frameworks by bringing a near-native experience to all of the web. I think they are doing this mostly to further open up integration to pushing their main profit making storage, server, applications and devices.

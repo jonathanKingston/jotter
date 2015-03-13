@@ -2,6 +2,7 @@
 layout: post
 title: "Why I now love CSS Values and Units module"
 date: 2014-03-03 21:29
+updated: 2015-03-13 00:00
 comments: true
 categories: [CSS, colour]
 ---
@@ -12,6 +13,8 @@ When I first read about [CSS Values and Units module](http://www.w3.org/TR/css3-
 At first, I thought using the `calc()` property would be a mad move for CSS and I was concerned how browsers would support new features.
 My initial motivation to thinking this was that we already have JavaScript with a known use case in calculating properties.
 I don't really think JavaScript is the best used for producing layout but it seemed far better than adding what is essentially a dynamic language construct into a declarative format.
+
+<!-- more -->
 
 ## The rise of the CSS framework
  

@@ -2,6 +2,7 @@
 layout: post
 title: "Trialling laravel PHP"
 date: 2013-10-25 01:29
+updated: 2015-03-13 00:00
 comments: true
 categories: [PHP, framework, Laravel, First impressions]
 ---
@@ -10,6 +11,8 @@ categories: [PHP, framework, Laravel, First impressions]
 Laravel was suggested to me last week and I have only just got time to take a look at it properly.
 
 The framework has a similar structure to Rails so it seems pretty familiar to me so far. In making this article I created a [test REST laravel application](https://github.com/jonathanKingston/laravel-test).
+
+<!-- more -->
 
 Initial install
 ---------------

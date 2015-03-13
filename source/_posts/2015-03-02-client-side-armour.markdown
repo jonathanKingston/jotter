@@ -2,6 +2,7 @@
 layout: post
 title: "Client side armour"
 date: 2015-03-02 00:00
+updated: 2015-03-13 00:00
 comments: true
 categories: ["Security", "HTML", "JavaScript", "development"]
 ---
@@ -15,10 +16,11 @@ The technologies mentioned here are all *belt and braces* security measures also
 Browsers that do support the standards, will gain from the increased security however browsers that don't are still vulnerable to the attacks.
 Even when all browsers do support the technology it is probably always safe to assume that they might not work.
 
+<!-- more -->
 
 ## Pinning behaviour to the browser
 
-The web itself was designed to be stateless and so since lots of statefull technology solutions have been added on top, some of the new forms of security are in this realm and are also called **TOFU security** or trust on first use; obviously all modern tech needs a hipster name.
+The web itself was designed to be stateless and so since lots of stateful technology solutions have been added on top, some of the new forms of security are in this realm and are also called **TOFU security** or trust on first use; obviously all modern tech needs a hipster name.
 **TOFU** is actually an old concept that came from SSH, by acknowledging you know a site, you are entrusting it on your first use. Despite its usage in browsers is not as secure as SSH, it is however another way to prevent a server from being stolen by an attacker after it was first used.
 
 ![Tofu](/images/clientsecurity/tofu.jpg)

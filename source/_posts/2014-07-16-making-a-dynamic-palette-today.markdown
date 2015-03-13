@@ -2,6 +2,7 @@
 layout: post
 title: "Making a dynamic palette today"
 date: 2014-07-16 00:57
+updated: 2015-03-13 00:00
 comments: true
 categories: [CSS, colour, Myth]
 ---
@@ -10,6 +11,7 @@ Creating dynamic CSS doesn't sound exciting, however it is certainly a time mana
 
 All these solutions really miss out from being a scalable system that will work in the browsers of tomorrow. The [color CSS specification](http://dev.w3.org/csswg/css-color/) and [CSS variables specification](http://www.w3.org/TR/css-variables-1/) changes all that, along with using a preprocessor called [Myth](http://myth.io) we can give tomorrows browser support to todays browsers.
 
+<!-- more -->
 
 ## Showcasing a sample palette
 

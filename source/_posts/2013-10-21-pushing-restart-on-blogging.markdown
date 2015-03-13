@@ -2,6 +2,7 @@
 layout: post
 title: "Pushing restart on blogging"
 date: 2013-10-21 15:35
+updated: 2013-10-21 15:35
 comments: true
 categories: [blogging, jekyll]
 ---

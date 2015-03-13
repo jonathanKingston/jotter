@@ -2,12 +2,15 @@
 layout: post
 title: "My new favourite colour"
 date: 2014-06-20 00:38
+updated: 2015-03-13 00:00
 comments: true
 categories: [CSS, colour, charity]
 ---
 The all new CSS colour: 'rebeccapurple' which is backed with one of the most moving stories I have heard in a long time.
 
 So I thought I would hold off writing this post until; [Eric gave confirmation for the new colour](http://meyerweb.com/eric/thoughts/2014/06/19/rebeccapurple/).
+
+<!-- more -->
 
 My sad thoughts were with Eric and his family who have [lost their daughter in a fight against cancer](http://meyerweb.com/eric/thoughts/2014/06/09/in-memoriam-2/). This is something that strikes a chord in my heart and everyone that is aware of someone who has gone through the ordeal.
 

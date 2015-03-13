@@ -2,6 +2,7 @@
 layout: post
 title: "Making a performance"
 date: 2014-03-05 21:15
+updated: 2015-03-13 00:00
 comments: true
 categories: 
 ---
@@ -14,6 +15,8 @@ This comes in many flavours but the two most common are:
 -    Optimising to the least lines of code
 -    Optimising code to be most performant
  
+<!-- more -->
+
 ## Performant code
 
 The scope of the project is really important here: if we were making an in-browser game then there may be justification for getting the most optimal code for the browser.

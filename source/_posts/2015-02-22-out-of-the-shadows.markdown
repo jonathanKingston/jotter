@@ -2,6 +2,7 @@
 layout: post
 title: "Out of the shadows"
 date: 2015-02-22 04:18
+updated: 2015-03-13 00:00
 comments: true
 categories: [JavaScript, CSS] 
 ---
@@ -17,6 +18,8 @@ However one of the least discussed features of web components is the [Shadow DOM
 Shadow DOM is the way in which developers will be able to hide away the minor details of website implementation, this means that template authors won't need to worry as much about perfecting their markup and concentrate on the building block they are trying to make. A great example of this is select boxes native in browsers, content authors don't need to worry about all the complexities of the buttons and functionality. The author can then just give some basic styling to the select box.
 
 So I hear you cry, why is this different to normal components that give us the ability to define our own web language and reuse. Well I think it solves the issue of specificity - by defining the boundaries of reusable objects, you gain the ability to isolate styles when necessary.
+
+<!-- more -->
 
 #### Before DOM render
 

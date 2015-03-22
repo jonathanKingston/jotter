@@ -7,6 +7,9 @@
     {% endif %}
     {% unless page.meta == false %}
       <p class="meta">
+        {% if index %}
+            {% include post/author_short.html %} |
+        {% endif %}
         {% include post/date.html %}{{ time }}
         {% if site.disqus_short_name and page.comments != false and post.comments != false and site.disqus_show_comment_count == true %}
            | <a href="{% if index %}{{ root_url }}{{ post.url }}{% endif %}#disqus_thread"

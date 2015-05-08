@@ -31,7 +31,7 @@ SSH requests the user to approve unknown servers credentials this isn't the case
 
 The following three technologies help solve these issues, allowing a site to pin behaviour to the browser for future requests:
 
-- [(HKPK) Public key pinning](https://tools.ietf.org/html/draft-ietf-websec-key-pinning-21) - giving browsers the ability to pin what a sites certificates will be should make it much harder for an attacker to game the trust in a servers identity. Preventing man in the middle attacks will become much simpler with this, as a client will not trust a response with a different certificate from the original response.
+- [(HPKP) Public key pinning](https://tools.ietf.org/html/draft-ietf-websec-key-pinning-21) - giving browsers the ability to pin what a sites certificates will be should make it much harder for an attacker to game the trust in a servers identity. Preventing man in the middle attacks will become much simpler with this, as a client will not trust a response with a different certificate from the original response.
 
 - [CSP pinning](http://www.w3.org/TR/2015/WD-csp-pinning-20150226/) - this has just been released as a working draft by the W3C and so there is no intent even from the browsers to implement to my knowledge.
 However it is exciting that a browser would be able to know, that it can immediately block all requests to specified resources from the site for a certain time window.

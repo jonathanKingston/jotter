@@ -14,7 +14,7 @@ So initially [security people](https://lists.w3.org/Archives/Public/public-aria/
 
 1. I am unable to style pseudo elements for replaced elements
 2. I don't want password managers remembering my fields and autocomplete has been removed from me
-3. I'm using a library that is old but I can impact the DOM or I'm doing web component of my own inputs such that other libraries can't impact my code intentionally.
+3. I don't want other code impacting my input field
 
 The only real discussion for and against the role I could find on the mailing list:
 
@@ -83,7 +83,7 @@ The only real discussion for and against the role I could find on the mailing li
 
 ## Expectation that authors do the right thing
 
-So the sum total of why this is being added appears to be that web authors behaving badly, will do the right thing for assistive technologies.
+So the sum total of why this is being added appears to be: web authors are behaving badly but those same people will do the right thing for assistive technologies.
 
 The problem is that in marking up their document with `role="password"`:
 

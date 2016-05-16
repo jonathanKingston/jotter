@@ -1,4 +1,0 @@
-User-agent: *
-Disallow: 
-
-Sitemap: http://jotter.jonathankingston.co.uk/sitemap.xml 

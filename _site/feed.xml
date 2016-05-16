@@ -1,0 +1,1832 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jonathan Kingston</title>
+    <description>Notes from a developer in Nottingham.
+</description>
+    <link>http://jotter.jonathankingston.co.uk/</link>
+    <atom:link href="http://jotter.jonathankingston.co.uk/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Mon, 16 May 2016 10:42:44 +0100</pubDate>
+    <lastBuildDate>Mon, 16 May 2016 10:42:44 +0100</lastBuildDate>
+    <generator>Jekyll v3.1.3</generator>
+    
+      <item>
+        <title>Client side armour</title>
+        <description>&lt;p&gt;&lt;img src=&quot;/images/clientsecurity/helmet.jpg&quot; alt=&quot;Helmet armour&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As web attacks become far more common place, specifications are quickly getting ratified to stop the common attack vectors from being used. W3C has set up a &lt;a href=&quot;http://www.w3.org/Security/&quot;&gt;Security Working Group&lt;/a&gt; just for improving security against website users.&lt;/p&gt;
+
+&lt;p&gt;The technologies mentioned here are all &lt;em&gt;belt and braces&lt;/em&gt; security measures also known as &lt;strong&gt;defence in depth&lt;/strong&gt; they therefore should not be considered the only defence against attacks.&lt;/p&gt;
+
+&lt;p&gt;Browsers that do support the standards, will gain from the increased security however browsers that don’t are still vulnerable to the attacks.
+Even when all browsers do support the technology it is probably always safe to assume that they might not work.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&quot;pinning-behaviour-to-the-browser&quot;&gt;Pinning behaviour to the browser&lt;/h2&gt;
+
+&lt;p&gt;The web itself was designed to be stateless and so since lots of stateful technology solutions have been added on top, some of the new forms of security are in this realm and are also called &lt;strong&gt;TOFU security&lt;/strong&gt; or trust on first use; obviously all modern tech needs a hipster name.
+&lt;strong&gt;TOFU&lt;/strong&gt; is actually an old concept that came from SSH, by acknowledging you know a site, you are entrusting it on your first use. Despite its usage in browsers is not as secure as SSH, it is however another way to prevent a server from being stolen by an attacker after it was first used.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/clientsecurity/tofu.jpg&quot; alt=&quot;Tofu&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;SSH requests the user to approve unknown servers credentials this isn’t the case for the web, mostly I suspect because of the level of impact to user experience. It is far from perfect but it does help prevent some attacks of trust against the users trust in the servers identity.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://en.wikipedia.org/wiki/DNS_spoofing&quot;&gt;DNS poisoning&lt;/a&gt; and &lt;a href=&quot;http://en.wikipedia.org/wiki/DNS_hijacking&quot;&gt;DNS hijacking&lt;/a&gt; are two ways in which an attacker can abuse the users trust in the server.&lt;/p&gt;
+
+&lt;p&gt;The following three technologies help solve these issues, allowing a site to pin behaviour to the browser for future requests:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://tools.ietf.org/html/draft-ietf-websec-key-pinning-21&quot;&gt;(HPKP) Public key pinning&lt;/a&gt; - giving browsers the ability to pin what a sites certificates will be should make it much harder for an attacker to game the trust in a servers identity. Preventing man in the middle attacks will become much simpler with this, as a client will not trust a response with a different certificate from the original response.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://www.w3.org/TR/2015/WD-csp-pinning-20150226/&quot;&gt;CSP pinning&lt;/a&gt; - this has just been released as a working draft by the W3C and so there is no intent even from the browsers to implement to my knowledge.
+However it is exciting that a browser would be able to know, that it can immediately block all requests to specified resources from the site for a certain time window.
+This adds further hardening to &lt;a href=&quot;http://www.w3.org/TR/CSP/&quot;&gt;CSP2&lt;/a&gt; which gives the strongest security for resources loading within a page and also has become a recommendation last month.
+Perhaps this directive might also lead to CSP directives being able to be loaded externally via some form of manifest file, the header could then just contain the integrity of the file; that way as directives become more complex the overhead doesn’t increase exponentially.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://tools.ietf.org/html/rfc6797&quot;&gt;(HSTS) HTTP strict transport security&lt;/a&gt; - This isn’t new however it fits into the same category as the two above. This allows sites to always enforce that they are in HTTPS mode only. Subsequent requests to the site will load HTTPS.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;preventing-clickjacking&quot;&gt;Preventing clickjacking&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.w3.org/TR/UISecurity/&quot;&gt;UI security&lt;/a&gt; is worth mentioning as a new set of directives for securing the interface of an application from malicious behaviour.
+These directives are additions to the CSP policy which add the following protections:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Prevention of obstructing page elements and triggering the user to click on items that were not expected.&lt;/li&gt;
+  &lt;li&gt;Allowing certain elements or behaviours through.&lt;/li&gt;
+  &lt;li&gt;Preventing time based attacks.&lt;/li&gt;
+  &lt;li&gt;Preventing elements from being placed near certain elements.&lt;/li&gt;
+  &lt;li&gt;Adding in a DOM interface to expose suspected attacks to JavaScript allowing the application to alert the user.&lt;/li&gt;
+  &lt;li&gt;Further extending violation reports provided by CSP.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;fixing-insecure-resources&quot;&gt;Fixing insecure resources&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.w3.org/TR/2015/WD-upgrade-insecure-requests-20150226/&quot;&gt;Upgrade Insecure Requests&lt;/a&gt; follows on nicely from HSTS, which tells the browser to force all insecure content to be HTTPS. For example the author may not be in control of all the sites content and can essentially rewrite the code to have ‘https’ in URLs that are ‘http’.&lt;/p&gt;
+
+&lt;h2 id=&quot;preventing-information-leaking&quot;&gt;Preventing information leaking&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.w3.org/TR/referrer-policy/&quot;&gt;Referrer policy&lt;/a&gt;
+Provides a way to prevent browsers from supplying a &lt;em&gt;referer&lt;/em&gt; header to other websites.
+This prevents any information leaks by URLs by using this header, this reduces the risk of users exposing information from where they have came from. It also adds further protection against the risk of unique tokens being exposed; despite not ideal to be in the URL in the first place certain interfaces require it.&lt;/p&gt;
+
+&lt;h2 id=&quot;ensuring-our-content-is-correct&quot;&gt;Ensuring our content is correct&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.w3.org/TR/SRI/&quot;&gt;(SRI) Sub Resource Integrity&lt;/a&gt; Is a way to ensure that content served to the browser is of a known content shape.
+Sites serving integrity attributes, prevent browsers from executing the sub resources unless they match the identity specified in the HTML.
+This prevents scripts from being overridden with malicious content, its primary application is content served over a CDN, however it doesn’t harm making attackers lives harder.&lt;/p&gt;
+
+&lt;p&gt;Another use case is restricting the content served from third parties, most sites often load many widgets and scripts from other sources - All of which may not remain secure over time.
+The developers of the application may not have a choice over if the resource is loaded on the site, for example it could be a primary revenue stream for the site.
+However the developer would be able to test the current code served from the third party and serve the integrity parameter from the script being served.
+If the resource then gets compromised the users of the site wouldn’t be at risk of the attack.&lt;/p&gt;
+
+&lt;h2 id=&quot;headers-still-worth-using&quot;&gt;Headers still worth using&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://msdn.microsoft.com/en-us/library/dd565647%28v=vs.85%29.aspx&quot;&gt;X-XSS-Protection&lt;/a&gt; - XSS filtering for common techniques used for injecting XSS. It was never standardised, however it is acknowledged by both Chrome and Internet Explorer.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://msdn.microsoft.com/en-us/library/ie/gg622941%28v=vs.85%29.aspx&quot;&gt;X-Content-Type-Options&lt;/a&gt; - Used to stop browsers from sniffing the content of an asset and running it, unless it matches the content type sent from the server. So for example loading &lt;code class=&quot;highlighter-rouge&quot;&gt;text/plain&lt;/code&gt; content will never be sniffed and loaded as JavaScript.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://tools.ietf.org/html/rfc7034&quot;&gt;X-Frame-Options&lt;/a&gt; Is a way of preventing clickjacking, by informing browsers &lt;strong&gt;when&lt;/strong&gt; the site is allowed to be loaded through framing.
+    &lt;ul&gt;
+      &lt;li&gt;This has been integrated within &lt;a href=&quot;https://w3c.github.io/webappsec/specs/content-security-policy/#directive-frame-ancestors&quot;&gt;CSP2 frame ancestors&lt;/a&gt; however it is still worth providing this until full support is available for &lt;strong&gt;CSP2&lt;/strong&gt;.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.w3.org/TR/cors/#access-control-allow-origin-response-header&quot;&gt;Access-Control-Allow-Origin&lt;/a&gt; - A way of opening up a site to allow cross origin requests, it is worth noting this here as it impacts security. Unless you need CORS functionality then &lt;strong&gt;don’t&lt;/strong&gt; return this header.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 02 Mar 2015 00:00:00 +0000</pubDate>
+        <link>http://jotter.jonathankingston.co.uk/blog/2015/03/02/client-side-armour/</link>
+        <guid isPermaLink="true">http://jotter.jonathankingston.co.uk/blog/2015/03/02/client-side-armour/</guid>
+        
+        
+        <category>Security</category>
+        
+        <category>HTML</category>
+        
+        <category>JavaScript</category>
+        
+        <category>development</category>
+        
+      </item>
+    
+      <item>
+        <title>Out of the shadows</title>
+        <description>&lt;p&gt;&lt;img src=&quot;/images/shadow/shadow-puppet.jpg&quot; alt=&quot;Shadow puppet&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Disclaimer&lt;/strong&gt; - This article discusses topics which are not cemented yet, may change and likely won’t work without browser shims / hacks. This article uses &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;&quot;shadow-tree&quot;&amp;gt;&amp;lt;/&amp;gt;&lt;/code&gt; syntax like the CSS specification does to demarcate the shadow tree in the DOM.&lt;/p&gt;
+
+&lt;p&gt;So we have all likely heard of web components by now; they are usable in most JavaScript libraries and are the UI kit that is expected of any GUI related software.&lt;/p&gt;
+
+&lt;p&gt;However one of the least discussed features of web components is the &lt;a href=&quot;http://www.w3.org/TR/shadow-dom/&quot;&gt;Shadow DOM&lt;/a&gt; and even less discussed is how it can be styled with scoped styles.&lt;/p&gt;
+
+&lt;p&gt;Shadow DOM is the way in which developers will be able to hide away the minor details of website implementation, this means that template authors won’t need to worry as much about perfecting their markup and concentrate on the building block they are trying to make. A great example of this is select boxes native in browsers, content authors don’t need to worry about all the complexities of the buttons and functionality. The author can then just give some basic styling to the select box.&lt;/p&gt;
+
+&lt;p&gt;So I hear you cry, why is this different to normal components that give us the ability to define our own web language and reuse. Well I think it solves the issue of specificity - by defining the boundaries of reusable objects, you gain the ability to isolate styles when necessary.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h4 id=&quot;before-dom-render&quot;&gt;Before DOM render&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/shadow/before-render.png&quot; alt=&quot;Before render&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Elements are nested under the Shadow host n1.&lt;/p&gt;
+
+&lt;h4 id=&quot;after-dom-render&quot;&gt;After DOM render&lt;/h4&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/shadow/after-render.png&quot; alt=&quot;After render&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once rendered, elements that are not a Shadow route are nested under the DOM insertion point &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;content&amp;gt;&lt;/code&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;my-element&amp;gt;&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- Shadow host --&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;&quot;shadow-tree&quot;&amp;gt;&lt;span class=&quot;c&quot;&gt;&amp;lt;!-- A non element --&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;title&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;Some text&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;c&quot;&gt;&amp;lt;!-- CSS inside a shadow DOM is treated as scoped --&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;style&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;my-element&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;won&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;match&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;anything&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;here&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nd&quot;&gt;:host&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;instead&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;my-element&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;red&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;:host&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;selector&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;here&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;will&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;match&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;my-element&lt;/span&gt;
+      &lt;span class=&quot;nd&quot;&gt;:host&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+        &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;blue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;o&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;&amp;lt;/&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;lt;/&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;my-element&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;Matches&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;.title&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;element&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;my-element&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;::shadow&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;red&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;Applies&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;content&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;elements&lt;/span&gt;
+  &lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;ones&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;residing&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;shadow&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;DOM&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;.title&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;would&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;not&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;match&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;my-element&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;div&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;red&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;  
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/style&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;so-why-does-it-matter-to-me&quot;&gt;So why does it matter to me?&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Shadow DOM provides a encapsulation layer that means multiple teams can work on the same HTML documents without worries of colliding CSS.&lt;/li&gt;
+  &lt;li&gt;Flexibility still remains to “select through the shadows” so you can override the default appearance of a component.&lt;/li&gt;
+  &lt;li&gt;Content authors can concentrate on styling usage rather than implementation.&lt;/li&gt;
+  &lt;li&gt;Component developers can concentrate on building the most reusable components possible.&lt;/li&gt;
+  &lt;li&gt;No amount of namespacing gives the isolation that Shadow DOM gives.
+    &lt;ul&gt;
+      &lt;li&gt;Nested HTML that is namespaced still has specificity issues, where as isolation gives easier container selection.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Chrome debugger even helps show the DOM tree:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/shadow/debugger.png&quot; alt=&quot;Debugger output&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://html5-demos.appspot.com/static/shadowdom-visualizer/index.html&quot;&gt;Visualise shadow DOM&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;shadow-dom-concepts&quot;&gt;Shadow DOM concepts&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://w3c.github.io/webcomponents/spec/shadow/#dfn-shadow-host&quot;&gt;&lt;strong&gt;Shadow host&lt;/strong&gt;&lt;/a&gt; - is the container of one or many &lt;strong&gt;Shadow trees&lt;/strong&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Elements within the &lt;strong&gt;Shadow host&lt;/strong&gt; are detached until they match a DOM insertion point&lt;/li&gt;
+      &lt;li&gt;The last &lt;strong&gt;Shadow tree&lt;/strong&gt; inserted into the &lt;strong&gt;Shadow host&lt;/strong&gt; is the only attached Node to the host.
+        &lt;ul&gt;
+          &lt;li&gt;Older &lt;strong&gt;Shadow trees&lt;/strong&gt; can be inserted into the newest shadow tree with a &lt;strong&gt;Shadow insertion point&lt;/strong&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://w3c.github.io/webcomponents/spec/shadow/#dfn-insertion-point&quot;&gt;&lt;strong&gt;Shadow insertion point&lt;/strong&gt;&lt;/a&gt; When a host has multiple &lt;strong&gt;Shadow trees&lt;/strong&gt; the trees can be reinserted into the newest tree if it has an insertion point.
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;shadow&amp;gt;&lt;/code&gt; is the current only implementation of a &lt;strong&gt;Shadow insertion point&lt;/strong&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://w3c.github.io/webcomponents/spec/shadow/#insertion-points&quot;&gt;&lt;strong&gt;DOM insertion point&lt;/strong&gt;&lt;/a&gt; - At the moment this is a &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;content&amp;gt;&lt;/code&gt; tag within the shadow DOM however other implementations may happen
+    &lt;ul&gt;
+      &lt;li&gt;An insertion point has the elements placed into it inside the &lt;em&gt;Shadow tree&lt;/em&gt;&lt;/li&gt;
+      &lt;li&gt;Insertion points has no representation in the DOM, it is just a container for elements.&lt;/li&gt;
+      &lt;li&gt;Insertion points match the elements in the &lt;em&gt;Shadow host&lt;/em&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://w3c.github.io/webcomponents/spec/shadow/#shadow-trees&quot;&gt;&lt;strong&gt;Shadow trees&lt;/strong&gt;&lt;/a&gt; - A tree of elements which are abstracted away from the normal DOM tree
+    &lt;ul&gt;
+      &lt;li&gt;&lt;strong&gt;Shadow trees&lt;/strong&gt; detach all elements from the &lt;strong&gt;Shadow host&lt;/strong&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;a-simpler-implementation-the-design&quot;&gt;A simpler implementation (The design)&lt;/h3&gt;
+
+&lt;p&gt;However we can vastly simplify this for the most common usage with custom elements;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Create a new custom element&lt;/li&gt;
+  &lt;li&gt;A &lt;strong&gt;Shadow tree&lt;/strong&gt; is added to the custom element (Making the custom element a &lt;strong&gt;shadow host&lt;/strong&gt;)&lt;/li&gt;
+  &lt;li&gt;A template of DOM nodes is cloned and inserted into the &lt;strong&gt;Shadow tree&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Elements that are contained in the custom element are either detached from the DOM
+    &lt;ul&gt;
+      &lt;li&gt;Or if the template has a &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;content&amp;gt;&lt;/code&gt; tag the elements are inserted within that.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Assuming we have some code building the custom elements (see final example), the following code:
+```html&lt;/p&gt;
+&lt;template id=&quot;mycustomelement&quot;&gt;
+  &lt;div&gt;
+    &lt;content&gt;&lt;/content&gt;
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;my-custom-element&gt;
+  &lt;b&gt;Hello&lt;/b&gt;
+&lt;/my-custom-element&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+Will result in the following DOM tree:
+```html
+&amp;lt;my-custom-element&amp;gt;
+  &amp;lt;div&amp;gt;
+    &amp;lt;b&amp;gt;Hello&amp;lt;/b&amp;gt;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/my-custom-element&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;javascript-implementation&quot;&gt;JavaScript implementation&lt;/h2&gt;
+
+&lt;h3 id=&quot;registering-a-component&quot;&gt;Registering a component&lt;/h3&gt;
+
+&lt;p&gt;Registering a new component is our first step to getting to the design set out above.&lt;/p&gt;
+
+&lt;p&gt;Let’s register a new component called &lt;code class=&quot;highlighter-rouge&quot;&gt;product-demo&lt;/code&gt; and register it to the global &lt;code class=&quot;highlighter-rouge&quot;&gt;window.productDemo&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;//Create a custom element that extends from the base HTMLElement&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;productDemoPrototype&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;Object&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;create&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;HTMLElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;//Register the element name to the window&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;productDemo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;registerElement&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;product-demo&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;prototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;productDemoPrototype&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;We can use the element before we define it in the JavaScript as HTML5 allows for custom elements that are not defined yet. However if we define custom behaviour to the &lt;code class=&quot;highlighter-rouge&quot;&gt;window.productDemo&lt;/code&gt; once the element is created this behaviour get applied to the element.&lt;/p&gt;
+
+&lt;p&gt;Customising the new element becomes simple with the new method &lt;a href=&quot;http://www.w3.org/TR/custom-elements/#dfn-created-callback&quot;&gt;createdCallback&lt;/a&gt; on the defined element. The callback is triggered when a new element instance is created, this gives us the ability to add custom behaviour on initialisation.&lt;/p&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;window&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;productDemo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;createdCallback&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&#39;New product-demo created&#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;attaching-a-template&quot;&gt;Attaching a template&lt;/h3&gt;
+
+&lt;p&gt;Web Components doesn’t require us to use &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;template&amp;gt;&lt;/code&gt; tags however they make writing the innards of a shadow simpler by being in a self contained placeholder.&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;template&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;h2&amp;gt;&lt;/span&gt;Product name&lt;span class=&quot;nt&quot;&gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;div&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/template&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Templates are just a simple blueprint for DOM nodes that have to be cloned to be inserted into the DOM:
+&lt;code class=&quot;highlighter-rouge&quot;&gt;javascript
+var template = document.querySelector(templateSelector);
+var clone = document.importNode(template.content, true);
+document.body.appendChild(clone);
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;The problem with this is that however complex the template, there is nothing dynamic to the component yet. However later on we will see that we use the &lt;code class=&quot;highlighter-rouge&quot;&gt;createdCallback&lt;/code&gt; to add in functionality from passed attributes to our custom elements.&lt;/p&gt;
+
+&lt;h3 id=&quot;adding-a-shadow-dom&quot;&gt;Adding a shadow DOM&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://w3c.github.io/webcomponents/spec/shadow/#widl-Element-createShadowRoot-ShadowRoot&quot;&gt;Element.createShadowRoot&lt;/a&gt; creates a shadow root on the element.&lt;/p&gt;
+
+&lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nx&quot;&gt;Element&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;createShadowRoot&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;By adding this to an element it turns the element into a &lt;strong&gt;shadow host&lt;/strong&gt; which in terms of JavaScript is similar to &lt;code class=&quot;highlighter-rouge&quot;&gt;document.createDocumentFragment&lt;/code&gt; in that it isn’t a real element in the conventional sense.&lt;/p&gt;
+
+&lt;h2 id=&quot;scoping-css&quot;&gt;Scoping CSS&lt;/h2&gt;
+
+&lt;p&gt;Scoped styles are the main advantage to Shadow DOM in that the selectors exposed allow web component developers to be able to ‘black box’ their code appearance unless the user of the component explicitly wanted to style within the component.&lt;/p&gt;
+
+&lt;p&gt;Styles within the shadow DOM are scoped to the &lt;strong&gt;Shadow root&lt;/strong&gt; rather than document wide as they normally would be.&lt;/p&gt;
+
+&lt;p&gt;Styles from the outside of the shadow are unable to select into the shadow unless using the selectors defined below. This means that as a template author I can’t select by mistake the innards of the shadow which means the components become very self contained. Rules like &lt;code class=&quot;highlighter-rouge&quot;&gt;color&lt;/code&gt; will be inherited into the shadow unless the shadow defines its own rules for those properties which would take a higher specificity.&lt;/p&gt;
+
+&lt;div class=&quot;language-css highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;This&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;has&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;shadow&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;DOM&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;applied&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;my-component&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;red&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;This&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;matches&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;all&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;elements&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;which&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;are&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;  &lt;span class=&quot;err&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;my-component&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;shadow&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;tree&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;content&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;span&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;This&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;won&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&#39;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;match&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;span&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;elements&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;within&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;shadow&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;tree&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;my-component&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;span&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;blue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://drafts.csswg.org/css-scoping/&quot;&gt;CSS Scoping specification&lt;/a&gt; defines ways in which we can utilise CSS to get over those age old specificity woes.&lt;/p&gt;
+
+&lt;p&gt;The spec brings along some new friends which will really be useful for working with shadow DOM:&lt;/p&gt;
+
+&lt;h3 id=&quot;selectors-from-the-outside&quot;&gt;Selectors from the outside&lt;/h3&gt;
+
+&lt;h4 id=&quot;shadowhttpdraftscsswgorgcss-scopingshadow-pseudoelement&quot;&gt;&lt;a href=&quot;http://drafts.csswg.org/css-scoping/#shadow-pseudoelement&quot;&gt;::shadow&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;::shadow&lt;/code&gt; can be used to override the components styles within the shadow DOM allowing you to pierce through the shadow and pick out elements within it.&lt;/p&gt;
+
+&lt;h4 id=&quot;httpdraftscsswgorgcss-scopingdeep-combinator&quot;&gt;&lt;a href=&quot;http://drafts.csswg.org/css-scoping/#deep-combinator&quot;&gt;»&amp;gt;&lt;/a&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/code&gt; deep shadow selector, through multiple layers of shadow DOM. This selects all the matching elements through the shadow including DOM insertion point content also.
+Chrome doesn’t even support this selector yet, &lt;code class=&quot;highlighter-rouge&quot;&gt;/deep/&lt;/code&gt; was in the older version of the specification and is the current implemented version in Chrome unstable.&lt;/p&gt;
+
+&lt;h4 id=&quot;unresolvedhttpw3cgithubiowebcomponentsspeccustomunresolved-element-pseudoclass-smallpart-of-the-web-component-specificationsmall&quot;&gt;&lt;a href=&quot;http://w3c.github.io/webcomponents/spec/custom/#unresolved-element-pseudoclass&quot;&gt;:unresolved&lt;/a&gt; &lt;small&gt;(part of the web component specification)&lt;/small&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;:unresolved&lt;/code&gt; can be used to target elements that have not yet been registered by the JavaScript. As all new web components are not native in the browser, until the elements are defined then the browsers considers web-component tags as ‘unresolved’ when the element is defined then the flag is removed from those elements. This means that the CSS author has full control of the behaviour of an element until the element is defined.
+For example the author could pick to hide the elements or show a loading spinner.&lt;/p&gt;
+
+&lt;div class=&quot;language-css highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;Before&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;my-custom-component&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;is&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;defined&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;this&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;will&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;be&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;the&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;default&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;appearance&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;This&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;prevents&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;any&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;flash&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;of&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;unstyled&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;component&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;my-custom-component&lt;/span&gt;&lt;span class=&quot;nd&quot;&gt;:unresolved&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;display&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;none&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h3 id=&quot;selectors-from-the-inside&quot;&gt;Selectors from the inside&lt;/h3&gt;
+&lt;p&gt;These selectors are for use within the Shadow DOM to select into the &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;content&amp;gt;&lt;/code&gt; element or matching certain &lt;strong&gt;Shadow host&lt;/strong&gt; elements.&lt;/p&gt;
+
+&lt;h4 id=&quot;contenthttpdraftscsswgorgcss-scopingcontent-combinator&quot;&gt;&lt;a href=&quot;http://drafts.csswg.org/css-scoping/#content-combinator&quot;&gt;::content&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;::content&lt;/code&gt; is used to select the elements residing in the DOM insertion point. Used from within the shadow to select matching elements within the DOM insertion point.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;::content&lt;/code&gt; for me is important in that it helps us define relationships between other components:&lt;/p&gt;
+
+&lt;div class=&quot;language-css highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;product-demo&lt;/span&gt;&lt;span class=&quot;nc&quot;&gt;.css&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;::content&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;product-image&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;display&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;block&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;float&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;right&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nd&quot;&gt;::content&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;product-description&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;display&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;block&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+  &lt;span class=&quot;nl&quot;&gt;float&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;left&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h4 id=&quot;hosthttpdraftscsswgorgcss-scopingselectordef-host-function&quot;&gt;&lt;a href=&quot;http://drafts.csswg.org/css-scoping/#selectordef-host-function&quot;&gt;:host()&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;Used from within a Shadow DOM to select the Shadow host that matches the selector within the brackets.
+&lt;code class=&quot;highlighter-rouge&quot;&gt;
+:host(.big) // From the styles within a shadow root this matches host elements that have an ancestor which match &#39;.big&#39;
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;hosthttpdraftscsswgorgcss-scopingselectordef-host&quot;&gt;&lt;a href=&quot;http://drafts.csswg.org/css-scoping/#selectordef-host&quot;&gt;:host&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;:host&lt;/code&gt; is used for selecting the shadow host element from within the shadow DOM itself.&lt;/p&gt;
+
+&lt;h4 id=&quot;host-contexthttpdraftscsswgorgcss-scopingselectordef-host-context&quot;&gt;&lt;a href=&quot;http://drafts.csswg.org/css-scoping/#selectordef-host-context&quot;&gt;:host-context()&lt;/a&gt;&lt;/h4&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;:host-context&lt;/code&gt; is used to select the parents of the host element from within the shadow context.&lt;/p&gt;
+
+&lt;h1 id=&quot;putting-it-all-into-action&quot;&gt;Putting it all into action&lt;/h1&gt;
+
+&lt;p&gt;Here is a simple function I made to define new elements with a shadow DOM.
+```javascript
+/**
+ * Create callback
+ * @callback createElementCallback
+ * @param {element} shadow the shadow DOM element
+ * @param {scope} this the scope of the custom element
+ */&lt;/p&gt;
+
+&lt;p&gt;/**
+ * Generates a new component
+ * @param {string} elementName Name of JavaScript Class for the element
+ * @param {string} tagName Name of the tag produced (Must contain at least one ‘-‘)
+ * @param {string} templateSelector Selector to template for the contents of the shadow DOM
+ * @param {createElementCallback} postCreateCallback Callback triggered on construction of the element
+ */
+function generateComponent(elementName, tagName, templateSelector, postCreateCallback) {&lt;/p&gt;
+
+&lt;p&gt;//Create a custom element that extends from the base HTMLElement
+  var elementPrototype = Object.create(HTMLElement.prototype);&lt;/p&gt;
+
+&lt;p&gt;//On creation of an element this code triggers
+  //Defines a shadow root within our custom element
+  //Imports in the matching template
+  //Triggers the callback for any further customisation
+  elementPrototype.createdCallback = function() {
+    var shadow = this.createShadowRoot();
+    var template = document.querySelector(templateSelector);
+    var clone = document.importNode(template.content, true);
+    shadow.appendChild(clone);
+    if (postCreateCallback) { postCreateCallback(shadow, this); }
+  };&lt;/p&gt;
+
+&lt;p&gt;//Register the element name to the window
+  window[elementName] = document.registerElement(tagName, {prototype: elementPrototype});
+}
+```&lt;/p&gt;
+
+&lt;p&gt;This sets up a new component which has a shadow DOM within it, the template specified will be inserted into shadow DOM which the function also sets up.&lt;/p&gt;
+
+&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;my-element&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;&quot;Shadow tree&quot;&amp;gt;
+    Template nodes here
+  &lt;span class=&quot;err&quot;&gt;&amp;lt;&lt;/span&gt;/&amp;gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/my-element&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;example&quot;&gt;Example&lt;/h2&gt;
+
+&lt;p&gt;Define some elements
+```javascript
+function slugify(slug) {
+  return slug.toLowerCase().replace(/\s/g,’-‘);
+}&lt;/p&gt;
+
+&lt;p&gt;generateComponent(‘MyBlockElement’, ‘my-block’, ‘#myblocktemplate’, function (shadow, scope) {
+  var headingDOM = shadow.querySelector(‘my-heading’);
+  var heading = scope.getAttribute(‘heading’);
+  var icon = scope.getAttribute(‘heading-icon’);
+  if (headingDOM) {
+    if (heading) {
+      headingDOM.innerText = heading;
+    } else {
+      headingDOM.style.display = ‘none’;
+    }
+    if (icon) {
+      headingDOM.setAttribute(‘icon’, icon);
+    }
+  }
+});&lt;/p&gt;
+
+&lt;p&gt;generateComponent(‘MyHeadingElement’, ‘my-heading’, ‘#myheadingtemplate’, function (shadow, scope) {
+  var icon = scope.getAttribute(‘icon’);
+  var iconDOM = shadow.querySelector(‘i’);
+  var linkDOM = shadow.querySelector(‘a’);
+  if (icon &amp;amp;&amp;amp; iconDOM) {
+    iconDOM.classList.add(icon);
+  }
+  if (linkDOM &amp;amp;&amp;amp; scope.innerText !== ‘’) {
+      linkDOM.setAttribute(‘href’, ‘#’ + slugify(scope.innerText));
+  }
+});
+```&lt;/p&gt;
+
+&lt;p&gt;Define the component templates:
+```html&lt;/p&gt;
+&lt;template id=&quot;myheadingtemplate&quot;&gt;
+  &lt;div&gt;
+    &lt;i class=&quot;icon&quot;&gt;&lt;/i&gt;
+    &lt;h1&gt;
+      &lt;content&gt;&lt;/content&gt;
+    &lt;/h1&gt;
+    &lt;a href=&quot;#&quot;&gt;#&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;style&gt;
+      i.icon:before {font-size:30px;}
+      i.user:before {content: &#39;☻&#39;;}
+      i.pentagon:before {content: &#39;⬟&#39;;}
+      h1 {display: inline-block;}
+  &lt;/style&gt;
+&lt;/template&gt;
+
+&lt;template id=&quot;myblocktemplate&quot;&gt;
+  &lt;div&gt;
+    &lt;my-heading&gt;&lt;/my-heading&gt;
+    &lt;content&gt;&lt;/content&gt;
+  &lt;/div&gt;
+  &lt;style&gt;
+     div {
+       border: 1px solid #000;
+       padding: 5%;
+       margin-bottom: 5%;
+     }
+  &lt;/style&gt;
+&lt;/template&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;gt;**WHAT!?** I hear you cry, nested `&amp;lt;style&amp;gt;` tags within my component template? For now this is the simplest implementation for component scoped styles however rolling a custom `&amp;lt;import` from separate assets later would be advised.
+&amp;gt;However the idea is that most components should be kept small so who knows this may become the common form as practices evolve.
+
+Our actual template using the elements:
+```html
+&amp;lt;my-block&amp;gt;
+  &amp;lt;my-block heading-icon=&quot;user&quot; heading=&quot;My important heading&quot; &amp;gt;
+    &amp;lt;div&amp;gt;Lorem ipsum&amp;lt;/div&amp;gt;
+  &amp;lt;/my-block&amp;gt;
+    
+  &amp;lt;my-block heading-icon=&quot;pentagon&quot; heading=&quot;My second heading&quot; &amp;gt;
+    Lorem ipsum
+  &amp;lt;/my-block&amp;gt;
+&amp;lt;/my-block&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;It is worth noting the same effect could be achieved with the same CSS outside the templates:
+&lt;code class=&quot;highlighter-rouge&quot;&gt;css
+my-heading::shadow div {
+ border: 1px solid #000;
+ padding: 5%;
+ margin-bottom: 5%;
+}
+my-block::shadow i.icon:before {font-size:30px;}
+my-block::shadow i.user:before {content: &#39;☻&#39;;}
+my-block::shadow i.pentagon:before {content: &#39;⬟&#39;;}
+my-block::shadow h1 {display: inline-block;}
+&lt;/code&gt;
+&lt;a href=&quot;http://codepen.io/anon/pen/dPeYGN&quot;&gt;See this on CodePen&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Which is lengthier however there are a few solutions to this:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Use LESS or Sass&lt;/li&gt;
+  &lt;li&gt;Use HTML imports to push the CSS into the element whilst still maintaining a separate CSS file
+    &lt;ul&gt;
+      &lt;li&gt;Drawback is &lt;a href=&quot;https://hacks.mozilla.org/2014/12/mozilla-and-web-components/&quot;&gt;Mozilla won’t be implementing import just yet&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Use a shim to compile together the CSS, JS and HTML into a package similar to how other frameworks do for components now&lt;/li&gt;
+  &lt;li&gt;Shim support for &lt;a href=&quot;http://tabatkins.github.io/specs/css-nesting/#the-nested-block&quot;&gt;nested CSS&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;further-reading&quot;&gt;Further reading&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/webcomponents/webcomponentsjs&quot;&gt;Pollyfills&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.polymer-project.org/articles/styling-elements.html&quot;&gt;Styling with polymer&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/webcomponents/webcomponents.github.io/blob/site/src/documents/articles/web-components-best-practices.html.md&quot;&gt;Good practices with web components&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/inigo-llc/ember-polymer&quot;&gt;Polymer in Ember-cli&lt;/a&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://gist.github.com/dnegstad/eee660aa32efd906082c&quot;&gt;Derived from this gist&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://robdodson.me/shadow-dom-css-cheat-sheet/&quot;&gt;Shadow DOM CSS cheat sheet&lt;/a&gt; - also has examples using polymer&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;credit&quot;&gt;Credit&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.flickr.com/photos/double-m2/3945354161/&quot;&gt;Picture by Double-M&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.xanthir.com/blog/&quot;&gt;Question help from Tab Atkins&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sun, 22 Feb 2015 04:18:00 +0000</pubDate>
+        <link>http://jotter.jonathankingston.co.uk/blog/2015/02/22/out-of-the-shadows/</link>
+        <guid isPermaLink="true">http://jotter.jonathankingston.co.uk/blog/2015/02/22/out-of-the-shadows/</guid>
+        
+        
+        <category>JavaScript</category>
+        
+        <category>CSS</category>
+        
+      </item>
+    
+      <item>
+        <title>Making a dynamic palette today</title>
+        <description>&lt;p&gt;Creating dynamic CSS doesn’t sound exciting, however it is certainly a time management issue of large scale sites on the web. This has lead to the advancement of preprocessing CSS and other methodologies like &lt;a href=&quot;http://oocss.org/&quot;&gt;OOCSS&lt;/a&gt; and &lt;a href=&quot;https://smacss.com/&quot;&gt;SMACSS&lt;/a&gt; which bring their own issues too.&lt;/p&gt;
+
+&lt;p&gt;All these solutions really miss out from being a scalable system that will work in the browsers of tomorrow. The &lt;a href=&quot;http://dev.w3.org/csswg/css-color/&quot;&gt;color CSS specification&lt;/a&gt; and &lt;a href=&quot;http://www.w3.org/TR/css-variables-1/&quot;&gt;CSS variables specification&lt;/a&gt; changes all that, along with using a preprocessor called &lt;a href=&quot;http://myth.io&quot;&gt;Myth&lt;/a&gt; we can give tomorrows browser support to todays browsers.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&quot;showcasing-a-sample-palette&quot;&gt;Showcasing a sample palette&lt;/h2&gt;
+
+&lt;p&gt;CSS3 code:
+```
+:root {
+  –primary: #e7e371;&lt;/p&gt;
+
+&lt;p&gt;–analog: color(var(–primary) hue(+30%));
+  –sixty: color(var(–primary) hue(+60%));
+  –right-triangle: color(var(–primary) hue(+90%));
+  –triad: color(var(–primary) hue(+120%));
+  –split-complement: color(var(–primary) hue(+150%));
+  –complement: color(var(–primary) hue(+180%));
+  –split-complement-negative: color(var(–primary) hue(-150%));
+  –triad-negative: color(var(–primary) hue(-120%));
+  –right-triangle-negative: color(var(–primary) hue(-90%));
+  –sixty-negative: color(var(–primary) hue(-60%));
+  –analog-negative: color(var(–primary) hue(-30%));
+}&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;{
+font-family: arial;
+}&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;.palette {
+  max-width: 600px;
+  margin-top: 2em;
+}&lt;/p&gt;
+
+&lt;p&gt;.palette &amp;gt; div {
+  height: 100px;
+  width: 100px;
+  float: left;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}&lt;/p&gt;
+
+&lt;p&gt;.primary {
+  background-color: var(–primary);
+}&lt;/p&gt;
+
+&lt;p&gt;.complement {
+  background-color: var(–complement);
+}&lt;/p&gt;
+
+&lt;p&gt;.analog {
+  background-color: var(–analog);
+}&lt;/p&gt;
+
+&lt;p&gt;.analog-negative {
+  background-color: var(–analog-negative);
+}&lt;/p&gt;
+
+&lt;p&gt;.split-complementary {
+  background-color: var(–split-complement);
+}&lt;/p&gt;
+
+&lt;p&gt;.split-complementary-negative {
+  background-color: var(–split-complement-negative);
+}&lt;/p&gt;
+
+&lt;p&gt;.triad {
+  background-color: var(–triad);
+}&lt;/p&gt;
+
+&lt;p&gt;.triad-negative {
+  background-color: var(–triad-negative);
+}&lt;/p&gt;
+
+&lt;p&gt;.right-triangle {
+  background-color: var(–right-triangle);
+}&lt;/p&gt;
+
+&lt;p&gt;.right-triangle-negative {
+  background-color: var(–right-triangle-negative);
+}&lt;/p&gt;
+
+&lt;p&gt;.sixty {
+  background-color: var(–sixty);
+}&lt;/p&gt;
+
+&lt;p&gt;.sixty-negative {
+  background-color: var(–sixty-negative);
+}&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+Myth then outputs CSS 2.0 output with other browser prefixes:
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;ul&gt;
+  &lt;li&gt;{
+font-family: arial;
+}&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;.palette {
+  max-width: 600px;
+  margin-top: 2em;
+}&lt;/p&gt;
+
+&lt;p&gt;.palette &amp;gt; div {
+  height: 100px;
+  width: 100px;
+  float: left;
+  font-size: 12px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+}&lt;/p&gt;
+
+&lt;p&gt;.primary {
+  background-color: #e7e371;
+}&lt;/p&gt;
+
+&lt;p&gt;.complement {
+  background-color: rgb(111, 115, 231);
+}&lt;/p&gt;
+
+&lt;p&gt;.analog {
+  background-color: rgb(175, 231, 111);
+}&lt;/p&gt;
+
+&lt;p&gt;.analog-negative {
+  background-color: rgb(231, 167, 111);
+}&lt;/p&gt;
+
+&lt;p&gt;.split-complementary {
+  background-color: rgb(111, 175, 231);
+}&lt;/p&gt;
+
+&lt;p&gt;.split-complementary-negative {
+  background-color: rgb(167, 111, 231);
+}&lt;/p&gt;
+
+&lt;p&gt;.triad {
+  background-color: rgb(111, 231, 227);
+}&lt;/p&gt;
+
+&lt;p&gt;.triad-negative {
+  background-color: rgb(227, 111, 231);
+}&lt;/p&gt;
+
+&lt;p&gt;.right-triangle {
+  background-color: rgb(111, 231, 167);
+}&lt;/p&gt;
+
+&lt;p&gt;.right-triangle-negative {
+  background-color: rgb(231, 111, 175);
+}&lt;/p&gt;
+
+&lt;p&gt;.sixty {
+  background-color: rgb(115, 231, 111);
+}&lt;/p&gt;
+
+&lt;p&gt;.sixty-negative {
+  background-color: rgb(231, 111, 115);
+}
+```&lt;/p&gt;
+
+&lt;p&gt;With a sample HTML page like this:
+```&lt;/p&gt;
+&lt;section class=&quot;palette&quot;&gt;
+  &lt;div class=&quot;primary&quot;&gt;Primary&lt;/div&gt;
+  
+  &lt;div class=&quot;analog&quot;&gt;Analog&lt;/div&gt;
+  
+  &lt;div class=&quot;sixty&quot;&gt;Sixty&lt;/div&gt;
+  
+  &lt;div class=&quot;right-triangle&quot;&gt;Right triangle&lt;/div&gt;
+
+  &lt;div class=&quot;triad&quot;&gt;Triad&lt;/div&gt;
+  
+  &lt;div class=&quot;split-complementary&quot;&gt;Split complementary&lt;/div&gt;
+  
+  &lt;div class=&quot;complement&quot;&gt;Complement&lt;/div&gt;
+  
+  &lt;div class=&quot;split-complementary-negative&quot;&gt;Split complementary negative&lt;/div&gt;
+  
+  &lt;div class=&quot;triad-negative&quot;&gt;Triad negative&lt;/div&gt;
+
+
+  &lt;div class=&quot;right-triangle-negative&quot;&gt;Right triangle negative&lt;/div&gt;
+
+  &lt;div class=&quot;sixty-negative&quot;&gt;Sixty&lt;/div&gt;
+  
+  &lt;div class=&quot;analog-negative&quot;&gt;Analog negative&lt;/div&gt;
+&lt;/section&gt;
+&lt;p&gt;```
+This will then output something that looks like:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/palette/palette.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://codepen.io/anon/pen/KdmbA&quot;&gt;Sample Codepen&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;example-usage&quot;&gt;Example usage&lt;/h2&gt;
+
+&lt;p&gt;I was going to show example uses here I had made using the above methods, but instead here are some great effects in CSS that could use the above to become a lot more flexible and lightweight.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://cssdeck.com/labs/css-buttons&quot;&gt;CSS buttons&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.midwinter-dg.com/blog_demos/css-text-shadows/&quot;&gt;CSS text shadows&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://medialoot.com/blog/quick-tip-how-to-create-css-text-effects-using-only-the-text-shadow-attribu/&quot;&gt;CSS text effects&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Using_CSS_transitions&quot;&gt;CSS animations&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;All of the above would benefit from using variables and dynamically creating colours. As more animations become commonplace with other advanced layout techniques, using tools to generate more of the work will help your CSS be more maintainable.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-future&quot;&gt;The future&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/palette/future.gif&quot; title=&quot;Marty Mcfly on a hover board&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;What this gives us is a dynamic StyleSheet that matches the functionality of the features of LESS and SASS today.
+It also gives the flexibility to later have native support in the browser with compliant code.
+With the mention of an &lt;a href=&quot;http://www.w3.org/TR/css-variables-1/#changes&quot;&gt;upcoming API&lt;/a&gt; which could be leveraged in JavaScript or CSS animations really could make using CSS variables a lot more exciting. The final resting place for the CSS variables API will likely be part of the &lt;a href=&quot;http://dev.w3.org/csswg/css-extensions/#custom-property&quot;&gt;CSS extensions specification&lt;/a&gt; where many other future adaptions will lie.&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 16 Jul 2014 00:57:00 +0100</pubDate>
+        <link>http://jotter.jonathankingston.co.uk/blog/2014/07/16/making-a-dynamic-palette-today/</link>
+        <guid isPermaLink="true">http://jotter.jonathankingston.co.uk/blog/2014/07/16/making-a-dynamic-palette-today/</guid>
+        
+        
+        <category>CSS</category>
+        
+        <category>colour</category>
+        
+        <category>Myth</category>
+        
+      </item>
+    
+      <item>
+        <title>VALIDATE me baby</title>
+        <description>&lt;p&gt;There are many times that I have been writing sites with the desire for the client side to call the server in a &lt;a href=&quot;http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.1&quot;&gt;safe&lt;/a&gt; and &lt;a href=&quot;http://en.wikipedia.org/wiki/Idempotence&quot;&gt;idempotent&lt;/a&gt; way with a request body for sending more data than a &lt;code class=&quot;highlighter-rouge&quot;&gt;GET&lt;/code&gt; can, or data that can’t be recorded via referral logs.&lt;/p&gt;
+
+&lt;p&gt;Even when or if the new &lt;a href=&quot;http://www.w3.org/TR/form-http-extensions/&quot;&gt;Form HTTP extensions specification&lt;/a&gt; gets approval and adoption for the basic HTTP methods, we still lack a clear way to send over requests with server side impact.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&quot;proposal&quot;&gt;Proposal&lt;/h2&gt;
+&lt;p&gt;This proposal is for browsers and servers to support a new HTTP verb &lt;code class=&quot;highlighter-rouge&quot;&gt;VALIDATE&lt;/code&gt; and adding a new HTML form parameter &lt;code class=&quot;highlighter-rouge&quot;&gt;methodfor&lt;/code&gt; so that browsers can safely send validation requests to the server.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-problem&quot;&gt;The problem&lt;/h2&gt;
+&lt;p&gt;All HTTP requests besides &lt;code class=&quot;highlighter-rouge&quot;&gt;GET&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;HEAD&lt;/code&gt; are specified to have side effects on the server. Which means that behind the scenes of my client side applications, I can only safely send over &lt;code class=&quot;highlighter-rouge&quot;&gt;GET&lt;/code&gt; requests to request for updates on the validation of messages.&lt;/p&gt;
+
+&lt;p&gt;So for example if I wanted to server side validate a credit card form I would have to send over:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;https://mysite.com/checkout/pay?creditcard=4111111111111111&amp;amp;fname=jonathan…
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Although technically, this will be a secure request at the network layer, it could be cached and/or logged at the web server.&lt;/p&gt;
+
+&lt;h2 id=&quot;advantages&quot;&gt;Advantages&lt;/h2&gt;
+&lt;p&gt;The &lt;code class=&quot;highlighter-rouge&quot;&gt;VALIDATE&lt;/code&gt; verb has two clear advantages: clear semantic reasoning and automatic validation with safe client side methods.&lt;/p&gt;
+
+&lt;h3 id=&quot;semantic-reasoning&quot;&gt;Semantic reasoning&lt;/h3&gt;
+&lt;p&gt;It gives the client and server the ability to know when a request is just a validation, and enables both sides to provide a better overall experience to the user.&lt;/p&gt;
+
+&lt;p&gt;User agents can indicate to the user when the form will be just a validation and will be technologically safe for them to send, potentially by giving a different appearance or accent to buttons. By doing so, users will have more confidence in trying out changes, for example payment buttons in a checkout flow.&lt;/p&gt;
+
+&lt;h4 id=&quot;example&quot;&gt;Example:&lt;/h4&gt;
+&lt;p&gt;A dynamic page could easily serve up the following form:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;form method=&quot;VALIDATE&quot; methodfor=&quot;POST&quot; &amp;gt;
+  &amp;lt;fieldset&amp;gt;
+    &amp;lt;legend&amp;gt;Purchase item&amp;lt;/legend&amp;gt;
+    &amp;lt;div class=&quot;form-row&quot;&amp;gt;
+      &amp;lt;label for=&quot;my-item&quot;&amp;gt;Item&amp;lt;/label&amp;gt;
+      &amp;lt;input name=&quot;item-sku&quot; placeholder=&quot;Input SKU code&quot; id=&quot;my-item&quot; /&amp;gt;
+    &amp;lt;/div&amp;gt;
+    &amp;lt;button&amp;gt;Submit&amp;lt;/button&amp;gt;
+  &amp;lt;/fieldset&amp;gt;
+&amp;lt;/form&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/validateme/first-form.png&quot; title=&quot;Example of how a browser may render a VALIDATE form&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once the user submits the form, the dynamic page could then come back with validation issues:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;form method=&quot;VALIDATE&quot; methodfor=&quot;POST&quot; &amp;gt;
+  &amp;lt;fieldset&amp;gt;
+    &amp;lt;legend&amp;gt;Purchase item&amp;lt;/legend&amp;gt;
+    &amp;lt;div class=&quot;form-row&quot;&amp;gt;
+      &amp;lt;label for=&quot;my-item&quot;&amp;gt;Item&amp;lt;/label&amp;gt;
+      &amp;lt;input name=&quot;item-sku&quot; value=&quot;thing&quot; placeholder=&quot;Input SKU code&quot; id=&quot;my-item&quot; /&amp;gt;
+      &amp;lt;div class=&quot;inline-error&quot;&amp;gt;Sorry our SKU codes are numeric, you might find these in our catalog EG: SKU #121212;&amp;lt;/div&amp;gt;
+    &amp;lt;/div&amp;gt;
+    &amp;lt;button&amp;gt;Submit&amp;lt;/button&amp;gt;
+  &amp;lt;/fieldset&amp;gt;
+&amp;lt;/form&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;&lt;img src=&quot;/images/validateme/second-form.png&quot; title=&quot;Example of how a browser may render a VALIDATE form with errors&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Once validation issues are resolved then the following would display:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;form method=&quot;POST&quot; &amp;gt;
+  &amp;lt;fieldset&amp;gt;
+    &amp;lt;legend&amp;gt;Confirm purchase of item 1212&amp;lt;/legend&amp;gt;
+    &amp;lt;div class=&quot;form-row&quot;&amp;gt;
+      &amp;lt;label for=&quot;my-item&quot;&amp;gt;Item&amp;lt;/label&amp;gt;
+      &amp;lt;input name=&quot;item-sku&quot; value=&quot;1212&quot; id=&quot;my-item&quot; readonly /&amp;gt;
+    &amp;lt;/div&amp;gt;
+    &amp;lt;!-- This goes out to all you &quot;law abiding citizens&quot; out there --&amp;gt;
+    &amp;lt;button&amp;gt;Order with obligation to pay&amp;lt;/button&amp;gt;
+  &amp;lt;/fieldset&amp;gt;
+&amp;lt;/form&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/validateme/final-form.png&quot; title=&quot;Example of how a browser may render a validated form before submission&quot; /&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;automatic-validation&quot;&gt;Automatic validation&lt;/h3&gt;
+&lt;p&gt;With &lt;code class=&quot;highlighter-rouge&quot;&gt;VALIDATE&lt;/code&gt; forms the JavaScript could automatically send over requests for updates and new error validations via AJAX and safely know that the user will not be impacted by side effects.&lt;/p&gt;
+
+&lt;p&gt;Having the ability for the JavaScript to safely make requests to the server means this feature could be turned on globally; even if the client library doesn’t understand the response, the error code could be used to indicate to the user of when the form is valid or not.&lt;/p&gt;
+
+&lt;h3 id=&quot;example-1&quot;&gt;Example:&lt;/h3&gt;
+
+&lt;p&gt;Client sends:
+```
+VALIDATE /checkout/pay HTTP/1.0
+Method-For: POST
+Content-Type: application/javascript; charset=UTF-8
+Content-Length: 32&lt;/p&gt;
+
+&lt;p&gt;{creditcard: ‘4111111111111111’, fname: ‘jonathan’…}
+```&lt;/p&gt;
+
+&lt;p&gt;Server response:
+```
+HTTP/1.0 412 Precondition Failed
+Date: Fri, 31 Jun 2014 23:59:59 GMT
+Content-Type: text/json
+Content-Length: 121212&lt;/p&gt;
+
+&lt;p&gt;{status: ‘additional-information’, form: [{type: ‘string’, name: ‘creditcard’}, {status: ‘new-additional’, type: ‘string’, name: ‘cv2’}, {type: ‘string’, name: ‘fname’}…]}
+```
+When precondition failed returns, it would be able to return validation issues per field, errors for the whole form and additional fields that are required.&lt;/p&gt;
+
+&lt;p&gt;Wait though, what is wrong with POST?
+Natively the server doesn’t expose an interface for sending body data over in a request, which means that swapping from one system to another could have side effects on the users data.&lt;/p&gt;
+
+&lt;p&gt;So for example lets take a site with different validate systems:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Your payment gateway implements the parameter: &lt;code class=&quot;highlighter-rouge&quot;&gt;?test=1&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Your order process uses http headers: &lt;code class=&quot;highlighter-rouge&quot;&gt;X-Validate-Request: 1&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Your blogging platform uses the parameter: &lt;code class=&quot;highlighter-rouge&quot;&gt;?verify-request=&#39;yes&#39;&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Client side applications can’t quickly share the same code without further adapters to each message; POSTing the data raw couldn’t be used safely as it might actually run the request that you are trying to check without the intention of the user to do so.&lt;/p&gt;
+
+&lt;p&gt;However, if both the payment gateway and order process implemented VALIDATE as a verb, the JavaScript and/or browser could automatically verify forms as and when it sees fit. Additionally, the blog could have the VALIDATE functionality turned off, and the server would be used in the traditional round trip manner, passing back more field when it knows the client needs them. This has the added bonus of working even with VALIDATE not being supported, so in the rare case of it being fired it would be completely safe to do so.&lt;/p&gt;
+
+&lt;h2 id=&quot;methodfor-reasoning&quot;&gt;Methodfor reasoning&lt;/h2&gt;
+&lt;p&gt;If you have read this far, it is likely you are as pedantic as I am, and you are likely to be asking ‘Ok, but how does the server know the corresponding verb’ as different verbs will require different validation.&lt;/p&gt;
+
+&lt;p&gt;Well I propose two things, a new HTML attribute to cater for the following verb and also a new HTTP header for the same purpose.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;form method=&quot;VALIDATE&quot; methodfor=&quot;DELETE&quot; action=&quot;/checkout/pay&quot; &amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Which in turn would send:
+&lt;code class=&quot;highlighter-rouge&quot;&gt;
+VALIDATE /checkout/pay HTTP/1.1
+Method-For: DELETE
+…
+&lt;/code&gt;
+Where the server would respond:
+&lt;code class=&quot;highlighter-rouge&quot;&gt;
+HTTP/1.1 412 Precondition Failed
+Date: Fri, 31 Jun 2014 22:21:59 GMT
+Content-Type: text/json
+Vary: Method, Method-For
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;This means that:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;We don’t end up with &lt;code class=&quot;highlighter-rouge&quot;&gt;VALIDATE-DELETE&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;VALIDATE-PUT&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;VALIDATE-POST&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;VALIDATE-HEAD&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;VALIDATE-NEW-SHINY&lt;/code&gt; methods&lt;/li&gt;
+  &lt;li&gt;Until full adoption by browsers server side support can retrofit functionality.
+    &lt;ul&gt;
+      &lt;li&gt;Older user agents can easily not worry about what the new verbs and parameters so long as the server assumes no support if no &lt;code class=&quot;highlighter-rouge&quot;&gt;Method-For&lt;/code&gt; header is not sent&lt;/li&gt;
+      &lt;li&gt;Server should treat request as a normal &lt;code class=&quot;highlighter-rouge&quot;&gt;POST&lt;/code&gt; interaction with no side effects&lt;/li&gt;
+      &lt;li&gt;Server can then send back the corresponding approval / validation issues mentioned above&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;User agents on sites with &lt;code class=&quot;highlighter-rouge&quot;&gt;VALIDATE&lt;/code&gt; support can automatically send the requests safely&lt;/li&gt;
+  &lt;li&gt;Forms could display differently based upon the &lt;code class=&quot;highlighter-rouge&quot;&gt;methodfor&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;method=”VALIDATE”&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;further-discussions-into-integration&quot;&gt;Further discussions into integration&lt;/h2&gt;
+
+&lt;h3 id=&quot;method-discovery&quot;&gt;Method discovery&lt;/h3&gt;
+&lt;p&gt;Frameworks and user agents would also be able to quickly resolve if the form could support the method by running an OPTIONS request which could likely be cached for a significant amount of time.&lt;/p&gt;
+
+&lt;h3 id=&quot;messaging&quot;&gt;Messaging&lt;/h3&gt;
+
+&lt;p&gt;Deciding upon a standard for negotiation between the client and server for how validation responses would be formed is key for JavaScript to really pick up and get use out of the VALIDATE verb.&lt;/p&gt;
+
+&lt;p&gt;Specifications like JSON API could be adapted and expanded to provide the same kind of validations as specified here: &lt;a href=&quot;http://discourse.specifiction.org/t/json-api-v1-0-review/207/5&quot;&gt;JSON API review&lt;/a&gt; or serialised versions of &lt;a href=&quot;https://github.com/darobin/web-schema&quot;&gt;Robin Berjon’s Web Schema&lt;/a&gt;.&lt;/p&gt;
+
+</description>
+        <pubDate>Thu, 10 Jul 2014 21:22:00 +0100</pubDate>
+        <link>http://jotter.jonathankingston.co.uk/blog/2014/07/10/validate-me-baby/</link>
+        <guid isPermaLink="true">http://jotter.jonathankingston.co.uk/blog/2014/07/10/validate-me-baby/</guid>
+        
+        
+        <category>JavaScript</category>
+        
+        <category>ideas</category>
+        
+        <category>HTML</category>
+        
+        <category>development</category>
+        
+      </item>
+    
+      <item>
+        <title>Google as a Service (GaaS)</title>
+        <description>&lt;p&gt;Google appears to be pushing further into the open internet platform in a land grab bid against closed source providers. As other articles are suggesting, Google is pushing the ‘Android everywhere’ idea however I am seeing this more as a two pronged approach with an ‘Internet everywhere’ approach as the main driver for Google’s other profitable offerings.&lt;/p&gt;
+
+&lt;p&gt;This article covers some of what we might see at &lt;a href=&quot;https://www.google.com/events/io&quot;&gt;Google I/O&lt;/a&gt; but also some of which could even be for next year. Google seem to want to close the gap between the open internet and native applications, retrofitting much of the tech that is provided in native applications into web based offerings. I would likely argue this is to win over some of the adopters of &lt;a href=&quot;https://developer.apple.com/swift/&quot;&gt;Apple’s new Swift offering&lt;/a&gt; but also backed by consumer to corporate offerings that markets using “Google for Everything”&lt;/p&gt;
+
+&lt;p&gt;The latest Google I/O talks seem to be very much focused on the developers this time: probably to counter the new Swift language by Apple but also to push more of Google’s platform to the early adopters. So, we are seeing less consumer and business announcements this year and instead a focus on a long game of developer adoptions for an array of new Google services.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h1 id=&quot;backing-the-open-internet&quot;&gt;Backing the open internet&lt;/h1&gt;
+&lt;p&gt;Google is investing further time and money into being an open platform which gives developers the confidence that the tech they integrate with should hopefully stay longer than heavy investment in Google APIs. They are also spending a lot of time bridging the open internet divide with Android as it brings further contention to the closed source application frameworks by bringing a near-native experience to all of the web. I think they are doing this mostly to further open up integration to pushing their main profit making storage, server, applications and devices.&lt;/p&gt;
+
+&lt;h2 id=&quot;investment-into-universal-2nd-factor-payment-mechanisms&quot;&gt;Investment into Universal 2nd Factor payment mechanisms&lt;/h2&gt;
+&lt;p&gt;Google has spent a lot of its efforts in writing and developing a strong authentication called &lt;a href=&quot;https://sites.google.com/site/oauthgoog/gnubby&quot;&gt;U2F&lt;/a&gt; method between two factor authentication and web applications. This has now been opened into an &lt;a href=&quot;http://fidoalliance.org/&quot;&gt;alliance&lt;/a&gt; which looks to be opening ID management and authentication online.&lt;/p&gt;
+
+&lt;h2 id=&quot;polymer&quot;&gt;Polymer&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.polymer-project.org&quot;&gt;Polymer&lt;/a&gt; is a patch for the future of the net, a patch that was made by Google&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.polymer-project.org/docs/polymer/node_bind.html&quot;&gt;Active web updates for changes&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Polymer gives developers the ability to write out an application and give a modern unified look and feel to their applications cross browser. Features such as reusable templates in the front end, with the ability to bind changes on the back-end to these templates (Think Meteor but native).&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.google.com/events/io/schedule/session/de22e147-07b6-e311-8491-00155d5066d7&quot;&gt;Google I/O talk on Polymer&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;native-app-feel-for-mobile-web&quot;&gt;Native app feel for mobile web&lt;/h2&gt;
+&lt;p&gt;Google is now pushing a new feature on Android ‘&lt;a href=&quot;https://developer.chrome.com/multidevice/android/installtohomescreen&quot;&gt;Install to homescreen&lt;/a&gt;’ which is implemented with &lt;code class=&quot;highlighter-rouge&quot;&gt;mobile-web-app-capable&lt;/code&gt; as a meta extension.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;brand-color&lt;/code&gt; - &lt;a href=&quot;https://groups.google.com/a/chromium.org/forum/#!msg/blink-dev/nzRY-h_-_ig/KR3XWn73tDoJ&quot;&gt;this feature&lt;/a&gt; is to add a hint to mobile tech on what colour represents the site; the browser specific implementations in Apple and IE pick tile colours and status bar colours.
+This thread also mentions showing at Google I/O which likely shows further push into making the mobile web native in this Google I/O.&lt;/p&gt;
+
+&lt;h2 id=&quot;geofencing&quot;&gt;Geofencing&lt;/h2&gt;
+&lt;p&gt;Geofencing is the ability to monitor when the user enters a certain geographical area and provide notifications based upon it. This is a further step to bringing mobile based tech to websites of any nature.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://code.google.com/p/chromium/issues/detail?id=383125&amp;amp;q=getRegisteredRegions&amp;amp;colspec=ID%20Pri%20M%20Iteration%20ReleaseBlock%20Cr%20Status%20Owner%20Summary%20OS%20Modified&quot;&gt;Geofencing bug&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;harmony-between-svg-and-html&quot;&gt;Harmony between SVG and HTML&lt;/h2&gt;
+&lt;p&gt;&lt;a href=&quot;https://code.google.com/p/chromium/issues/detail?id=243882&quot;&gt;Some effort&lt;/a&gt; has been made by Google focused on changing over SVG rendering into the same as HTML.&lt;/p&gt;
+
+&lt;p&gt;This looks like it is to pave the way for the following new specifications:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://dev.w3.org/fxtf/geometry/&quot;&gt;Geometry interfaces module&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.w3.org/TR/svg-integration/&quot;&gt;SVG integration&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;What this likely means:&lt;/strong&gt;
+SVG features and customisations become closer to HTML, giving a native application user experience to the web.&lt;/p&gt;
+
+&lt;p&gt;##Investments in web tech
+Google are building apps, platforms and guides which all promote further more of Google’s latest technologies they are preferring at the moment.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://developers.google.com/web/fundamentals/&quot;&gt;Web fundamentals site&lt;/a&gt;
+Google is providing yet more guides in building web sites; the latest is advice and dev support in multiple device technologies.&lt;/p&gt;
+
+&lt;p&gt;They have published a &lt;a href=&quot;https://developers.google.com/web/starter-kit/&quot;&gt;starter kit&lt;/a&gt; which promotes some of Google’s best practices and development tools. Interestingly this appears to be backing the &lt;a href=&quot;http://www.w3.org/TR/appmanifest/&quot;&gt;appmanifest&lt;/a&gt; which in the particular form it is in with a &lt;code class=&quot;highlighter-rouge&quot;&gt;.webapp&lt;/code&gt; extension was designed for the &lt;a href=&quot;https://marketplace.firefox.com/developers/?src=nav_logo&quot;&gt;Firefox marketplace&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;angular-and-friends&quot;&gt;Angular and friends&lt;/h3&gt;
+&lt;p&gt;More support into providing Google services and ideas into the web stack. For example Angular promotes web components and other new technologies mentioned in this article.&lt;/p&gt;
+
+&lt;h1 id=&quot;marketing-google-as-a-service&quot;&gt;Marketing Google as a Service&lt;/h1&gt;
+
+&lt;p&gt;As well as ramping up marketing new cloud based services to developers - &lt;a href=&quot;https://developers.google.com/drive/&quot;&gt;With fancy visual developer pages&lt;/a&gt; and Google are also advancing their offerings in cloud which are also marketing the ecosytem too.&lt;/p&gt;
+
+&lt;h2 id=&quot;google-domains&quot;&gt;Google domains&lt;/h2&gt;
+&lt;p&gt;Google is going to be a &lt;a href=&quot;http://domains.google.com/about/&quot;&gt;domain provider&lt;/a&gt; which is another promotion for apps and hosting services that they provide. Linking together Google mail and other quick web app tools they already have with domains is likely to give the consumers and companies a much quicker way to get online.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.google.com/events/io/schedule/session/22ce27dc-7cbf-e311-b297-00155d5066d7&quot;&gt;Google talk on the future of domains&lt;/a&gt; - this will likely talk through Google entering into the domain market, after all they have secretly been backing some of the &lt;a href=&quot;http://newgtlds.icann.org/en/&quot;&gt;new GTLD’s&lt;/a&gt; with its new &lt;a href=&quot;https://www.google.com/registry/&quot;&gt;Charleston road registry which has become public recently&lt;/a&gt; including other extensions like: &lt;a href=&quot;https://gtldresult.icann.org/application-result/applicationstatus/applicationdetails/1339&quot;&gt;.dev&lt;/a&gt;, &lt;a href=&quot;https://gtldresult.icann.org/application-result/applicationstatus/applicationdetails/499&quot;&gt;.family&lt;/a&gt;, &lt;a href=&quot;https://gtldresult.icann.org/applicationstatus/applicationdetails/519&quot;&gt;.android&lt;/a&gt; and &lt;a href=&quot;https://gtldresult.icann.org/application-result/applicationstatus/applicationdetails/511&quot;&gt;.page&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Future expansions could lead to one click installation of analytics, hosting, cloud applications.&lt;/p&gt;
+
+&lt;h2 id=&quot;enterprise-offerings&quot;&gt;Enterprise offerings&lt;/h2&gt;
+
+&lt;p&gt;Google is making waves in changes for content distributors from becoming its own &lt;a href=&quot;https://fiber.google.com/about/&quot;&gt;ISP&lt;/a&gt; to building corporate friends with the likes of &lt;a href=&quot;https://www.google.com/takeaction/&quot;&gt;Netflix by lobbying with them for an open internet&lt;/a&gt; against companies like Comcast and the FCC.&lt;/p&gt;
+
+&lt;h3 id=&quot;isp-content-distribution&quot;&gt;ISP content distribution&lt;/h3&gt;
+&lt;p&gt;Google’s clear support for distribution of web media is a focus for them as a whole company:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.google.com/events/io/schedule/session/0486a8f4-4acb-e311-b297-00155d5066d7&quot;&gt;Making your cloud apps Google-fast&lt;/a&gt; - providing new companies the architecture and tools to be as good as Google for performance is likely to save companies a lot of money.&lt;/li&gt;
+  &lt;li&gt;Advancement into web encodings like &lt;a href=&quot;https://developers.google.com/speed/webp/?csw=1&quot;&gt;WebP&lt;/a&gt; and &lt;a href=&quot;http://www.webmproject.org/&quot;&gt;WebM&lt;/a&gt; put trust in companies that Google has their back, also the storage and network savings will likely be massive.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://googlefiberblog.blogspot.co.uk/2014/05/minimizing-buffering.html&quot;&gt;Fiber to content&lt;/a&gt; - through colocation of content the service improvements would be huge.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://dvcs.w3.org/hg/html-media/raw-file/tip/encrypted-media/encrypted-media.html&quot;&gt;Encrypted media extensions support&lt;/a&gt; - Unfortunately media companies being what they are with the lack of encrypted media on the web content providers would refuse to distribute content over the open web. Even on the outset this seems a step backwards for web standards actually; it promotes the web as a full stack application with no proprietary plugins. By standardising this approach web authors; browsers and content distributors won’t need to bring their own tech to the table.&lt;/li&gt;
+  &lt;li&gt;Adding improvements in their cloud platform to compete in the market with: &lt;a href=&quot;https://developers.google.com/compute/docs/containers&quot;&gt;Investment in Docker for scaling of applications&lt;/a&gt; and &lt;a href=&quot;http://techcrunch.com/2014/06/19/googles-new-cloud-import-tool-makes-switching-from-aws-easier/&quot;&gt;New import from AWS tool&lt;/a&gt; giving corporates less trouble in designing for scale makes Google a great AWS competitor.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;universal-communications&quot;&gt;Universal Communications&lt;/h3&gt;
+&lt;p&gt;Google’s technologies appear to be aligning slowly whereby I can see an always-on approach to communication going through the best path of communication:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.twilio.com/blog/2014/06/twilio-and-google-twilio-cx-for-chromebooks-nt.html&quot;&gt;Partnership with Twilio&lt;/a&gt; - Leveraging &lt;a href=&quot;http://www.webrtc.org/&quot;&gt;WebRTC&lt;/a&gt; which is another open Google backed service&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://plus.google.com/+googleplus/posts/8irsMuNR3ZK&quot;&gt;Improvements of hangouts&lt;/a&gt; merged conversations with SMS chats is the first step to providing a communication tool where the user doesn’t need to worry about which of the N contact mechanisms to take - the software can decide and pick the most convenient for the recipient.&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developers.google.com/glass/distribute/glass-at-work&quot;&gt;‘Glass at work’&lt;/a&gt; partnerships - likely to roll out tech for down time for employees; commuting etc&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://developers.google.com/cast/&quot;&gt;Google casting&lt;/a&gt; - Which is bringing the ability to share media cross device and could be modified to open up universal communications for video conferencing.&lt;/li&gt;
+  &lt;li&gt;Google cloud messaging on more devices with &lt;a href=&quot;https://developer.chrome.com/apps/cloudMessaging&quot;&gt;Chrome based devices with native gcm&lt;/a&gt; - This was announced last year but has only just dropped into &lt;a href=&quot;http://googlechromereleases.blogspot.co.uk/2014/06/stable-channel-update.html&quot;&gt;Chrome 35&lt;/a&gt; as unified API. Allowing sending and receiving Google cloud messages through chrome applications. This means developers should be able to communicate with all apps soon. Internally &lt;a href=&quot;http://www.google.co.uk/cloudprint/learn/&quot;&gt;Google’s cloud print&lt;/a&gt; used GCM; imagine the potential with Google opening this up to all developers.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h1&gt;
+
+&lt;p&gt;Google appears to be playing a very long game with helping developers; which I think will likely pay off for them in advertising and distributing their tech services and products. By offering up a complete web solution to most in the market, above and beyond what its competitors can it will likely attract a wide range of consumers to companies. Google is betting on whole companies riding on their platform from handset to servers.&lt;/p&gt;
+
+</description>
+        <pubDate>Wed, 25 Jun 2014 08:50:00 +0100</pubDate>
+        <link>http://jotter.jonathankingston.co.uk/blog/2014/06/25/google-as-a-service-gaas/</link>
+        <guid isPermaLink="true">http://jotter.jonathankingston.co.uk/blog/2014/06/25/google-as-a-service-gaas/</guid>
+        
+        
+        <category>google</category>
+        
+        <category>cloud</category>
+        
+        <category>services</category>
+        
+        <category>tech</category>
+        
+        <category>development</category>
+        
+      </item>
+    
+      <item>
+        <title>My new favourite colour</title>
+        <description>&lt;p&gt;The all new CSS colour: ‘rebeccapurple’ which is backed with one of the most moving stories I have heard in a long time.&lt;/p&gt;
+
+&lt;p&gt;So I thought I would hold off writing this post until; &lt;a href=&quot;http://meyerweb.com/eric/thoughts/2014/06/19/rebeccapurple/&quot;&gt;Eric gave confirmation for the new colour&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;My sad thoughts were with Eric and his family who have &lt;a href=&quot;http://meyerweb.com/eric/thoughts/2014/06/09/in-memoriam-2/&quot;&gt;lost their daughter in a fight against cancer&lt;/a&gt;. This is something that strikes a chord in my heart and everyone that is aware of someone who has gone through the ordeal.&lt;/p&gt;
+
+&lt;p&gt;I was delighted to see the web community align on this issue, which was to release a colour in the name of Eric’s daughter in the CSS specification. If you don’t know who by now, the Eric in mention is &lt;a href=&quot;http://meyerweb.com&quot;&gt;Eric Meyer of MeyerWeb&lt;/a&gt;. On the day of &lt;a href=&quot;http://meyerweb.com/eric/thoughts/2014/06/12/funeral-service/&quot;&gt;Rebeccas funeral&lt;/a&gt; the community set out to make the colour purple popular not only on social media and in donations in the fight against cancer but also to give a memorial to someone, who we all likely learned CSS from.&lt;/p&gt;
+
+&lt;p&gt;So I am proud to announce today that I have released a &lt;a href=&quot;https://www.npmjs.org/package/rework-rebeccapurple&quot;&gt;CSS rework module&lt;/a&gt; which gives backwards compatibility for all older browsers for CSS authors who wish to use this new colour. Which is then backed with the newly landed &lt;a href=&quot;http://trac.webkit.org/changeset/170136&quot;&gt;Webkit nightly&lt;/a&gt;, with further backing from &lt;a href=&quot;https://connect.microsoft.com/IE/feedback/details/895019/support-beccapurple-as-html-named-color&quot;&gt;IE&lt;/a&gt;, &lt;a href=&quot;https://code.google.com/p/chromium/issues/detail?id=384254&quot;&gt;Chrome&lt;/a&gt; and &lt;a href=&quot;https://bugzilla.mozilla.org/show_bug.cgi?id=1024642&quot;&gt;FireFox&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In the event that you perhaps want to show support for cancer causes, research and charities. I think using the colour would be a brilliant symbol of a unified support for the fight against cancer. For me already this is what it means; seeing the colour already has these emotional ties to the passing of loved ones.&lt;/p&gt;
+
+&lt;p&gt;I hope to see further promotion of the colour and adoption and the continued care for the loved ones on the internet. My thoughts again go out to Eric and the family.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 20 Jun 2014 00:38:00 +0100</pubDate>
+        <link>http://jotter.jonathankingston.co.uk/blog/2014/06/20/my-new-favourite-colour/</link>
+        <guid isPermaLink="true">http://jotter.jonathankingston.co.uk/blog/2014/06/20/my-new-favourite-colour/</guid>
+        
+        
+        <category>CSS</category>
+        
+        <category>colour</category>
+        
+        <category>charity</category>
+        
+      </item>
+    
+      <item>
+        <title>Making a performance</title>
+        <description>&lt;h2 id=&quot;dont-over-optimise-too-early&quot;&gt;Don’t over optimise too early&lt;/h2&gt;
+
+&lt;p&gt;A common trend I see more in JavaScript, than in any other language is to over optimise every line of code.
+This comes in many flavours but the two most common are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Optimising to the least lines of code&lt;/li&gt;
+  &lt;li&gt;Optimising code to be most performant&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&quot;performant-code&quot;&gt;Performant code&lt;/h2&gt;
+
+&lt;p&gt;The scope of the project is really important here: if we were making an in-browser game then there may be justification for getting the most optimal code for the browser.&lt;/p&gt;
+
+&lt;p&gt;Most websites, &lt;strong&gt;do not&lt;/strong&gt; require the level of interaction that developers expect to warrant optimising for the computer.&lt;/p&gt;
+
+&lt;p&gt;Having code that can be diagnosed easily in smaller isolated components, makes it much easier to improve performance in a much safer manner, when the performance is needed.&lt;/p&gt;
+
+&lt;p&gt;Over optimising early looks a lot like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  var chosenPost = false;
+  var findPost = function (post, title) {
+    if (chosenPost !== false) {
+      return chosenPost;
+    }
+ 
+    var i = posts.length;
+    var post;
+    while (i--) {
+      post = posts[i];
+      if (&#39;title&#39; in post &amp;amp;&amp;amp; post.title === title) {
+        chosenPost = post;
+        return chosenPost;
+      }
+    }
+ 
+    return false;
+  };
+ 
+  var posts = [
+    {title: &#39;Optimisation scandal&#39;},
+    {title: &#39;School reunion&#39;},
+    {title: &#39;Something else&#39;},
+  ];
+  var chosenPost = findPost(posts, &#39;Optimisation scandal&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;In the example above, the coder has attempted to improve performance by making the method not search through the posts the second time round.
+Firstly, this code increases application risk due to two factors:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Introducing while loops of this nature are poorly understood, the &lt;a href=&quot;http://en.wikipedia.org/wiki/Off-by-one_error&quot;&gt;off by one error&lt;/a&gt; happens here easily.&lt;/li&gt;
+  &lt;li&gt;Adding in caching introduces other risks:
+    &lt;ul&gt;
+      &lt;li&gt;It is easy for developers to skip over these lines of code&lt;/li&gt;
+      &lt;li&gt;Cache rules can become sullied with lots of conditionals&lt;/li&gt;
+      &lt;li&gt;This stops the method being &lt;a href=&quot;http://en.wikipedia.org/wiki/Idempotence&quot;&gt;indempotent&lt;/a&gt;: developers can easily mess with the global variable and cause issues.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;What is also worth commenting on here is actually, these lines of code &lt;a href=&quot;http://jsperf.com/loops/145&quot;&gt;do not always&lt;/a&gt; give the performance improvement developers expect.
+Until the need for an optimisation has been proven and the performance improvement has also been proved, I would always leave them out, unless the coding style expects them.&lt;/p&gt;
+
+&lt;p&gt;The questions I try to ask myself when writing an optimisation is:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;How long will it take to implement?&lt;/li&gt;
+  &lt;li&gt;How hard does it make the code to read?&lt;/li&gt;
+  &lt;li&gt;How much time will is save the user?&lt;/li&gt;
+  &lt;li&gt;Do the users need that saving of time or do I?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;lines-of-code&quot;&gt;Lines of code&lt;/h2&gt;
+
+&lt;p&gt;Optimising for the least number of lines of code is mainly a misconception that programmers are at their most optimal when they have to write the least lines.&lt;/p&gt;
+
+&lt;p&gt;Write speed for a programmer is a factor, however it is not the only one.&lt;/p&gt;
+
+&lt;p&gt;For teams working together on the same code base, comprehension speed, I would argue, is actually the most important.&lt;/p&gt;
+
+&lt;p&gt;When a programmer starts at your company, whether they are junior or senior, it is likely there will be a lot of training for the new starter either by themselves, or with another programmer.
+For every simplification to a programmers write speed comes an increase in comprehension and training required.&lt;/p&gt;
+
+&lt;p&gt;Reducing key presses leads to code that is harder to maintain and also comprehend:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  var thing,
+      thing2,
+      thing3,
+      thing4 = true;
+  thingAssign(thing, thing2, thing3, thing4)
+  if (thing &amp;amp;&amp;amp; thing2 &amp;amp;&amp;amp; thing3) $(&#39;something&#39;).each(function () { $(this).addClass(&#39;selected&#39;)  })
+  if (thing4) doSomething(&#39;thing&#39;)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;The problems I expect new programmers to encounter with the above code are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;They may be unsure regarding what thing - thing4 get declared as&lt;/li&gt;
+  &lt;li&gt;Difficulty understanding where &lt;a href=&quot;http://ecma262-5.com/ELS5_Section_7.htm#Section_7.9.1&quot;&gt;ASI&lt;/a&gt;(Automatic Semicolon Insertion) rules come into play&lt;/li&gt;
+  &lt;li&gt;Comprehension of where if statements terminate&lt;/li&gt;
+  &lt;li&gt;What is checked in the if statement &lt;code class=&quot;highlighter-rouge&quot;&gt;thing &amp;amp;&amp;amp; thing2 &amp;amp;&amp;amp; thing3&lt;/code&gt;
+    &lt;ul&gt;
+      &lt;li&gt;If either of the three variables is set to: false, null, undefined, NaN, 0, or ‘’ then this test would fail&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Remembering to insert brackets or commas after each statement in the if once another statement is required&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;clear-coding-standards-help&quot;&gt;Clear coding standards help&lt;/h2&gt;
+
+&lt;p&gt;One of the main reasons I have become so interested in &lt;a href=&quot;http://eslint.org/&quot;&gt;ESLint&lt;/a&gt;, is because it will allow for strict coding standards that are not interpreted differently.&lt;/p&gt;
+
+&lt;p&gt;Personally, I would prefer to codify a set of coding standards as much as possible. This is mostly down to experience of seeing so many developers not follow standards.&lt;/p&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;This was just a brief look into making development simpler for teams to manage. Most of this article is fairly basic but it is worth planning a set of coding standards and a clear coding strategy to create a clear company wide approach. This uniformity in the team should improve code output and limit mistakes.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 05 Mar 2014 21:15:00 +0000</pubDate>
+        <link>http://jotter.jonathankingston.co.uk/blog/2014/03/05/making-a-performance/</link>
+        <guid isPermaLink="true">http://jotter.jonathankingston.co.uk/blog/2014/03/05/making-a-performance/</guid>
+        
+        
+      </item>
+    
+      <item>
+        <title>Why I now love CSS Values and Units module</title>
+        <description>&lt;h2 id=&quot;what-i-first-thought&quot;&gt;What I first thought&lt;/h2&gt;
+
+&lt;p&gt;When I first read about &lt;a href=&quot;http://www.w3.org/TR/css3-values&quot;&gt;CSS Values and Units module&lt;/a&gt; I completely dismissed it. 
+At first, I thought using the &lt;code class=&quot;highlighter-rouge&quot;&gt;calc()&lt;/code&gt; property would be a mad move for CSS and I was concerned how browsers would support new features.
+My initial motivation to thinking this was that we already have JavaScript with a known use case in calculating properties.
+I don’t really think JavaScript is the best used for producing layout but it seemed far better than adding what is essentially a dynamic language construct into a declarative format.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&quot;the-rise-of-the-css-framework&quot;&gt;The rise of the CSS framework&lt;/h2&gt;
+
+&lt;p&gt;You only have to sift through some of the modern framework’s code to realise that there is a units problem at hand here.
+The frameworks I have had a chance to work with have all had the issue of mixing units and having to constantly specify dimensions.&lt;/p&gt;
+
+&lt;p&gt;The problem I see is code like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;  &amp;lt;style&amp;gt;
+    body {font-size:12px;}
+    .ems span {font-size:0.8em;}
+  &amp;lt;/style&amp;gt;
+
+  &amp;lt;div class=&quot;ems&quot;&amp;gt;
+    &amp;lt;span&amp;gt;Call me maybe&amp;lt;/span&amp;gt;
+ 
+    &amp;lt;br /&amp;gt;
+ 
+    &amp;lt;span&amp;gt;&amp;lt;span&amp;gt;Call me maybe&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;
+ 
+    &amp;lt;br /&amp;gt;
+ 
+    &amp;lt;span&amp;gt;&amp;lt;span&amp;gt;&amp;lt;span&amp;gt;Call me maybe&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/span&amp;gt;
+  &amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;Which, if you run in a browser, you will notice the half arsed Carly Rae Jepsen lyrics fade away.&lt;/p&gt;
+
+&lt;p&gt;This can, however, be fixed by using &lt;a href=&quot;http://www.w3.org/TR/css3-values/#rem-unit&quot;&gt;rem&lt;/a&gt; units instead:
+```&lt;/p&gt;
+&lt;style&gt;
+    body {font-size:12px;}
+    .rems span {font-size:0.8rem;}
+  &lt;/style&gt;
+
+&lt;div class=&quot;rems&quot;&gt;
+    &lt;span&gt;Call me maybe&lt;/span&gt;
+ 
+    &lt;br /&gt;
+ 
+    &lt;span&gt;&lt;span&gt;Call me maybe&lt;/span&gt;&lt;/span&gt;
+ 
+    &lt;br /&gt;
+ 
+    &lt;span&gt;&lt;span&gt;&lt;span&gt;Call me maybe&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;
+  &lt;/div&gt;
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+Which when run in a browser demonstrates that rem units stay a consistent size for all levels in the DOM.
+
+The great news is rem units actually solves the issue here. However, in wades Internet Explorer 8, which doesn&#39;t support rem units - if you need to support IE 8 then we need to look elsewhere for an alternative solution.
+
+So we are stuck with either using px or em units, which both can be hard to maintain for the reason above.
+ 
+## Introducing Myth
+ 
+I could tell you lots about preprocessing languages like LESS and SASS, however I have always used them in angst - mainly due to the nature of inventing a new, non-standard language on top of CSS.
+ 
+[Myth](http://myth.io), on the other hand, is basically a mix of all of the latest [W3C](http://www.w3.org) specifications which means that once all browsers support the features, the amount of processing can be decreased over time.
+
+This is where `calc()` and CSS variables come into play, with the ability for us to now use an absolute size to reference element and font sizes.
+Over time we can then change these to rem units with ease allowing for a much more flexible layout.
+
+I created a quick [demo site for in-browser Myth compiling](http://jonathankingston.github.io/mythhub/) so I could show examples.
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;p&gt;:root {
+  var-base-font: 12px;
+}&lt;/p&gt;
+
+&lt;p&gt;h1 {
+  font-size: calc(var(base-font) * 2);
+}&lt;/p&gt;
+
+&lt;p&gt;h2 {
+  font-size: calc(var(base-font) * 1.75);
+}&lt;/p&gt;
+
+&lt;p&gt;h3 {
+  font-size: calc(var(base-font) * 1.5);
+}
+```
+&lt;a href=&quot;http://jonathankingston.github.io/mythhub/?m=%3Aroot+%7B%0D%0A++var-base-font%3A+12px%3B%0D%0A%7D%0D%0A%0D%0Ah1+%7B%0D%0A++font-size%3A+calc%28var%28base-font%29+*+2%29%3B%0D%0A%7D%0D%0A%0D%0Ah2+%7B%0D%0A++font-size%3A+calc%28var%28base-font%29+*+1.75%29%3B%0D%0A%7D%0D%0A%0D%0Ah3+%7B%0D%0A++font-size%3A+calc%28var%28base-font%29+*+1.5%29%3B%0D%0A%7D&quot;&gt;Example CSS Myth font calculation&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;When browser support is sufficiently high enough for the application you are building, the variables can be changed to give the exact same output using rem rather than px units.
+```
+:root {
+  var-base-font: 0.75rem;
+}&lt;/p&gt;
+
+&lt;p&gt;h1 {
+  font-size: calc(var(base-font) * 2);
+}&lt;/p&gt;
+
+&lt;p&gt;h2 {
+  font-size: calc(var(base-font) * 1.75);
+}&lt;/p&gt;
+
+&lt;p&gt;h3 {
+  font-size: calc(var(base-font) * 1.5);
+}
+```
+&lt;a href=&quot;http://jonathankingston.github.io/mythhub/?m=%3Aroot+%7B%0D%0A++var-base-font%3A+0.75rem%3B%0D%0A%7D%0D%0A%0D%0Ah1+%7B%0D%0A++font-size%3A+calc%28var%28base-font%29+*+2%29%3B%0D%0A%7D%0D%0A%0D%0Ah2+%7B%0D%0A++font-size%3A+calc%28var%28base-font%29+*+1.75%29%3B%0D%0A%7D%0D%0A%0D%0Ah3+%7B%0D%0A++font-size%3A+calc%28var%28base-font%29+*+1.5%29%3B%0D%0A%7D&quot;&gt;Example CSS Myth font recalculation&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Myth is in its early stages, but even so it’s clear this style of CSS development could be the most future-proof.&lt;/p&gt;
+
+&lt;h2 id=&quot;future-developments-for-myth&quot;&gt;Future developments for Myth&lt;/h2&gt;
+
+&lt;p&gt;I would like to see the following (Edited with latest improvements):&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;It would be great if I could configure a per browser output
+    &lt;ul&gt;
+      &lt;li&gt;Selective browser extensions, currently it supports browser auto-prefixing like: &lt;code class=&quot;highlighter-rouge&quot;&gt;-webkit-transition: opacity 1s;&lt;/code&gt; output instead of just the corresponding browser specified&lt;/li&gt;
+      &lt;li&gt;Provide the least amount of fixes for modern browsers&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;del&gt;Choose to auto-follow @import and compile all files into one .css file&lt;/del&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;del&gt;&lt;a href=&quot;https://github.com/segmentio/myth/issues/44&quot;&gt;output source maps&lt;/a&gt;&lt;/del&gt;&lt;/li&gt;
+  &lt;li&gt;Allow to declare what screen size the user is to strip out media queries that are not relevant&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;future-developments-of-css-values-specification&quot;&gt;Future developments of CSS values specification&lt;/h2&gt;
+
+&lt;p&gt;I would like to see the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://www.w3.org/TR/css3-values/#numeric-types&quot;&gt;Less ambiguity in value precision&lt;/a&gt; or the ability to provide a precision
+    &lt;ul&gt;
+      &lt;li&gt;I think this matters more when you are using multiple compilers that you get a consistent numeric precision.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;WEBIDL format or similar to improve parsers and validators&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Mon, 03 Mar 2014 21:29:00 +0000</pubDate>
+        <link>http://jotter.jonathankingston.co.uk/blog/2014/03/03/why-i-now-love-css-values-and-units-module/</link>
+        <guid isPermaLink="true">http://jotter.jonathankingston.co.uk/blog/2014/03/03/why-i-now-love-css-values-and-units-module/</guid>
+        
+        
+        <category>CSS</category>
+        
+        <category>colour</category>
+        
+      </item>
+    
+      <item>
+        <title>Give the world back FollowRedirects XMLHttpRequest</title>
+        <description>&lt;p&gt;So having written enough heavy AJAX applications I can tell you that a massive frustration is that there is
+not any ability to detect natively when the browser follows a redirect over AJAX, this makes handling redirection difficult in the client.&lt;/p&gt;
+
+&lt;p&gt;Some might suggest that we should invest further into using web sockets or someting instead of AJAX. However using AJAX seems to fit better
+with well established MVC web frameworks that are able to respond with JSON or XML.
+This will allow us to copy over much of the existing sites functionality without making many changes on the server side.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;Firstly I would like to describe some of the merits of being able to see where the browser has been sent to:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;HTTP redirection is used for many reasons on the web, most frameworks would have to use special conditions to 
+manage conditional redirection based upon content type, locales and other rules&lt;/li&gt;
+  &lt;li&gt;The Content-type the server responds with may differ from the response the client expected,
+this is likely to occur when the server can’t respond to the Accepts header sent so sends HTML or similar instead.
+Without having redirection information the client application needs to validate the content returned before parsing.&lt;/li&gt;
+  &lt;li&gt;Use of redirection to inform the AJAX application of a change in API&lt;/li&gt;
+  &lt;li&gt;Redirecting the client application to relevant locale, encoding or device type&lt;/li&gt;
+  &lt;li&gt;Having a simpler server side controller that responds with the same behaviour for all conditions is always a benefit&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I’m having a difficulty in understanding when the feature came into browsers in the first place to auto follow redirection however
+I can only assume it was put in to simplify the method usage.&lt;/p&gt;
+
+&lt;p&gt;So I did some further digging and managed to find that this feature was recommended to prevent redirection when specified but it was dropped
+from the specification &lt;a href=&quot;http://lists.w3.org/Archives/Public/public-webapps/2010OctDec/0812.html&quot;&gt;in the W3C mailing list&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;It looks to me like followRedirects was instead replaced with doing the right thing when the request is a &lt;a href=&quot;http://www.w3.org/TR/XMLHttpRequest/#infrastructure-for-the-send\(\)-method&quot;&gt;CORS&lt;/a&gt; however the client side writer might
+not be in full control of the server response within the same domain either.&lt;/p&gt;
+
+&lt;p&gt;AJAX requests that redirect currently look like this:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;JavaScript request URL http://mydomain.com/page.&lt;/li&gt;
+  &lt;li&gt;Server responds with 301, 302, 303, 307, or 308 and sets the Location header to http://mydomain.com/page2.&lt;/li&gt;
+  &lt;li&gt;Browser auto sends a request to the URL of the Location header (http://mydomain.com/page2).&lt;/li&gt;
+  &lt;li&gt;Server responds to request http://mydomain.com/page2.&lt;/li&gt;
+  &lt;li&gt;Browser then completes the XMLHttpRequest returning the headers of the second request to http://mydomain.com/page2.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Compressing the history of the request like this makes it impossible for the application writer on the client side to know when the server
+responded with a redirection without the server implementing:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Server doesn’t respond with redirection status code&lt;/li&gt;
+  &lt;li&gt;Server returns the path somehow in the response: JSON key, HTTP X-headers.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For me the most logical way to reduce the complexity of JavaScript client side applications is the ability to uniformly handle requests it
+understands by loading different templates from the redirected responses. For requests it doesn’t understand or are out of the application
+scope the client could redirect using window.location.href. For this to happen reliably however we need either the ability
+to see all the responses from the server if redirects happen or to be able to turn following redirections off.&lt;/p&gt;
+
+&lt;p&gt;So W3C please add back to the specification the ability to set followRedirects to false and/or the feature to view the redirection
+requests followed in XMLHttpRequest.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 08 Nov 2013 18:54:00 +0000</pubDate>
+        <link>http://jotter.jonathankingston.co.uk/blog/2013/11/08/give-the-world-back-followredirects-xmlhttprequest/</link>
+        <guid isPermaLink="true">http://jotter.jonathankingston.co.uk/blog/2013/11/08/give-the-world-back-followredirects-xmlhttprequest/</guid>
+        
+        
+        <category>JavaScript</category>
+        
+        <category>ECMAScript</category>
+        
+        <category>XMLHttpRequest</category>
+        
+        <category>SPA</category>
+        
+        <category>Single Page Application</category>
+        
+      </item>
+    
+      <item>
+        <title>Trialling laravel PHP</title>
+        <description>&lt;p&gt;Laravel was suggested to me last week and I have only just got time to take a look at it properly.&lt;/p&gt;
+
+&lt;p&gt;The framework has a similar structure to Rails so it seems pretty familiar to me so far. In making this article I created a &lt;a href=&quot;https://github.com/jonathanKingston/laravel-test&quot;&gt;test REST laravel application&lt;/a&gt;.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&quot;initial-install&quot;&gt;Initial install&lt;/h2&gt;
+
+&lt;p&gt;Firstly I needed to install everything as my machine has recently decided to need rebuilding, I needed to install PHP and composer etc.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install php5
+curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Setting up a new instance is then quick and simple with:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;composer create-project laravel/laravel laravel-test --prefer-dist
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;###Setup a new site in Apache
+I then setup an area to play around with in Apache:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo touch /etc/apache2/sites-available/laravel-test
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I then edited the file to have the following config:&lt;/p&gt;
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;figcaption class=&quot;code-highlight-caption&quot;&gt;&lt;span class=&quot;code-highlight-caption-title&quot;&gt;laravel-test&lt;/span&gt;&lt;/figcaption&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;Listen 8080
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;lt;VirtualHost *:8080&amp;gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        ServerAdmin webmaster@localhost
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        DocumentRoot /home/jonathan/workspace/laravel-test/public
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;lt;Directory /home/jonathan/workspace/laravel-test/public&amp;gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;8&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;                RewriteEngine On
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;9&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;                Options Indexes FollowSymLinks MultiViews
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;10&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;                AllowOverride All
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;11&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;                Order allow,deny
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;12&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;                allow from all
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;13&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;lt;/Directory&amp;gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;14&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;15&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;16&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        ErrorLog $&amp;#x7b;APACHE_LOG_DIR&amp;#x7d;/error.log
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;17&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;18&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        # Possible values include: debug, info, notice, warn, error, crit,
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;19&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        # alert, emerg.
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;20&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        LogLevel warn
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;21&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;22&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        CustomLog $&amp;#x7b;APACHE_LOG_DIR&amp;#x7d;/access.log combined
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;23&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;24&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;lt;/VirtualHost&amp;gt;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;I then ran the following to enable the site:
+    sudo a2ensite laravel-test;
+    sudo a2enmod rewrite;
+    sudo service apache2 reload;&lt;/p&gt;
+
+&lt;p&gt;I then ran the following to set the required permissions:
+    sudo chmod -R 777 app/storage;&lt;/p&gt;
+
+&lt;h2 id=&quot;quick-start-guide&quot;&gt;Quick start guide&lt;/h2&gt;
+&lt;p&gt;The laravel quick start guide I think could flow better.
+The guide doesn’t mention the benefits of separating out code into controllers.
+New developers are not suggested that &lt;a href=&quot;http://laravel.com/docs/controllers#resource-controllers&quot;&gt;REST resourceful routing&lt;/a&gt; would be better later, I actually found this feature hard to find even though I was fairly sure the framework supported it.
+There is not a detailed enough explanation to how to setup a web server to securely use the framework.&lt;/p&gt;
+
+&lt;p&gt;As a guide it doesn’t seem like it would promote good development practice for new developers.&lt;/p&gt;
+
+&lt;h2 id=&quot;templates&quot;&gt;Templates&lt;/h2&gt;
+
+&lt;p&gt;The &lt;a href=&quot;http://laravel.com/docs/templates&quot;&gt;Blade&lt;/a&gt; templates remind me of &lt;a href=&quot;http://www.ruby-doc.org/stdlib-2.0.0/libdoc/erb/rdoc/ERB.html&quot;&gt;Erb&lt;/a&gt; and &lt;a href=&quot;http://twig.sensiolabs.org/&quot;&gt;Twig&lt;/a&gt; templates, so far they seem a little weird but certainly no &lt;a href=&quot;http://www.template-toolkit.org&quot;&gt;Template Toolkit&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;I am however a little perplexed as to why Laravel has created another template engine when Twig appears to have the same goals and instead of using this:
+    @section(‘main’)
+      this is a test.
+    @endsection&lt;/p&gt;
+
+&lt;p&gt;Twig would use:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;block&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+   &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;is&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;test.&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;endblock&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;err&quot;&gt;%&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I personally find this easier to read, luckily it looks like you can use Twig in Laravel with &lt;a href=&quot;https://github.com/rcrowe/TwigBridge&quot;&gt;TwigBridge&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;config-changes&quot;&gt;Config changes&lt;/h2&gt;
+
+&lt;p&gt;I changed my database to PostgreSQL rather than mySQL opening &lt;code class=&quot;highlighter-rouge&quot;&gt;app/config/database.php&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;        &#39;default&#39; =&amp;gt; &#39;pgsql&#39;,
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Also modifying the config further down for pgsql.&lt;/p&gt;
+
+&lt;p&gt;###New DB setup
+Making sure we have the database installed:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sudo apt-get install postgresql-9.1;
+sudo apt-get install php5-pgsql;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Changing the PostgreSQL default password if you have not already:
+    sudo -u postgres psql postgres;&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;\password postgres
+create database database;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;h2 id=&quot;forms&quot;&gt;Forms&lt;/h2&gt;
+
+&lt;p&gt;Forms look like they could do with a lot of work, as this is a modern framework I was expecting something more powerful than &lt;a href=&quot;http://guides.rubyonrails.org/form_helpers.html&quot;&gt;Rails forms&lt;/a&gt;.
+Having used &lt;a href=&quot;http://search.cpan.org/~gshank/HTML-FormHandler-0.40053/lib/HTML/FormHandler.pm&quot;&gt;FormHandler&lt;/a&gt; in Perl on a regular basis the forms in Laravel appear to be far weaker than that.
+Anyway, we are left with something that is a PHP clone of Rails here, it does the job.&lt;/p&gt;
+
+&lt;h2 id=&quot;migrations&quot;&gt;Migrations&lt;/h2&gt;
+&lt;p&gt;For a corporate environment of any size, having the ability to roll back and forward database structures is very powerful.&lt;/p&gt;
+
+&lt;p&gt;Laravel provides migrate in the artisan command:
+    php artisan migrate:make create_test_table&lt;/p&gt;
+
+&lt;p&gt;Here is a sample database I created:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Schema::create(&#39;test&#39;, function($table)
+{
+    $table-&amp;gt;increments(&#39;id&#39;);
+    $table-&amp;gt;string(&#39;name&#39;);
+    $table-&amp;gt;text(&#39;description&#39;);
+    $table-&amp;gt;timestamps();
+});
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Now lets run the migrations:
+    php artisan migrate&lt;/p&gt;
+
+&lt;h2 id=&quot;controller&quot;&gt;Controller&lt;/h2&gt;
+
+&lt;p&gt;I then setup a sample controller:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;php artisan controller:make testController
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Then setup the route to link to this controller making it a &lt;a href=&quot;http://laravel.com/docs/controllers#resource-controllers&quot;&gt;resource controller&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Route::resource(&#39;test&#39;, &#39;testController&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;I then populated the controller code:&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;public function index()
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;                $tests = Test::all();
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;                return View::make(&#39;test/index&#39;, array(&#39;tests&#39; =&amp;gt; $tests));
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;        &amp;#x7d;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;building-the-templates&quot;&gt;Building the templates&lt;/h2&gt;
+&lt;p&gt;For the controller I then needed to build the following template s:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;app/views/test/index.blade.php&lt;/li&gt;
+  &lt;li&gt;app/views/test/edit.blade.php&lt;/li&gt;
+  &lt;li&gt;app/views/test/show.blade.php&lt;/li&gt;
+  &lt;li&gt;app/views/test/create.blade.php&lt;/li&gt;
+  &lt;li&gt;app/views/test/destroy.blade.php&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I also made the templates extend from a template ‘layout’:&lt;/p&gt;
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;lt;!DOCTYPE html&amp;gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;lt;html&amp;gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &amp;lt;head&amp;gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    &amp;lt;title&amp;gt;Test application&amp;lt;/title&amp;gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &amp;lt;/head&amp;gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &amp;lt;body&amp;gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    @yield(&#39;content&#39;)
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;8&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &amp;lt;/body&amp;gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;9&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;lt;/html&amp;gt;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;Here is the edit action that I used:&lt;/p&gt;
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;@extends(&#39;layout&#39;)
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;@section(&#39;content&#39;)
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &amp;lt;h1&amp;gt;Edit test &amp;#x7b;&amp;#x7b; $test-&amp;gt;id &amp;#x7d;&amp;#x7d;&amp;lt;/h1&amp;gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &amp;#x7b;&amp;#x7b; Form::model($test, array(&#39;action&#39; =&amp;gt; array(&#39;testController@update&#39;, $test-&amp;gt;id), &#39;method&#39; =&amp;gt; &#39;put&#39;)) &amp;#x7d;&amp;#x7d;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    &amp;lt;div&amp;gt;&amp;#x7b;&amp;#x7b; Form::label(&#39;name&#39;, &#39;Test name&#39;) &amp;#x7d;&amp;#x7d; &amp;#x7b;&amp;#x7b; Form::text(&#39;name&#39;) &amp;#x7d;&amp;#x7d;&amp;lt;/div&amp;gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;8&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    &amp;lt;div&amp;gt;&amp;#x7b;&amp;#x7b; Form::label(&#39;description&#39;, &#39;Description&#39;) &amp;#x7d;&amp;#x7d; &amp;#x7b;&amp;#x7b; Form::textarea(&#39;description&#39;) &amp;#x7d;&amp;#x7d;&amp;lt;/div&amp;gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;9&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    &amp;#x7b;&amp;#x7b; Form::submit() &amp;#x7d;&amp;#x7d;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;10&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &amp;#x7b;&amp;#x7b; Form::close() &amp;#x7d;&amp;#x7d;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;11&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;12&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &amp;#x7b;&amp;#x7b; link_to_action(&#39;testController@index&#39;, &#39;Show all&#39;) &amp;#x7d;&amp;#x7d;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;13&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;@endsection&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;I was happy to see several &lt;a href=&quot;http://laravel.com/docs/helpers#urls&quot;&gt;Helpers&lt;/a&gt; for producing links and URL’s this is an absolute must for templates to keep links fresh and easy to maintain on a larger site.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/jonathanKingston/laravel-test/tree/master/app/views/test&quot;&gt;See all the rest of the template code I used.&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;orm-wrapper&quot;&gt;ORM wrapper&lt;/h2&gt;
+
+&lt;p&gt;The ORM wrapper seems easy enough to follow for beginners, following the same direction as most other frameworks.&lt;/p&gt;
+
+&lt;p&gt;However the Laravel docs shows how to use validations but not where they should be placed or what best practices are. I have decided to hook in with model so only one place defines the database validation.&lt;/p&gt;
+
+&lt;p&gt;I added the following code to my model:&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;public $validator;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  public $rules = array(
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    &#39;name&#39; =&amp;gt; &#39;Required|Min:3|Alpha&#39;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  );
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  public static function boot() &amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;8&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    parent::boot();
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;9&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;10&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    //Add in saving hook to prevent database being saved
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;11&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    Test::saving(function ($model) &amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;12&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;      $model-&amp;gt;validator = Validator::make($model-&amp;gt;toArray(), $model-&amp;gt;rules);
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;13&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;14&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;      return $model-&amp;gt;validator-&amp;gt;passes();
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;15&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    &amp;#x7d;);
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;16&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &amp;#x7d;&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;This adds in a boot method which allows the model to define hooks. &lt;a href=&quot;http://laravel.com/docs/eloquent#model-events&quot;&gt;More info on the boot method and events&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;I then use the boot method for adding in a saving hook (Before INSERT or UPDATE) using &lt;code class=&quot;highlighter-rouge&quot;&gt;Test::saving(&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;The anonymous function then validates the input of the model and saves it to the parameter &lt;code class=&quot;highlighter-rouge&quot;&gt;$model-&amp;gt;validator&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;The return value of the anonymous function used in the hook &lt;code class=&quot;highlighter-rouge&quot;&gt;$model-&amp;gt;validator-&amp;gt;passes()&lt;/code&gt; will return true or false which when false will prevent the model being saved.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;In the controller I then use:&lt;/p&gt;
+
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;$test = Test::find($id);
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;$test-&amp;gt;update(array(&#39;name&#39; =&amp;gt; Input::get(&#39;name&#39;), &#39;description&#39; =&amp;gt; Input::get(&#39;description&#39;)));
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;if ($test-&amp;gt;validator-&amp;gt;fails()) &amp;#x7b;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  return Redirect::action(&#39;testController@edit&#39;, array($test-&amp;gt;id))-&amp;gt;withInput()-&amp;gt;withErrors($test-&amp;gt;validator);
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;&amp;#x7d;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;return Redirect::action(&#39;testController@show&#39;, array($test-&amp;gt;id));&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;Check out the &lt;a href=&quot;http://laravel.com/docs/validation#error-messages-and-views&quot;&gt;Validator API&lt;/a&gt; for more info.&lt;/p&gt;
+
+&lt;p&gt;I then modified the template to show the errors:&lt;/p&gt;
+&lt;figure class=&quot;code-highlight-figure&quot;&gt;&lt;div class=&quot;code-highlight&quot;&gt;&lt;pre class=&quot;code-highlight-pre&quot;&gt;&lt;div data-line=&quot;1&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;@if ( $errors-&amp;gt;count() &amp;gt; 0 )
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;2&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &amp;lt;p&amp;gt;The following errors have occurred:&amp;lt;/p&amp;gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;3&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt; &lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;4&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &amp;lt;ul&amp;gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;5&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  @foreach( $errors-&amp;gt;all() as $message )
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;6&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;    &amp;lt;li&amp;gt;&amp;#x7b;&amp;#x7b; $message &amp;#x7d;&amp;#x7d;&amp;lt;/li&amp;gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;7&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  @endforeach
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;8&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;  &amp;lt;/ul&amp;gt;
+&lt;/div&gt;&lt;/div&gt;&lt;div data-line=&quot;9&quot; class=&quot;code-highlight-row numbered&quot;&gt;&lt;div class=&quot;code-highlight-line&quot;&gt;@endif&lt;/div&gt;&lt;/div&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/figure&gt;
+
+&lt;p&gt;The $errors will be populated from the redirect in the controller from &lt;code class=&quot;highlighter-rouge&quot;&gt;withErrors&lt;/code&gt; and the forms will be populated with the erronous form input from the &lt;code class=&quot;highlighter-rouge&quot;&gt;withInput&lt;/code&gt; method call too.&lt;/p&gt;
+
+&lt;h2 id=&quot;improvements&quot;&gt;Improvements&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Documentation, key parts of the framework are less documented than far less important parts.&lt;/li&gt;
+  &lt;li&gt;Add in the ability to do FormHandler style forms which can render forms, validate and connect to the model.&lt;/li&gt;
+  &lt;li&gt;Stronger content-type response handling like &lt;a href=&quot;http://apidock.com/rails/ActionController/MimeResponds/respond_with&quot;&gt;respond_with in Rails&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Why do the Laravel code samples use spaces but the code in the framework use tabs? (Pick one - please)&lt;/li&gt;
+  &lt;li&gt;Scaffolding - yes it will make things look even more like Rails however it is a brilliant beginner tool and with the ability to customise the generated code for bigger projects it makes creating new wireframes is very fast.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;I am happy to see that the famework is fairly extendable, I didn’t look into what the extension mechanisms are like and what popular extension code quality was.
+I think overall it seems a far leaner framework than CakePHP and with most of the ability of Rails. I think being a youngish framework still, more could be done to improve the setup, documentation and tools.&lt;/p&gt;
+</description>
+        <pubDate>Fri, 25 Oct 2013 01:29:00 +0100</pubDate>
+        <link>http://jotter.jonathankingston.co.uk/blog/2013/10/25/trialing-laravel-php/</link>
+        <guid isPermaLink="true">http://jotter.jonathankingston.co.uk/blog/2013/10/25/trialing-laravel-php/</guid>
+        
+        
+        <category>PHP</category>
+        
+        <category>framework</category>
+        
+        <category>Laravel</category>
+        
+        <category>First impressions</category>
+        
+      </item>
+    
+  </channel>
+</rss>

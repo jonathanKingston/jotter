@@ -12,7 +12,7 @@ So initially [security people](https://lists.w3.org/Archives/Public/public-aria/
 
 ## Use cases for role="password"
 
-1. I am unable to use CSS styling pseudo elements with replaced elements
+1. I am unable to style pseudo elements for replaced elements
 2. I don't want password managers remembering my fields and autocomplete has been removed from me
 3. I'm using a library that is old but I can impact the DOM or I'm doing web component of my own inputs such that other libraries can't impact my code intentionally.
 

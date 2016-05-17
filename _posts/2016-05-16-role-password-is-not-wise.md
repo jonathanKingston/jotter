@@ -6,13 +6,13 @@ updated: 2016-05-16 00:00
 categories: ["Security", "HTML", "JavaScript", "development", "accessibility"]
 ---
 
-**TL;DR:** ARIA is a hack on real accessibility, reimplementing HTML in ARIA is silly, subverting password managers is evil, expecting the developers to start using role="password" likely wont happen happen, CSS replaced elements can't use pseudo elements and we should just fix that.
+**TL;DR:** [ARIA](https://www.w3.org/TR/wai-aria-1.1/) is a hack on real accessibility, reimplementing HTML in ARIA is silly, subverting password managers is evil, expecting the developers to start using role="password" likely wont happen, CSS replaced elements can't use pseudo elements and we should just fix that.
 
 So initially [security people](https://lists.w3.org/Archives/Public/public-aria/2016May/0009.html) did not really raise issue with `role="password"` as it doesn't directly create security risks, however it is my view that it permits bad web authorship and promotes hurting users experience on the web.
 
 ## Use cases for role="password"
 
-1. I am unable to style pseudo elements for replaced elements
+1. I am unable to style pseudo elements for [replaced elements](https://drafts.csswg.org/css2/conform.html#replaced-element) which [an input](https://html.spec.whatwg.org/multipage/rendering.html#replaced-elements)
 2. I don't want password managers remembering my fields and autocomplete has been removed from me
 3. I don't want other code impacting my input field
 
@@ -132,8 +132,15 @@ Users lose having a well defined password field that behaves consistently and ca
 **Use-case 1.**
 Input is a replaced element which doesn't allow [pseudo elements such as ::before and ::after](http://codepen.io/anon/pen/LNvOeq) which some layouts want without creating wrappers. This should be made possible in CSS or have a new native element, preferentially the first. It's a widely desired feature and it doesn't seem a limitation on CSS itself.
 
+**Update 2016/05/17:** This could be simulated with a custom element wrapping an input element reducing templates to not need a wrapping div. [As highlighted out by @simevidas](https://twitter.com/simevidas/status/732389037609209856)
+
 ## Users want to isolate their CSS
 
 **Use-case 3.** - *"I would like CSS isolation on my input field"*
 
 Use Shadow DOM in future.
+
+## Existing HTML - Update: 2016/05/17
+
+[@briankardell](https://twitter.com/briankardell) mentioned another use case that I had not covered (there are likely many).
+I concentrated on uses that couldn't be replicated in HTML today. He mentioned the 'show password' use, which should be possible to simulate with an input element and JavaScript changing the type.

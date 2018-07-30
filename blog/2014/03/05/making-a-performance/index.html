@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#454545">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Making a performance</title>
+  <meta name="description" content="Don't over optimise too earlyA common trend I see more in JavaScript, than in any other language is to over optimise every line of code.This comes in many fl...">
+
+  <link rel="stylesheet" href="https://jotter.jonathankingston.co.uk/css/main.css">
+  
+  <link rel="alternate" type="application/rss+xml" title="Jonathan Kingston" href="https://jotter.jonathankingston.co.uk/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+  <div class="wrapper">
+    <a class="site-title" href="https://jotter.jonathankingston.co.uk/">Jonathan Kingston</a>
+  </div>
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        
+          <header class="post-header">
+            <h1 class="post-title" itemprop="name headline">Making a performance</h1>
+            <p class="post-meta">
+              
+              <time datetime="2014-03-05 00:00:00 +0000" itemprop="datePublished">Mar 5, 2014</time>
+              
+              
+            </p>
+          </header>
+        
+          <div class="post-content" itemprop="articleBody">
+            <h2>Don't over optimise too early</h2>
+<p>A common trend I see more in JavaScript, than in any other language is to over optimise every line of code.
+This comes in many flavours but the two most common are:</p>
+<ul>
+<li>Optimising to the least lines of code</li>
+<li>Optimising code to be most performant</li>
+</ul>
+<!-- more -->
+<h2>Performant code</h2>
+<p>The scope of the project is really important here: if we were making an in-browser game then there may be justification for getting the most optimal code for the browser.</p>
+<p>Most websites, <strong>do not</strong> require the level of interaction that developers expect to warrant optimising for the computer.</p>
+<p>Having code that can be diagnosed easily in smaller isolated components, makes it much easier to improve performance in a much safer manner, when the performance is needed.</p>
+<p>Over optimising early looks a lot like this:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">var chosenPost = false;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">var findPost = function (post, title) {
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">if (chosenPost !== false) {
+</span><span style="background-color:#2b303b;color:#c0c5ce;">      </span><span style="background-color:#2b303b;color:#c0c5ce;">return chosenPost;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">}
+</span><span style="background-color:#2b303b;color:#c0c5ce;"> </span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">var i = posts.length;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">var post;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">while (i--) {
+</span><span style="background-color:#2b303b;color:#c0c5ce;">      </span><span style="background-color:#2b303b;color:#c0c5ce;">post = posts[i];
+</span><span style="background-color:#2b303b;color:#c0c5ce;">      </span><span style="background-color:#2b303b;color:#c0c5ce;">if (&#39;title&#39; in post &amp;&amp; post.title === title) {
+</span><span style="background-color:#2b303b;color:#c0c5ce;">        </span><span style="background-color:#2b303b;color:#c0c5ce;">chosenPost = post;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">        </span><span style="background-color:#2b303b;color:#c0c5ce;">return chosenPost;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">      </span><span style="background-color:#2b303b;color:#c0c5ce;">}
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">}
+</span><span style="background-color:#2b303b;color:#c0c5ce;"> </span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">return false;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">};
+</span><span style="background-color:#2b303b;color:#c0c5ce;"> </span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">var posts = [
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">{title: &#39;Optimisation scandal&#39;},
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">{title: &#39;School reunion&#39;},
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">{title: &#39;Something else&#39;},
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">];
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">var chosenPost = findPost(posts, &#39;Optimisation scandal&#39;);
+</span></pre>
+<p>In the example above, the coder has attempted to improve performance by making the method not search through the posts the second time round.
+Firstly, this code increases application risk due to two factors:</p>
+<ul>
+<li>Introducing while loops of this nature are poorly understood, the <a href="http://en.wikipedia.org/wiki/Off-by-one_error">off by one error</a> happens here easily.</li>
+<li>Adding in caching introduces other risks:
+<ul>
+<li>It is easy for developers to skip over these lines of code</li>
+<li>Cache rules can become sullied with lots of conditionals</li>
+<li>This stops the method being <a href="http://en.wikipedia.org/wiki/Idempotence">indempotent</a>: developers can easily mess with the global variable and cause issues.</li>
+</ul>
+</li>
+</ul>
+<p>What is also worth commenting on here is actually, these lines of code <a href="http://jsperf.com/loops/145">do not always</a> give the performance improvement developers expect.
+Until the need for an optimisation has been proven and the performance improvement has also been proved, I would always leave them out, unless the coding style expects them.</p>
+<p>The questions I try to ask myself when writing an optimisation is:</p>
+<ul>
+<li>How long will it take to implement?</li>
+<li>How hard does it make the code to read?</li>
+<li>How much time will is save the user?</li>
+<li>Do the users need that saving of time or do I?</li>
+</ul>
+<h2>Lines of code</h2>
+<p>Optimising for the least number of lines of code is mainly a misconception that programmers are at their most optimal when they have to write the least lines.</p>
+<p>Write speed for a programmer is a factor, however it is not the only one.</p>
+<p>For teams working together on the same code base, comprehension speed, I would argue, is actually the most important.</p>
+<p>When a programmer starts at your company, whether they are junior or senior, it is likely there will be a lot of training for the new starter either by themselves, or with another programmer.
+For every simplification to a programmers write speed comes an increase in comprehension and training required.</p>
+<p>Reducing key presses leads to code that is harder to maintain and also comprehend:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">var thing,
+</span><span style="background-color:#2b303b;color:#c0c5ce;">      </span><span style="background-color:#2b303b;color:#c0c5ce;">thing2,
+</span><span style="background-color:#2b303b;color:#c0c5ce;">      </span><span style="background-color:#2b303b;color:#c0c5ce;">thing3,
+</span><span style="background-color:#2b303b;color:#c0c5ce;">      </span><span style="background-color:#2b303b;color:#c0c5ce;">thing4 = true;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">thingAssign(thing, thing2, thing3, thing4)
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">if (thing &amp;&amp; thing2 &amp;&amp; thing3) $(&#39;something&#39;).each(function () { $(this).addClass(&#39;selected&#39;)  })
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">if (thing4) doSomething(&#39;thing&#39;)
+</span></pre>
+<p>The problems I expect new programmers to encounter with the above code are:</p>
+<ul>
+<li>They may be unsure regarding what thing - thing4 get declared as</li>
+<li>Difficulty understanding where <a href="http://ecma262-5.com/ELS5_Section_7.htm#Section_7.9.1">ASI</a>(Automatic Semicolon Insertion) rules come into play</li>
+<li>Comprehension of where if statements terminate</li>
+<li>What is checked in the if statement <code>thing &amp;&amp; thing2 &amp;&amp; thing3</code>
+<ul>
+<li>If either of the three variables is set to: false, null, undefined, NaN, 0, or '' then this test would fail</li>
+</ul>
+</li>
+<li>Remembering to insert brackets or commas after each statement in the if once another statement is required</li>
+</ul>
+<h2>Clear coding standards help</h2>
+<p>One of the main reasons I have become so interested in <a href="http://eslint.org/">ESLint</a>, is because it will allow for strict coding standards that are not interpreted differently.</p>
+<p>Personally, I would prefer to codify a set of coding standards as much as possible. This is mostly down to experience of seeing so many developers not follow standards.</p>
+<h2>Summary</h2>
+<p>This was just a brief look into making development simpler for teams to manage. Most of this article is fairly basic but it is worth planning a set of coding standards and a clear coding strategy to create a clear company wide approach. This uniformity in the team should improve code output and limit mistakes.</p>
+
+          </div>
+        
+        </article>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+    <ul class="social-media-list">
+      
+
+      
+    </ul>
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

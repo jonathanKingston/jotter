@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#454545">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Containers website assignment</title>
+  <meta name="description" content="At Mozilla we have been working on a feature called containers, which gives users the ability to separate their lives online to prevent being tracked.">
+
+  <link rel="stylesheet" href="https://jotter.jonathankingston.co.uk/css/main.css">
+  
+  <link rel="alternate" type="application/rss+xml" title="Jonathan Kingston" href="https://jotter.jonathankingston.co.uk/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+  <div class="wrapper">
+    <a class="site-title" href="https://jotter.jonathankingston.co.uk/">Jonathan Kingston</a>
+  </div>
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        
+          <header class="post-header">
+            <h1 class="post-title" itemprop="name headline">Containers website assignment</h1>
+            <p class="post-meta">
+              
+              <time datetime="2017-04-04 00:00:00 +0000" itemprop="datePublished">Apr 4, 2017</time>
+              
+              
+            </p>
+          </header>
+        
+          <div class="post-content" itemprop="articleBody">
+            <p>At Mozilla we have been working on a feature called <a href="https://testpilot.firefox.com/experiments/containers">containers</a>, which gives users the ability to separate their lives online to prevent being tracked.</p>
+<p><img src="/images/containers/intro.gif" alt="" /></p>
+<p>Since <a href="https://blog.mozilla.org/tanvi/2016/06/16/contextual-identities-on-the-web/">launching containers in Nightly</a> and now in <a href="https://hacks.mozilla.org/2017/03/containers-come-to-test-pilot/">Test Pilot</a>, the most requested feature for containers was the ability to assign a website to a container. When a user assigns a website to a container the browser will then load that website in said container whenever the website is requested.</p>
+<p><em>To get the features mentioned in this article <a href="https://testpilot.firefox.com/experiments/containers">download Containers in Test Pilot</a></em></p>
+<h1>How it works</h1>
+<p>Launching <strong>today</strong> you will be able to assign websites to your containers using the following flow:</p>
+<p>Open a bbc.com in a News container:</p>
+<p><img src="/images/containers/open.png" alt="Screenshot of opening bbc.com in a container using a context menu" /></p>
+<p>Assign the container to the link by picking &quot;Always Open in This Container&quot;:</p>
+<p><img src="/images/containers/assign.png" alt="Screenshot of a context menu assigning website to a container" /></p>
+<p>When you click a link to bbc.com you will see this prompt asking you to confirm opening in the container you asked for:</p>
+<p><img src="/images/containers/prompt.png" alt="Screenshot of user prompt to confirm opening website" /></p>
+<p>When you want to remove the assignment use the same context menu:
+<img src="/images/containers/unassign.png" alt="Screenshot of context menu to unassign website to a container" /></p>
+<p>Using the example we can see how a user will be able to prevent their browsing history being shared from advertisers, news and shopping sites whilst only adding minimal effort to their browsing flow.</p>
+<h1>Hard decisions</h1>
+<p>For a long time we put off implementing this feature due to it's user interface complexity and we likely will still have to tweak it after we launch. <em>The feature itself wasn't very complex, with the code being only ~300 lines of code.</em></p>
+<p>I was initially hesitant to implement this feature due to the following three issues:</p>
+<ol>
+<li><a href="#the-ability-to-csrf-yourself">The ability to CSRF yourself.</a></li>
+<li><a href="#the-inability-to-use-more-than-one-container-for-a-website">The inability to use more than one container for a website.</a></li>
+<li><a href="#the-inability-to-grasp-why-containers-are-isolated">The inability to grasp why containers are isolated.</a></li>
+</ol>
+<h1>1. The ability to CSRF yourself</h1>
+<p>Websites often have paths or pages that supply capabilities that other pages can call.
+These capabilities could be <strong>paying someone</strong> or <strong>resetting a password</strong>.
+A <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">Cross Site Request Forgery</a> is an attack when a user unknowingly visits one of these paths without intending to.
+CSRF exploits usually require that a user is already authenticated to a website and then unknowingly gets sent to one of these capability URLs that performs a privileged action on the authenticated users behalf.</p>
+<p>For example:</p>
+<ol>
+<li>User visits <em>example.bank</em>.</li>
+<li>User logs in.</li>
+<li>User then visits <em>evil.example.com</em>.</li>
+<li><em>evil.example.com</em> redirects the user to <em>example.bank/makepayment?username=evil&amp;amount=1000</em> in an hidden frame that they can't see.</li>
+<li>Assuming <em>example.bank</em> doesn't protect against CSRF the user will have the money taken from their account.</li>
+</ol>
+<p>There are <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet">lots</a> of <a href="https://scotthelme.co.uk/csrf-is-dead/">ways</a> a website can protect users from these forms of attacks, however in reality they still exist on the web today.</p>
+<p>Containers actually fix this issue so long as you log into services within a new container, lets take another look at that example:</p>
+<ol>
+<li>User opens a Finance container and logs into <em>example.bank</em>.</li>
+<li>User visits <em>bad.com</em> in the default &quot;No container&quot; new tab.</li>
+<li><em>bad.com</em> redirects user to <em>example.bank/makepayment?username=evil&amp;amount=1000</em> in an hidden frame that they can't see.</li>
+<li><em>example.bank</em> in &quot;No container&quot; isn't logged in and doesn't know about the user so refuses to pay evil user.</li>
+</ol>
+<p>Now if we had assigned the bank to go into the Finance container we would be not protected either.</p>
+<p>Furthermore single use <a href="https://www.w3.org/TR/capability-urls/#risk-of-exposure">capability URLs can actually leak in the referrer header too</a>.</p>
+<h1>2. The inability to use more than one container for a website</h1>
+<p>Users won't get the advantage of having multiple mail clients in different containers (Work and Personal mail)</p>
+<h1>3. The inability to grasp why containers are isolated</h1>
+<p>My other issue with container assignment  would be that a user wouldn't see the immediate advantage of using containers if they always get teleported into a certain container.</p>
+<p>Users might suffer from their search engine and mail provider all being lumped into the same container.
+This would mean the website could still track across all these properties.
+One of the design goals of containers was to limit the amount of tracking users had whilst browsing the internet and helping users shatter their <a href="https://en.wikipedia.org/wiki/Filter_bubble">filter bubble</a>.</p>
+<p>If a website can force a user into a container for another site they potentially can continue to track the user.</p>
+<p>Lets take a look at an example of a staff member leaking his information across the web:</p>
+<ol>
+<li>User visits <em>https://work.example.com</em> in a work container and assigns it to always open in work.</li>
+<li>User opens a new tab and opens <em>https://example.clinic</em>.</li>
+<li>User searches on <em>example.clinic</em> for something they don't want their work to know about.</li>
+<li><em>horrible.example.marketing</em> sends a cookie to the browser with a unique identifier <strong>&quot;hey-we-heard-you-had-medical-issues&quot;</strong>.</li>
+<li><em>https://example.clinic</em> forces the user to load <em>https://work.example.com/?tracking-id=</em><em>&quot;hey-we-heard-you-had-medical-issues&quot;</em>**.</li>
+<li>Browser redirects work.example.com &quot;No container&quot; into a work container with the same path.</li>
+<li><em>horrible.example.marketing</em> script is also loaded on <em>work.example.com</em> domain which resends a cookie based upon the GET tracking-id parameter.</li>
+</ol>
+<ul>
+<li><em>horrible.example.marketing</em> are now able to link together the two sites across a container.</li>
+</ul>
+<ol start="8">
+<li><em>work.example.com</em> decides to not promote staff that may push up insurance premiums.</li>
+</ol>
+<p>Whenever you assign an origin into a container you risk leaking your browsing history like this unsuspecting person did. This might seem extreme but there is however <a href="https://www.eff.org/deeplinks/2015/01/healthcare.gov-sends-personal-data">evidence to suggest medical information often leaks from one website to another</a>.</p>
+<h2>How we solved these issues</h2>
+<ol>
+<li>We decided to warn users with a prompt which can be dismissed with a checkbox.</li>
+</ol>
+<ul>
+<li>
+<p>I also prevented form submission across containers unless they are using a GET method.</p>
+<ul>
+<li>GET method forms shouldn't have capabilities like withdrawing money.</li>
+<li>This will cause some breakage however it should prevent the worst of these attacks.</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>
+<p>Issue two is currently left unresolved due to wanting the users to have the ability to hide the warning.</p>
+</li>
+<li>
+<p>After checking out many URLs we decided that websites still often split their services enough by subdomain that we could assign containers based upon the <a href="https://en.wikipedia.org/wiki/Same-origin_policy">Same Origin Policy</a>.</p>
+</li>
+</ol>
+<ul>
+<li>This means <em>mail.example.com</em> and <em>www.example.com</em> would be treated differently.</li>
+<li>Assigning sites based upon the Same Origin Policy also gave us isolation against HTTP based attacks. Unless users had explicitly assigned the insecure version too, however we had to decide if users would want this behaviour...</li>
+</ul>
+<h3>Deciding on HTTP website assignment</h3>
+<p>We had a hard balance between separating HTTP vs HTTPS assignment of a website.</p>
+<h4>Advantages</h4>
+<ul>
+<li>This would prevent <em><strong>http</strong>://example.bank/makepayment?username=evil&amp;amount=1000</em> redirecting to <em><strong>https</strong>://example.bank/makepayment?username=evil&amp;amount=1000</em>.
+<ul>
+<li>Which would harm some websites that don't use a redirect however we now provide <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Insecure_passwords">insecure password warnings for these</a> so users should be less tempted to login to the HTTP version of a website now.</li>
+</ul>
+</li>
+<li>Further down rating of HTTP traffic.</li>
+</ul>
+<h4>Disadvantages</h4>
+<ul>
+<li>Users might click a link to a HTTP version of the website expecting not to have their history leak into the container they are currently in.</li>
+<li>Users are unsure why they have to assign both HTTP and HTTPS, this wouldn't be easy to explain in UI.</li>
+<li>Display of the protocol for both <em>https://example.com</em> and <em>http://example.com</em> would add further UI barriers.</li>
+</ul>
+<h4>Decision</h4>
+<p>Despite the risk of HTTP over insecure networks we decided that there was enough websites this would break right now and the usability disadvantages were pretty bad. The containers project as a whole has been a hard balance of usability and stricter security settings. There are already places where containers are imperfect for preventing tracking such as:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Online_Certificate_Status_Protocol">OCSP</a></li>
+<li><a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">HSTS flags</a> see <a href="http://www.radicalresearch.co.uk/lab/hstssupercookies">HSTS supercookies</a> for tracking technique.</li>
+<li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1249348">Security exceptions for invalid certs</a>.</li>
+</ul>
+<p>Containers isn't considered the most robust security and privacy measure we have within the browser, it's a compromise of usability and robust security. At risk users should consider the patches Mozilla is working on as part of the <a href="https://wiki.mozilla.org/Security/Tor_Uplift">Tor uplift project</a> namely &quot;first party isolation&quot; and the anti fingerprinting techniques Tor browser uses.</p>
+<h1>Outstanding questions</h1>
+<p>One of the advantages of us running the test pilot experiment is it allows us to measure the usage of containers to gauge how people are using it, we often struggle to do wild experiments within Firefox like this because we can't gather as much information as we likely would want.</p>
+<ul>
+<li>Do users end up with too many of the same containers?</li>
+<li>Should we remove the ctrl/cmd + click links from being in the same container?</li>
+<li>With the ability to assign websites to be in a container, opening links in a new tab likely should be in &quot;No container&quot; to reduce the leakage of authenticated internet back into third party sites.</li>
+<li>Should we use instead/as well use <code>rel=&quot;noreferrer&quot;</code>, <code>rel=&quot;noopener&quot;</code>, <code>rel=&quot;nofollow&quot;</code> links be treated as an indicator for a &quot;No container&quot;?
+<ul>
+<li>When a website indicates it isn't a strong relationship to each other perhaps we should consider it to be a different container.</li>
+</ul>
+</li>
+</ul>
+<h1>Feedback and bugs welcome</h1>
+<p>Feedback is always welcome at <a href="mailto:containers@mozilla.com">containers@mozilla.com</a> where all the other developers involved in the experiment and the underlying platform changes will be notified.</p>
+<ul>
+<li><a href="https://github.com/mozilla/testpilot-containers/issues/new">Bugs via our GitHub repo are always welcome too</a></li>
+<li><a href="https://bugzilla.mozilla.org/enter_bug.cgi?assigned_to=nobody%40mozilla.org&amp;blocked=ContextualIdentity&amp;bug_file_loc=http%3A%2F%2F&amp;bug_ignored=0&amp;bug_severity=normal&amp;bug_status=NEW&amp;cc=tanvi%40mozilla.com&amp;cf_blocking_b2g=---&amp;cf_blocking_fennec=---&amp;cf_feature_b2g=---&amp;cf_fx_iteration=---&amp;cf_fx_points=---&amp;cf_status_b2g_2_0=---&amp;cf_status_b2g_2_0m=---&amp;cf_status_b2g_2_1=---&amp;cf_status_b2g_2_1_s=---&amp;cf_status_b2g_2_2=---&amp;cf_status_b2g_2_2r=---&amp;cf_status_b2g_2_5=---&amp;cf_status_b2g_2_6=---&amp;cf_status_b2g_master=---&amp;cf_status_firefox47=---&amp;cf_status_firefox48=---&amp;cf_status_firefox49=---&amp;cf_status_firefox50=---&amp;cf_status_firefox_esr38=---&amp;cf_status_firefox_esr45=---&amp;cf_status_thunderbird_esr38=---&amp;cf_status_thunderbird_esr45=---&amp;cf_tracking_b2g=---&amp;cf_tracking_e10s=---&amp;cf_tracking_firefox47=---&amp;cf_tracking_firefox48=---&amp;cf_tracking_firefox49=---&amp;cf_tracking_firefox50=---&amp;cf_tracking_firefox_esr38=---&amp;cf_tracking_firefox_esr45=---&amp;cf_tracking_firefox_relnote=---&amp;cf_tracking_relnote_b2g=---&amp;cf_tracking_thunderbird_esr38=---&amp;cf_tracking_thunderbird_esr45=---&amp;component=DOM%3A%20Security&amp;contenttypemethod=autodetect&amp;contenttypeselection=text%2Fplain&amp;defined_groups=1&amp;flag_type-203=X&amp;flag_type-37=X&amp;flag_type-4=X&amp;flag_type-41=X&amp;flag_type-5=X&amp;flag_type-607=X&amp;flag_type-720=X&amp;flag_type-721=X&amp;flag_type-737=X&amp;flag_type-781=X&amp;flag_type-787=X&amp;flag_type-799=X&amp;flag_type-800=X&amp;flag_type-803=X&amp;flag_type-835=X&amp;flag_type-846=X&amp;flag_type-855=X&amp;flag_type-863=X&amp;flag_type-864=X&amp;flag_type-875=X&amp;flag_type-889=X&amp;flag_type-892=X&amp;flag_type-901=X&amp;flag_type-905=X&amp;flag_type-908=X&amp;form_name=enter_bug&amp;maketemplate=Remember%20values%20as%20bookmarkable%20template&amp;op_sys=Unspecified&amp;priority=--&amp;product=Core&amp;rep_platform=Unspecified&amp;status_whiteboard=%5BuserContextId%5D%5Bdomsecurity-backlog%5D&amp;target_milestone=---&amp;version=unspecified">Bugs about the platform feature which is in nightly</a></li>
+</ul>
+<p>Feel free to reach out on twitter <a href="https://twitter.com/kingstonTime">@KingstonTime</a></p>
+<p>I want to highlight, despite this being a feature I worked on many others have been involved with the experiment.</p>
+<p>The team responsible for getting the Test pilot live:</p>
+<ul>
+<li><a href="https://github.com/bakulf">Andrea Marchesini</a></li>
+<li><a href="https://twitter.com/johnmgruen">John Gruen</a> and the <a href="https://twitter.com/FxTestPilot">Test Pilot team</a></li>
+<li><a href="https://twitter.com/KamilJozwiak">Kamil Jozwiak</a></li>
+<li><a href="https://twitter.com/groovecoder">Luke Crouch</a></li>
+<li><a href="https://twitter.com/TanviHacks">Tanvi Vyas</a></li>
+</ul>
+<p>Existing platform team responsible for working on getting <a href="https://wiki.mozilla.org/Security/Contextual_Identity_Project/Containers">containers</a> and origin attributes into Nightly.</p>
+<ul>
+<li><a href="https://github.com/bakulf">Andrea Marchesini</a></li>
+<li><a href="https://twitter.com/brampitoyo">Bram Pitoyo</a></li>
+<li><a href="http://christophkerschbaumer.com/">Christoph Kerschbaumer</a></li>
+<li><a href="https://twitter.com/dwhuseby">Dave Huseby</a></li>
+<li><a href="https://twitter.com/AhsinTseng">Ethan Tsengo</a></li>
+<li>Jonathan Hao</li>
+<li><a href="https://twitter.com/KamilJozwiak">Kamil Jozwiak</a></li>
+<li><a href="https://twitter.com/creativemisuse">Paul Theriault</a></li>
+<li><a href="https://twitter.com/s_englehardt">Steven Englehardt</a></li>
+<li><a href="https://twitter.com/TanviHacks">Tanvi Vyas</a></li>
+<li>Tim Huang</li>
+<li>Yoshi Huang</li>
+</ul>
+<p>Past Research:</p>
+<ul>
+<li><a href="http://www.ieee-security.org/TC/W2SP/2013/papers/s1p2.pdf">http://www.ieee-security.org/TC/W2SP/2013/papers/s1p2.pdf</a></li>
+<li><a href="https://web.archive.org/web/20161107220901/https://blog.mozilla.org/ladamski/2010/07/contextual-identity/">https://web.archive.org/web/20161107220901/https://blog.mozilla.org/ladamski/2010/07/contextual-identity/</a></li>
+</ul>
+<p><a href="https://twitter.com/Cejaeger">Carolyn Jaeger</a> who created the stunning gif in this article.</p>
+<p>I'm sure many others have been missed too!</p>
+
+          </div>
+        
+        </article>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+    <ul class="social-media-list">
+      
+
+      
+    </ul>
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

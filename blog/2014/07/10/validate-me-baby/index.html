@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#454545">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>VALIDATE me baby</title>
+  <meta name="description" content="There are many times that I have been writing sites with the desire for the client side to call the server in a safe and idempotent way with a request body f...">
+
+  <link rel="stylesheet" href="https://jotter.jonathankingston.co.uk/css/main.css">
+  
+  <link rel="alternate" type="application/rss+xml" title="Jonathan Kingston" href="https://jotter.jonathankingston.co.uk/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+  <div class="wrapper">
+    <a class="site-title" href="https://jotter.jonathankingston.co.uk/">Jonathan Kingston</a>
+  </div>
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        
+          <header class="post-header">
+            <h1 class="post-title" itemprop="name headline">VALIDATE me baby</h1>
+            <p class="post-meta">
+              
+              <time datetime="2014-07-10 00:00:00 +0000" itemprop="datePublished">Jul 10, 2014</time>
+              
+              
+            </p>
+          </header>
+        
+          <div class="post-content" itemprop="articleBody">
+            <p>There are many times that I have been writing sites with the desire for the client side to call the server in a <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html#sec9.1">safe</a> and <a href="http://en.wikipedia.org/wiki/Idempotence">idempotent</a> way with a request body for sending more data than a <code>GET</code> can, or data that can't be recorded via referral logs.</p>
+<p>Even when or if the new <a href="http://www.w3.org/TR/form-http-extensions/">Form HTTP extensions specification</a> gets approval and adoption for the basic HTTP methods, we still lack a clear way to send over requests with server side impact.</p>
+<!-- more -->
+<h2>Proposal</h2>
+<p>This proposal is for browsers and servers to support a new HTTP verb <code>VALIDATE</code> and adding a new HTML form parameter <code>methodfor</code> so that browsers can safely send validation requests to the server.</p>
+<h2>The problem</h2>
+<p>All HTTP requests besides <code>GET</code> and <code>HEAD</code> are specified to have side effects on the server. Which means that behind the scenes of my client side applications, I can only safely send over <code>GET</code> requests to request for updates on the validation of messages.</p>
+<p>So for example if I wanted to server side validate a credit card form I would have to send over:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">https://mysite.com/checkout/pay?creditcard=4111111111111111&amp;fname=jonathan…
+</span></pre>
+<p>Although technically, this will be a secure request at the network layer, it could be cached and/or logged at the web server.</p>
+<h2>Advantages</h2>
+<p>The <code>VALIDATE</code> verb has two clear advantages: clear semantic reasoning and automatic validation with safe client side methods.</p>
+<h3>Semantic reasoning</h3>
+<p>It gives the client and server the ability to know when a request is just a validation, and enables both sides to provide a better overall experience to the user.</p>
+<p>User agents can indicate to the user when the form will be just a validation and will be technologically safe for them to send, potentially by giving a different appearance or accent to buttons. By doing so, users will have more confidence in trying out changes, for example payment buttons in a checkout flow.</p>
+<h4>Example:</h4>
+<p>A dynamic page could easily serve up the following form:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">&lt;form method=&quot;VALIDATE&quot; methodfor=&quot;POST&quot; &gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;fieldset&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;legend&gt;Purchase item&lt;/legend&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;div class=&quot;form-row&quot;&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">      </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;label for=&quot;my-item&quot;&gt;Item&lt;/label&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">      </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;input name=&quot;item-sku&quot; placeholder=&quot;Input SKU code&quot; id=&quot;my-item&quot; /&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;/div&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;button&gt;Submit&lt;/button&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;/fieldset&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;/form&gt;
+</span></pre>
+<p><img src="/images/validateme/first-form.png" title="Example of how a browser may render a VALIDATE form" /></p>
+<p>Once the user submits the form, the dynamic page could then come back with validation issues:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">&lt;form method=&quot;VALIDATE&quot; methodfor=&quot;POST&quot; &gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;fieldset&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;legend&gt;Purchase item&lt;/legend&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;div class=&quot;form-row&quot;&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">      </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;label for=&quot;my-item&quot;&gt;Item&lt;/label&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">      </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;input name=&quot;item-sku&quot; value=&quot;thing&quot; placeholder=&quot;Input SKU code&quot; id=&quot;my-item&quot; /&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">      </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;div class=&quot;inline-error&quot;&gt;Sorry our SKU codes are numeric, you might find these in our catalog EG: SKU #121212;&lt;/div&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;/div&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;button&gt;Submit&lt;/button&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;/fieldset&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;/form&gt;
+</span></pre>
+<p><img src="/images/validateme/second-form.png" title="Example of how a browser may render a VALIDATE form with errors" /></p>
+<p>Once validation issues are resolved then the following would display:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">&lt;form method=&quot;POST&quot; &gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;fieldset&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;legend&gt;Confirm purchase of item 1212&lt;/legend&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;div class=&quot;form-row&quot;&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">      </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;label for=&quot;my-item&quot;&gt;Item&lt;/label&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">      </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;input name=&quot;item-sku&quot; value=&quot;1212&quot; id=&quot;my-item&quot; readonly /&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;/div&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;!-- This goes out to all you &quot;law abiding citizens&quot; out there --&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;button&gt;Order with obligation to pay&lt;/button&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;/fieldset&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;/form&gt;
+</span></pre>
+<p><img src="/images/validateme/final-form.png" title="Example of how a browser may render a validated form before submission" /></p>
+<h3>Automatic validation</h3>
+<p>With <code>VALIDATE</code> forms the JavaScript could automatically send over requests for updates and new error validations via AJAX and safely know that the user will not be impacted by side effects.</p>
+<p>Having the ability for the JavaScript to safely make requests to the server means this feature could be turned on globally; even if the client library doesn't understand the response, the error code could be used to indicate to the user of when the form is valid or not.</p>
+<h3>Example:</h3>
+<p>Client sends:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">VALIDATE /checkout/pay HTTP/1.0
+</span><span style="background-color:#2b303b;color:#c0c5ce;">Method-For: POST
+</span><span style="background-color:#2b303b;color:#c0c5ce;">Content-Type: application/javascript; charset=UTF-8
+</span><span style="background-color:#2b303b;color:#c0c5ce;">Content-Length: 32
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">{creditcard: &#39;4111111111111111&#39;, fname: &#39;jonathan&#39;…}
+</span></pre>
+<p>Server response:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">HTTP/1.0 412 Precondition Failed
+</span><span style="background-color:#2b303b;color:#c0c5ce;">Date: Fri, 31 Jun 2014 23:59:59 GMT
+</span><span style="background-color:#2b303b;color:#c0c5ce;">Content-Type: text/json
+</span><span style="background-color:#2b303b;color:#c0c5ce;">Content-Length: 121212
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">{status: &#39;additional-information&#39;, form: [{type: &#39;string&#39;, name: &#39;creditcard&#39;}, {status: &#39;new-additional&#39;, type: &#39;string&#39;, name: &#39;cv2&#39;}, {type: &#39;string&#39;, name: &#39;fname&#39;}...]}
+</span></pre>
+<p>When precondition failed returns, it would be able to return validation issues per field, errors for the whole form and additional fields that are required.</p>
+<p>Wait though, what is wrong with POST?
+Natively the server doesn’t expose an interface for sending body data over in a request, which means that swapping from one system to another could have side effects on the users data.</p>
+<p>So for example lets take a site with different validate systems:</p>
+<ul>
+<li>Your payment gateway implements the parameter: <code>?test=1</code></li>
+<li>Your order process uses http headers: <code>X-Validate-Request: 1</code></li>
+<li>Your blogging platform uses the parameter: <code>?verify-request='yes'</code></li>
+</ul>
+<p>Client side applications can’t quickly share the same code without further adapters to each message; POSTing the data raw couldn’t be used safely as it might actually run the request that you are trying to check without the intention of the user to do so.</p>
+<p>However, if both the payment gateway and order process implemented VALIDATE as a verb, the JavaScript and/or browser could automatically verify forms as and when it sees fit. Additionally, the blog could have the VALIDATE functionality turned off, and the server would be used in the traditional round trip manner, passing back more field when it knows the client needs them. This has the added bonus of working even with VALIDATE not being supported, so in the rare case of it being fired it would be completely safe to do so.</p>
+<h2>Methodfor reasoning</h2>
+<p>If you have read this far, it is likely you are as pedantic as I am, and you are likely to be asking ‘Ok, but how does the server know the corresponding verb’ as different verbs will require different validation.</p>
+<p>Well I propose two things, a new HTML attribute to cater for the following verb and also a new HTTP header for the same purpose.</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">&lt;form method=&quot;VALIDATE&quot; methodfor=&quot;DELETE&quot; action=&quot;/checkout/pay&quot; &gt;
+</span></pre>
+<p>Which in turn would send:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">VALIDATE /checkout/pay HTTP/1.1
+</span><span style="background-color:#2b303b;color:#c0c5ce;">Method-For: DELETE
+</span><span style="background-color:#2b303b;color:#c0c5ce;">…
+</span></pre>
+<p>Where the server would respond:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">HTTP/1.1 412 Precondition Failed
+</span><span style="background-color:#2b303b;color:#c0c5ce;">Date: Fri, 31 Jun 2014 22:21:59 GMT
+</span><span style="background-color:#2b303b;color:#c0c5ce;">Content-Type: text/json
+</span><span style="background-color:#2b303b;color:#c0c5ce;">Vary: Method, Method-For
+</span></pre>
+<p>This means that:</p>
+<ul>
+<li>We don't end up with <code>VALIDATE-DELETE</code>, <code>VALIDATE-PUT</code>, <code>VALIDATE-POST</code>, <code>VALIDATE-HEAD</code>, <code>VALIDATE-NEW-SHINY</code> methods</li>
+<li>Until full adoption by browsers server side support can retrofit functionality.
+<ul>
+<li>Older user agents can easily not worry about what the new verbs and parameters so long as the server assumes no support if no <code>Method-For</code> header is not sent</li>
+<li>Server should treat request as a normal <code>POST</code> interaction with no side effects</li>
+<li>Server can then send back the corresponding approval / validation issues mentioned above</li>
+</ul>
+</li>
+<li>User agents on sites with <code>VALIDATE</code> support can automatically send the requests safely</li>
+<li>Forms could display differently based upon the <code>methodfor</code> and <code>method=”VALIDATE”</code></li>
+</ul>
+<h2>Further discussions into integration</h2>
+<h3>Method discovery</h3>
+<p>Frameworks and user agents would also be able to quickly resolve if the form could support the method by running an OPTIONS request which could likely be cached for a significant amount of time.</p>
+<h3>Messaging</h3>
+<p>Deciding upon a standard for negotiation between the client and server for how validation responses would be formed is key for JavaScript to really pick up and get use out of the VALIDATE verb.</p>
+<p>Specifications like JSON API could be adapted and expanded to provide the same kind of validations as specified here: <a href="http://discourse.specifiction.org/t/json-api-v1-0-review/207/5">JSON API review</a> or serialised versions of <a href="https://github.com/darobin/web-schema">Robin Berjon's Web Schema</a>.</p>
+
+          </div>
+        
+        </article>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+    <ul class="social-media-list">
+      
+
+      
+    </ul>
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

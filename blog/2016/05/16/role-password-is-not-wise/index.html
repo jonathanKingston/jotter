@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#454545">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>role=&quot;password&quot; is not wise</title>
+  <meta name="description" content="TL;DR: ARIA is a hack on real accessibility, reimplementing HTML in ARIA is silly, subverting password managers is evil, expecting the developers to start us...">
+
+  <link rel="stylesheet" href="https://jotter.jonathankingston.co.uk/css/main.css">
+  
+  <link rel="alternate" type="application/rss+xml" title="Jonathan Kingston" href="https://jotter.jonathankingston.co.uk/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+  <div class="wrapper">
+    <a class="site-title" href="https://jotter.jonathankingston.co.uk/">Jonathan Kingston</a>
+  </div>
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        
+          <header class="post-header">
+            <h1 class="post-title" itemprop="name headline">role="password" is not wise</h1>
+            <p class="post-meta">
+              
+              <time datetime="2016-05-16 00:00:00 +0000" itemprop="datePublished">May 16, 2016</time>
+              
+              
+            </p>
+          </header>
+        
+          <div class="post-content" itemprop="articleBody">
+            <p><strong>TL;DR:</strong> <a href="https://www.w3.org/TR/wai-aria-1.1/">ARIA</a> is a hack on real accessibility, reimplementing HTML in ARIA is silly, subverting password managers is evil, expecting the developers to start using role=&quot;password&quot; likely wont happen, CSS replaced elements can't use pseudo elements and we should just fix that.</p>
+<p>So initially <a href="https://lists.w3.org/Archives/Public/public-aria/2016May/0009.html">security people</a> did not really raise issue with <code>role=&quot;password&quot;</code> as it doesn't directly create security risks, however it is my view that it permits bad web authorship and promotes hurting users experience on the web.</p>
+<h2>Use cases for role=&quot;password&quot;</h2>
+<ol>
+<li>I am unable to style pseudo elements for <a href="https://drafts.csswg.org/css2/conform.html#replaced-element">replaced elements</a> which <a href="https://html.spec.whatwg.org/multipage/rendering.html#replaced-elements">an input</a></li>
+<li>I don't want password managers remembering my fields and autocomplete has been removed from me</li>
+<li>I don't want other code impacting my input field</li>
+</ol>
+<p>The only real discussion for and against the role I could find on the mailing list:</p>
+<blockquote>
+<blockquote>
+<p>The reason for the new role is that authors are creating custom password<br />
+input fields instead of the native HTML input type=“password”. By<br />
+applying a role=“password” to the input element we can convey to the<br />
+assistive technology that the author intended it to be a password field<br />
+vs an ordinary text field. Since these are custom password fields it is<br />
+up to the author and not the user agent to handle the obscuring of text.</p>
+<p>example: <code>&lt;input type=“text” role=“password”&gt;</code></p>
+</blockquote>
+<p>This example conveys the primary problem I see - it doesn't include<br />
+anything that makes the input behave like a password.</p>
+<p>Issues as I understand them:</p>
+<ol>
+<li>
+<p>Relying on web app authors to implement security seems like a terrible<br />
+idea, just because there are so many more of them to get it wrong.</p>
+</li>
+<li>
+<p>The primary audience for ARIA is screen reader users, and the primary<br />
+audience for screen readers are people who are blind. If their screen<br />
+reader tells them they are on a password field, they have no way to verify<br />
+beyond noticing it behave differently from a real one. Which means they<br />
+have to expose some of their password and notice different things happen.</p>
+</li>
+</ol>
+<p>In the example above, they may be told that there was a password field,<br />
+and as they start to type the password it is likely that it would be<br />
+echoed back at them. Depending on their settings, perhaps as a complete<br />
+word - i.e. when they've put it all there.</p>
+<p>They may not be told, since the backward compatibility story is that the<br />
+input would seem to be a normal input. I think that is preferable, since<br />
+at least users can tell they are not in a &quot;real&quot; password field.</p>
+<ol start="3">
+<li>
+<p>There is currently no way for the role value to trigger common user<br />
+agent behaviour with passwords, such as blocking copy or storing things in<br />
+a password manager.</p>
+</li>
+<li>
+<p>Expecting the user to listen to characters when they start typing<br />
+passwords, as a way to determine whether they are visually exposing their<br />
+password, seems to be an anti-apttern from the point of view of user<br />
+experience, and inherently fragile from the perspective of protecting<br />
+security.</p>
+</li>
+</ol>
+<p>A counter argument is that it is not clear what is a password input<br />
+anyway. There is a convention that characters entered are masked with &quot;*&quot;<br />
+but this is easy enough to mock up with a standard text input. So how much<br />
+are we increasing the attack surface?</p>
+<p>cheers</p>
+<p>Chaals</p>
+<blockquote>
+<p>The browser would convey to the assistive technology that this is a<br />
+password field vs. an ordinary text field. In this scenario the user<br />
+should pay attention to the text rendered.</p>
+<p>Does your group believe this adds security risks? If so, what are those<br />
+risks?</p>
+<p>Thank you,</p>
+<p>Rich Schwerdtfeger
+ARIA Working Group Chair</p>
+</blockquote>
+</blockquote>
+<h2>Expectation that authors do the right thing</h2>
+<p>So the sum total of why this is being added appears to be: web authors are behaving badly but those same people will do the right thing for assistive technologies.</p>
+<p>The problem is that in marking up their document with <code>role=&quot;password&quot;</code>:</p>
+<ul>
+<li>Web authors aid password managers by providing a role that can select the element to save the password (<strong>use-case 2.</strong>)</li>
+<li>Websites that decide to do wonky things will unlikely spend time doing anything new for assistive tech</li>
+<li>Assistive tech will take a long time to take advantage of this, promoting the right thing would happen faster</li>
+</ul>
+<p>It all feels like closing the gate after the horse has bolted.</p>
+<h2>Assistive tech will struggle to behave correct here</h2>
+<p>Conceptually assistive technologies are going to struggle to suggest that the user is safe from someone snooping on their passwords. It has been suggested that the technology needs to make a generic noise to mask the password being input into the field. However this doesn't inform the user if it is doing the same visually. So assistive technology could check the visual output to ensure the password is masked perhaps and warn the user, however this would likely be a fairly heavy weight implementation which will likely not be implemented consistently.</p>
+<h2>ARIA wasn't supposed to be a vehicle to reimplement HTML</h2>
+<p>Web components have needed to define new behaviours in HTML and thus creating explanations to screen readers and other technologies makes sense. However lately it has become a way to reimplement the whole of HTML. This really is going to lead to web components doing lots of reinventing the wheel.</p>
+<p>Password input fields have lots of technology assigned to them already which we are promoting is a good thing to reimplement:</p>
+<ul>
+<li>Form validation</li>
+<li>Password masking</li>
+<li>Autocomplete</li>
+<li>etc</li>
+</ul>
+<p>Password fields today are already more accessible today because of the existing features, screen readers could choose to announce the requirements of a password (maxlength, minlength and pattern) when the user requests so.</p>
+<p>Where possible real HTML should be used over ARIA.</p>
+<h2>Password managers are good</h2>
+<p>Permitting web authors to circumvent password managers is a bad thing! We prevented <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=956906">web authors using autocomplete badly</a> in much the same manner. Adding new tools to let website owners circumvent password management seems to only validate this behaviour.</p>
+<p>If we wanted to fix password field selection in the future it likely would require unmanageable heuristics for browsers to remember password fields.</p>
+<p>Browsers should consider spending more time on making form population and password management much simpler such that users become the driving factor why they web authors shouldn't roll their own fields.</p>
+<p>Harming users of the site over what authors want is against the <a href="https://www.w3.org/TR/html-design-principles/#priority-of-constituencies">core design pattern 'Priority of Constituencies' of HTML</a>.</p>
+<blockquote>
+<p>In case of conflict, consider users over authors over implementors over specifiers over theoretical purity. In other words costs or difficulties to the user should be given more weight than costs to authors; which in turn should be given more weight than costs to implementors; which should be given more weight than costs to authors of the spec itself, which should be given more weight than those proposing changes for theoretical reasons alone. Of course, it is preferred to make things better for multiple constituencies at once.</p>
+</blockquote>
+<p>Users lose having a well defined password field that behaves consistently and can be saved within a password manager. Websites subverting password managers should actively be called out either publicly or through the browser.</p>
+<h2>Replaced elements won't allow ::before and ::after</h2>
+<p><strong>Use-case 1.</strong>
+Input is a replaced element which doesn't allow <a href="http://codepen.io/anon/pen/LNvOeq">pseudo elements such as ::before and ::after</a> which some layouts want without creating wrappers. This should be made possible in CSS or have a new native element, preferentially the first. It's a widely desired feature and it doesn't seem a limitation on CSS itself.</p>
+<p><strong>Update 2016/05/17:</strong> This could be simulated with a custom element wrapping an input element reducing templates to not need a wrapping div. <a href="https://twitter.com/simevidas/status/732389037609209856">As highlighted out by @simevidas</a></p>
+<h2>Users want to isolate their CSS</h2>
+<p><strong>Use-case 3.</strong> - <em>&quot;I would like CSS isolation on my input field&quot;</em></p>
+<p>Use Shadow DOM in future.</p>
+<h2>Existing HTML - Update: 2016/05/17</h2>
+<p><a href="https://twitter.com/briankardell">@briankardell</a> mentioned another use case that I had not covered (there are likely many).
+I concentrated on uses that couldn't be replicated in HTML today. He mentioned the 'show password' use, which should be possible to simulate with an input element and JavaScript changing the type.</p>
+
+          </div>
+        
+        </article>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+    <ul class="social-media-list">
+      
+
+      
+    </ul>
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

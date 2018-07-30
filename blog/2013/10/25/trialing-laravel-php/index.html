@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#454545">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Trialling laravel PHP</title>
+  <meta name="description" content="Laravel was suggested to me last week and I have only just got time to take a look at it properly.">
+
+  <link rel="stylesheet" href="https://jotter.jonathankingston.co.uk/css/main.css">
+  
+  <link rel="alternate" type="application/rss+xml" title="Jonathan Kingston" href="https://jotter.jonathankingston.co.uk/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+  <div class="wrapper">
+    <a class="site-title" href="https://jotter.jonathankingston.co.uk/">Jonathan Kingston</a>
+  </div>
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        
+          <header class="post-header">
+            <h1 class="post-title" itemprop="name headline">Trialling laravel PHP</h1>
+            <p class="post-meta">
+              
+              <time datetime="2013-10-25 00:00:00 +0000" itemprop="datePublished">Oct 25, 2013</time>
+              
+              
+            </p>
+          </header>
+        
+          <div class="post-content" itemprop="articleBody">
+            <p>Laravel was suggested to me last week and I have only just got time to take a look at it properly.</p>
+<p>The framework has a similar structure to Rails so it seems pretty familiar to me so far. In making this article I created a <a href="https://github.com/jonathanKingston/laravel-test">test REST laravel application</a>.</p>
+<!-- more -->
+<h2>Initial install</h2>
+<p>Firstly I needed to install everything as my machine has recently decided to need rebuilding, I needed to install PHP and composer etc.</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">sudo apt-get install php5
+</span><span style="background-color:#2b303b;color:#c0c5ce;">curl -sS https://getcomposer.org/installer | php
+</span><span style="background-color:#2b303b;color:#c0c5ce;">sudo mv composer.phar /usr/local/bin/composer
+</span></pre>
+<p>Setting up a new instance is then quick and simple with:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">composer create-project laravel/laravel laravel-test --prefer-dist
+</span></pre>
+<h3>Setup a new site in Apache</h3>
+<p>I then setup an area to play around with in Apache:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">sudo touch /etc/apache2/sites-available/laravel-test
+</span></pre>
+<p>I then edited the file to have the following config:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">Listen 8080
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;VirtualHost *:8080&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">        </span><span style="background-color:#2b303b;color:#c0c5ce;">ServerAdmin webmaster@localhost
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">        </span><span style="background-color:#2b303b;color:#c0c5ce;">DocumentRoot /home/jonathan/workspace/laravel-test/public
+</span><span style="background-color:#2b303b;color:#c0c5ce;">        </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;Directory /home/jonathan/workspace/laravel-test/public&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">                </span><span style="background-color:#2b303b;color:#c0c5ce;">RewriteEngine On
+</span><span style="background-color:#2b303b;color:#c0c5ce;">                </span><span style="background-color:#2b303b;color:#c0c5ce;">Options Indexes FollowSymLinks MultiViews
+</span><span style="background-color:#2b303b;color:#c0c5ce;">                </span><span style="background-color:#2b303b;color:#c0c5ce;">AllowOverride All
+</span><span style="background-color:#2b303b;color:#c0c5ce;">                </span><span style="background-color:#2b303b;color:#c0c5ce;">Order allow,deny
+</span><span style="background-color:#2b303b;color:#c0c5ce;">                </span><span style="background-color:#2b303b;color:#c0c5ce;">allow from all
+</span><span style="background-color:#2b303b;color:#c0c5ce;">        </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;/Directory&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">        </span><span style="background-color:#2b303b;color:#c0c5ce;">ErrorLog ${APACHE_LOG_DIR}/error.log
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">        </span><span style="background-color:#2b303b;color:#c0c5ce;"># Possible values include: debug, info, notice, warn, error, crit,
+</span><span style="background-color:#2b303b;color:#c0c5ce;">        </span><span style="background-color:#2b303b;color:#c0c5ce;"># alert, emerg.
+</span><span style="background-color:#2b303b;color:#c0c5ce;">        </span><span style="background-color:#2b303b;color:#c0c5ce;">LogLevel warn
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">        </span><span style="background-color:#2b303b;color:#c0c5ce;">CustomLog ${APACHE_LOG_DIR}/access.log combined
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;/VirtualHost&gt;
+</span></pre>
+<p>I then ran the following to enable the site:
+sudo a2ensite laravel-test;
+sudo a2enmod rewrite;
+sudo service apache2 reload;</p>
+<p>I then ran the following to set the required permissions:
+sudo chmod -R 777 app/storage;</p>
+<h2>Quick start guide</h2>
+<p>The laravel quick start guide I think could flow better.
+The guide doesn't mention the benefits of separating out code into controllers.
+New developers are not suggested that <a href="http://laravel.com/docs/controllers#resource-controllers">REST resourceful routing</a> would be better later, I actually found this feature hard to find even though I was fairly sure the framework supported it.
+There is not a detailed enough explanation to how to setup a web server to securely use the framework.</p>
+<p>As a guide it doesn't seem like it would promote good development practice for new developers.</p>
+<h2>Templates</h2>
+<p>The <a href="http://laravel.com/docs/templates">Blade</a> templates remind me of <a href="http://www.ruby-doc.org/stdlib-2.0.0/libdoc/erb/rdoc/ERB.html">Erb</a> and <a href="http://twig.sensiolabs.org/">Twig</a> templates, so far they seem a little weird but certainly no <a href="http://www.template-toolkit.org">Template Toolkit</a>.</p>
+<p>I am however a little perplexed as to why Laravel has created another template engine when Twig appears to have the same goals and instead of using this:
+@section('main')
+this is a test.
+@endsection</p>
+<p>Twig would use:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">{% block main %}
+</span><span style="background-color:#2b303b;color:#c0c5ce;">   </span><span style="background-color:#2b303b;color:#c0c5ce;">this is a test.
+</span><span style="background-color:#2b303b;color:#c0c5ce;">{% endblock %}
+</span></pre>
+<p>I personally find this easier to read, luckily it looks like you can use Twig in Laravel with <a href="https://github.com/rcrowe/TwigBridge">TwigBridge</a>.</p>
+<h2>Config changes</h2>
+<p>I changed my database to PostgreSQL rather than mySQL opening <code>app/config/database.php</code>:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">        </span><span style="background-color:#2b303b;color:#c0c5ce;">&#39;default&#39; =&gt; &#39;pgsql&#39;,
+</span></pre>
+<p>Also modifying the config further down for pgsql.</p>
+<p>###New DB setup
+Making sure we have the database installed:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">sudo apt-get install postgresql-9.1;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">sudo apt-get install php5-pgsql;
+</span></pre>
+<p>Changing the PostgreSQL default password if you have not already:
+sudo -u postgres psql postgres;</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">\password postgres
+</span><span style="background-color:#2b303b;color:#c0c5ce;">create database database;
+</span></pre>
+<h2>Forms</h2>
+<p>Forms look like they could do with a lot of work, as this is a modern framework I was expecting something more powerful than <a href="http://guides.rubyonrails.org/form_helpers.html">Rails forms</a>.
+Having used <a href="http://search.cpan.org/%7Egshank/HTML-FormHandler-0.40053/lib/HTML/FormHandler.pm">FormHandler</a> in Perl on a regular basis the forms in Laravel appear to be far weaker than that.
+Anyway, we are left with something that is a PHP clone of Rails here, it does the job.</p>
+<h2>Migrations</h2>
+<p>For a corporate environment of any size, having the ability to roll back and forward database structures is very powerful.</p>
+<p>Laravel provides migrate in the artisan command:
+php artisan migrate:make create_test_table</p>
+<p>Here is a sample database I created:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">Schema::create(&#39;test&#39;, function($table)
+</span><span style="background-color:#2b303b;color:#c0c5ce;">{
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">$table-&gt;increments(&#39;id&#39;);
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">$table-&gt;string(&#39;name&#39;);
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">$table-&gt;text(&#39;description&#39;);
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">$table-&gt;timestamps();
+</span><span style="background-color:#2b303b;color:#c0c5ce;">});
+</span></pre>
+<p>Now lets run the migrations:
+php artisan migrate</p>
+<h2>Controller</h2>
+<p>I then setup a sample controller:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">php artisan controller:make testController
+</span></pre>
+<p>Then setup the route to link to this controller making it a <a href="http://laravel.com/docs/controllers#resource-controllers">resource controller</a>:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">Route::resource(&#39;test&#39;, &#39;testController&#39;);
+</span></pre>
+<p>I then populated the controller code:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">        </span><span style="background-color:#2b303b;color:#c0c5ce;">public function index()
+</span><span style="background-color:#2b303b;color:#c0c5ce;">        </span><span style="background-color:#2b303b;color:#c0c5ce;">{
+</span><span style="background-color:#2b303b;color:#c0c5ce;">                </span><span style="background-color:#2b303b;color:#c0c5ce;">$tests = Test::all();
+</span><span style="background-color:#2b303b;color:#c0c5ce;">                </span><span style="background-color:#2b303b;color:#c0c5ce;">return View::make(&#39;test/index&#39;, array(&#39;tests&#39; =&gt; $tests));
+</span><span style="background-color:#2b303b;color:#c0c5ce;">        </span><span style="background-color:#2b303b;color:#c0c5ce;">}
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span></pre>
+<h2>Building the templates</h2>
+<p>For the controller I then needed to build the following template s:</p>
+<ul>
+<li>app/views/test/index.blade.php</li>
+<li>app/views/test/edit.blade.php</li>
+<li>app/views/test/show.blade.php</li>
+<li>app/views/test/create.blade.php</li>
+<li>app/views/test/destroy.blade.php</li>
+</ul>
+<p>I also made the templates extend from a template 'layout':</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;!DOCTYPE html&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;html&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;head&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;title&gt;Test application&lt;/title&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;/head&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;body&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">@yield(&#39;content&#39;)
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;/body&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;/html&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span></pre>
+<p>Here is the edit action that I used:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">@extends(&#39;layout&#39;)
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">@section(&#39;content&#39;)
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;h1&gt;Edit test {{ $test-&gt;id }}&lt;/h1&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">{{ Form::model($test, array(&#39;action&#39; =&gt; array(&#39;testController@update&#39;, $test-&gt;id), &#39;method&#39; =&gt; &#39;put&#39;)) }}
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;div&gt;{{ Form::label(&#39;name&#39;, &#39;Test name&#39;) }} {{ Form::text(&#39;name&#39;) }}&lt;/div&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;div&gt;{{ Form::label(&#39;description&#39;, &#39;Description&#39;) }} {{ Form::textarea(&#39;description&#39;) }}&lt;/div&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">{{ Form::submit() }}
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">{{ Form::close() }}
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">{{ link_to_action(&#39;testController@index&#39;, &#39;Show all&#39;) }}
+</span><span style="background-color:#2b303b;color:#c0c5ce;">@endsection
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span></pre>
+<p>I was happy to see several <a href="http://laravel.com/docs/helpers#urls">Helpers</a> for producing links and URL's this is an absolute must for templates to keep links fresh and easy to maintain on a larger site.</p>
+<p><a href="https://github.com/jonathanKingston/laravel-test/tree/master/app/views/test">See all the rest of the template code I used.</a></p>
+<h2>ORM wrapper</h2>
+<p>The ORM wrapper seems easy enough to follow for beginners, following the same direction as most other frameworks.</p>
+<p>However the Laravel docs shows how to use validations but not where they should be placed or what best practices are. I have decided to hook in with model so only one place defines the database validation.</p>
+<p>I added the following code to my model:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">public $validator;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">public $rules = array(
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">&#39;name&#39; =&gt; &#39;Required|Min:3|Alpha&#39;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">);
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">public static function boot() {
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">parent::boot();
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">//Add in saving hook to prevent database being saved
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">Test::saving(function ($model) {
+</span><span style="background-color:#2b303b;color:#c0c5ce;">      </span><span style="background-color:#2b303b;color:#c0c5ce;">$model-&gt;validator = Validator::make($model-&gt;toArray(), $model-&gt;rules);
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">      </span><span style="background-color:#2b303b;color:#c0c5ce;">return $model-&gt;validator-&gt;passes();
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">});
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">}
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span></pre>
+<ul>
+<li>This adds in a boot method which allows the model to define hooks. <a href="http://laravel.com/docs/eloquent#model-events">More info on the boot method and events</a>.</li>
+<li>I then use the boot method for adding in a saving hook (Before INSERT or UPDATE) using <code>Test::saving(</code>.</li>
+<li>The anonymous function then validates the input of the model and saves it to the parameter <code>$model-&gt;validator</code></li>
+<li>The return value of the anonymous function used in the hook <code>$model-&gt;validator-&gt;passes()</code> will return true or false which when false will prevent the model being saved.</li>
+</ul>
+<p>In the controller I then use:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">$test = Test::find($id);
+</span><span style="background-color:#2b303b;color:#c0c5ce;">$test-&gt;update(array(&#39;name&#39; =&gt; Input::get(&#39;name&#39;), &#39;description&#39; =&gt; Input::get(&#39;description&#39;)));
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">if ($test-&gt;validator-&gt;fails()) {
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">return Redirect::action(&#39;testController@edit&#39;, array($test-&gt;id))-&gt;withInput()-&gt;withErrors($test-&gt;validator);
+</span><span style="background-color:#2b303b;color:#c0c5ce;">}
+</span><span style="background-color:#2b303b;color:#c0c5ce;">return Redirect::action(&#39;testController@show&#39;, array($test-&gt;id));
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span></pre>
+<p>Check out the <a href="http://laravel.com/docs/validation#error-messages-and-views">Validator API</a> for more info.</p>
+<p>I then modified the template to show the errors:</p>
+<pre style="background-color:#2b303b">
+<span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">@if ( $errors-&gt;count() &gt; 0 )
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;p&gt;The following errors have occurred:&lt;/p&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;ul&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">@foreach( $errors-&gt;all() as $message )
+</span><span style="background-color:#2b303b;color:#c0c5ce;">    </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;li&gt;{{ $message }}&lt;/li&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">@endforeach
+</span><span style="background-color:#2b303b;color:#c0c5ce;">  </span><span style="background-color:#2b303b;color:#c0c5ce;">&lt;/ul&gt;
+</span><span style="background-color:#2b303b;color:#c0c5ce;">@endif
+</span><span style="background-color:#2b303b;color:#c0c5ce;">
+</span></pre>
+<p>The $errors will be populated from the redirect in the controller from <code>withErrors</code> and the forms will be populated with the erronous form input from the <code>withInput</code> method call too.</p>
+<h2>Improvements</h2>
+<ul>
+<li>Documentation, key parts of the framework are less documented than far less important parts.</li>
+<li>Add in the ability to do FormHandler style forms which can render forms, validate and connect to the model.</li>
+<li>Stronger content-type response handling like <a href="http://apidock.com/rails/ActionController/MimeResponds/respond_with">respond_with in Rails</a></li>
+<li>Why do the Laravel code samples use spaces but the code in the framework use tabs? (Pick one - please)</li>
+<li>Scaffolding - yes it will make things look even more like Rails however it is a brilliant beginner tool and with the ability to customise the generated code for bigger projects it makes creating new wireframes is very fast.</li>
+</ul>
+<h2>Conclusion</h2>
+<p>I am happy to see that the famework is fairly extendable, I didn't look into what the extension mechanisms are like and what popular extension code quality was.
+I think overall it seems a far leaner framework than CakePHP and with most of the ability of Rails. I think being a youngish framework still, more could be done to improve the setup, documentation and tools.</p>
+
+          </div>
+        
+        </article>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+    <ul class="social-media-list">
+      
+
+      
+    </ul>
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

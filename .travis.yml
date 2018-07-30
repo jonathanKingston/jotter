@@ -1,5 +1,24 @@
-language: ruby
-rvm:
-  - 2.0.0
-  - 1.9.3
-script: bundle exec rake install; bundle exec rake generate
+sudo: false
+before_script:
+  - curl -LSfs https://japaric.github.io/trust/install.sh |
+    sh -s --
+    --git cobalt-org/cobalt.rs
+    --crate cobalt
+    --force
+    --target x86_64-unknown-linux-gnu
+    --tag v0.12.2
+  - export PATH="$PATH:~/.cargo/bin"
+script:
+  - cobalt build
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: "$GH_TOKEN"
+  local_dir: _site
+  target_branch: gh-pages
+  on:
+    branch: master
+env:
+  global:
+    secure: ICS99Fp22mhV/lO9aeHiuZCbhVOIbeQfq0mHQ4VXYmWodviU3lf9gmKT7oWWBtodDUNsqy2fN9aM7usfyyfgpXHrxNzatxqLD/Jrq11RkgcInEpK2VRmBIXl5HBxxb9hmEx+hSJhRTXNEqPCNcJXKH1fUuhDwWzYzuFJFogpioU=

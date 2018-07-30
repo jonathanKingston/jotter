@@ -1,0 +1,10 @@
+
+site:
+  title: Jonathan Kingston
+  description: Notes from a developer in Nottingham
+  base_url: https://jotter.jonathankingston.co.uk
+posts:
+  default:
+    permalink: /blog/{{year}}/{{month}}/{{day}}/{{slug}}/
+    layout: post.liquid
+  rss: feed.xml

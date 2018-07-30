@@ -1,15 +1,1 @@
-.bundle
-.DS_Store
-.sass-cache
-.gist-cache
-.pygments-cache
-_deploy
-public
-sass.old
-source.old
-_stash
 _site
-stylesheets/*.css
-vendor
-node_modules
-.code-highlighter-cache

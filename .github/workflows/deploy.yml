@@ -44,7 +44,7 @@ jobs:
           set -euo pipefail
           npm install -g sass
           mkdir -p _site/css
-          sass css/main.scss _site/css/main.css --style=compressed --no-source-map
+          sass --load-path=_sass css/main.scss _site/css/main.css --style=compressed --no-source-map
 
       - name: Publish to gh-pages
         uses: peaceiris/actions-gh-pages@v3

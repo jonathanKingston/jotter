@@ -3,6 +3,9 @@ site:
   title: Jonathan Kingston
   description: Notes from a developer in Nottingham
   base_url: https://jotter.jonathankingston.co.uk
+  data:
+    github_username: jonathankingston
+    twitter_username: kingstonTime
 posts:
   default:
     permalink: /blog/{{year}}/{{month}}/{{day}}/{{slug}}/

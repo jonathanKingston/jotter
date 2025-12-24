@@ -61,8 +61,10 @@ img {
     &.left, &.right { margin-bottom: .8em; }
 }
 
-// Post-specific media sizing helpers (avoid inline styles so mobile can respond cleanly)
-.post-content img.post-illustration {
+// Post media sizing helpers (avoid inline styles so mobile can respond cleanly)
+// Desktop/tablet: keep floated illustrations from getting too large.
+.post-content img.basic-alignment.left.flex-content,
+.post-content img.basic-alignment.right.flex-content {
     max-width: 450px;
     height: auto;
 }

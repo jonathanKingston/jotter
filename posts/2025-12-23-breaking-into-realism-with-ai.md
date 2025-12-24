@@ -31,7 +31,7 @@ None of this replaces careful review. But it gets you to something concrete fast
 
 Engineering requires deep concentration, or at least it used to. AI can act as a scratchpad you think out loud to, holding context while you context-switch.
 
-<img class="basic-alignment right flex-content post-illustration" src="/images/ai/skelly-to-laptop.svg" alt="Jot the idea on your phone, then later review outputs like a todo list.">
+<img class="basic-alignment right flex-content" src="/images/ai/skelly-to-laptop.svg" alt="Jot the idea on your phone, then later review outputs like a todo list.">
 
 I've taken a laptop to distracting environments and been as productive as I would be in a quiet room. The cognitive load drops when you're not holding everything in your head. You can sketch an idea, let the AI flesh it out, and review it later with fresh eyes.
 

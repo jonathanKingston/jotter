@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install Cobalt
+        env:
+          COBALT_TAG: v0.12.2
+        run: |
+          set -euo pipefail
+          cargo install --locked --git https://github.com/cobalt-org/cobalt.rs --tag "${COBALT_TAG}" cobalt \
+            || cargo install --locked --git https://github.com/cobalt-org/cobalt.rs --tag "${COBALT_TAG}" cobalt-bin
+
+      - name: Build site
+        run: cobalt build
+
+

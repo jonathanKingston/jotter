@@ -61,6 +61,29 @@ img {
     &.left, &.right { margin-bottom: .8em; }
 }
 
+// Post-specific media sizing helpers (avoid inline styles so mobile can respond cleanly)
+.post-content img.post-illustration {
+    max-width: 450px;
+    height: auto;
+}
+
+// Mobile: prevent any fixed-width media (including inline-styled images) from overflowing the page.
+@include media-query($on-palm) {
+    .post-content img {
+        max-width: 100% !important;
+        height: auto;
+    }
+
+    // Disable floats on narrow screens so media doesn't force horizontal overflow.
+    .post-content .basic-alignment.left,
+    .post-content .basic-alignment.right {
+        float: none;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
 
 
 /**

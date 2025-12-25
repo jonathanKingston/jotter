@@ -5,7 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
-  <meta name="description" content="{{ site.description }}">
+  {% assign meta_description = "" %}
+  {% if page.description != blank %}
+    {% assign meta_description = page.description | strip_html | strip_newlines | strip %}
+  {% elsif page.excerpt != blank %}
+    {% assign meta_description = page.excerpt | strip_html | strip_newlines | strip %}
+  {% endif %}
+  {% if meta_description == blank and page.collection == "posts" %}
+    {% assign meta_description = page.content | strip_html | strip_newlines | strip %}
+  {% endif %}
+  {% if meta_description == blank %}
+    {% assign meta_description = site.description %}
+  {% endif %}
+  <meta name="description" content="{{ meta_description | escape | truncate: 160 }}">
 
   <link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.base_url }}">
   <link rel="canonical" href="{{ site.base_url }}/{{ page.permalink }}">

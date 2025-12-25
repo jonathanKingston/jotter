@@ -4,7 +4,8 @@ title: "Jonathan Kingston"
 <div class="home">
   <h1 class="page-heading">Posts</h1>
   <ul class="post-list">
-  {% for post in collections.posts.pages %}
+  {% assign posts_sorted = collections.posts.pages | sort: "published_date" | reverse %}
+  {% for post in posts_sorted %}
     <li>
     {% if post.published_date %}
     <span class="post-meta">{{ post.published_date | date: "%b %-d, %Y" }}</span>
@@ -13,6 +14,24 @@ title: "Jonathan Kingston"
     <h2>
       <a class="post-link" href="{{ post.permalink }}">{{ post.title }}</a>
     </h2>
+    {% assign post_summary_html = "" %}
+    {% if post.description != blank %}
+      {% assign post_summary_html = post.description %}
+    {% elsif post.excerpt != blank %}
+      {% assign post_summary_html = post.excerpt %}
+    {% else %}
+      {% assign post_summary_html = post.content %}
+    {% endif %}
+    {% assign post_summary = post_summary_html | strip_html | strip_newlines | strip %}
+    {% if post_summary == blank %}
+      {% assign post_summary_parts = post.content | split: "</p>" %}
+      {% capture post_summary_from_second_p %}{% for part in post_summary_parts offset: 1 %}{{ part }}</p>{% endfor %}{% endcapture %}
+      {% assign post_summary = post_summary_from_second_p | strip_html | strip_newlines | strip %}
+    {% endif %}
+    {% assign post_summary = post_summary | truncate: 200 %}
+    {% if post_summary != blank %}
+    <p class="post-description">{{ post_summary }}</p>
+    {% endif %}
     </li>
   {% endfor %}
   </ul>

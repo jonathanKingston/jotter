@@ -25,7 +25,7 @@
     {% assign meta_description = site.description %}
   {% endif %}
 
-  {% if is_home and page_content_text != blank %}
+  {% if is_home and page_content_text != blank and meta_description != page_content_text %}
     {% assign meta_description = meta_description | append: " — " | append: page_content_text %}
   {% endif %}
   <meta name="description" content="{{ meta_description | escape | truncate: 160 }}">

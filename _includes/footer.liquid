@@ -8,6 +8,18 @@
       </li>
       {% endif %}
 
+      {% if site.data.bsky_url %}
+      <li>
+        {% include "icon-bluesky.html" %}
+      </li>
+      {% endif %}
+
+      {% if site.data.mastodon_url %}
+      <li>
+        {% include "icon-mastodon.html" %}
+      </li>
+      {% endif %}
+
       {% if site.data.twitter_username %}
       <li>
         {% include "icon-twitter.html" %}

@@ -113,6 +113,19 @@
     margin-left: 0;
 }
 
+.social-media-list {
+    li {
+        display: inline-block;
+        margin-right: 10px;
+        margin-bottom: 5px;
+    }
+}
+
+.social-link--retired {
+    color: $grey-color;
+    cursor: default;
+}
+
 .footer-col-wrapper {
     font-size: 15px;
     color: $grey-color;

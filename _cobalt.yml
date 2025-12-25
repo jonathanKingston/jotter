@@ -6,6 +6,10 @@ site:
   data:
     github_username: jonathankingston
     twitter_username: kingstonTime
+    bsky_url: https://bsky.app/profile/kingstontime.bsky.social
+    bsky_handle: kingstontime.bsky.social
+    mastodon_url: https://mastodon.social/@jkt
+    mastodon_handle: "@jkt@mastodon.social"
 posts:
   default:
     permalink: /blog/{{year}}/{{month}}/{{day}}/{{slug}}/

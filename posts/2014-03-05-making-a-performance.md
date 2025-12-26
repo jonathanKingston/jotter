@@ -1,3 +1,4 @@
+---
 title: Making a performance
 data:
   updated: "2015-03-13 00:00"

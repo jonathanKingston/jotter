@@ -1,3 +1,4 @@
+---
 title: Give the world back FollowRedirects XMLHttpRequest
 categories:
   - JavaScript

@@ -1,3 +1,4 @@
+---
 title: My new favourite colour
 categories:
   - CSS

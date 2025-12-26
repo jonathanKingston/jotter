@@ -1,3 +1,4 @@
+---
 title: VALIDATE me baby
 categories:
   - JavaScript

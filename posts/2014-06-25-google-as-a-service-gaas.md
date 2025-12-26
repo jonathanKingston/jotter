@@ -1,3 +1,4 @@
+---
 title: Google as a Service (GaaS)
 categories:
   - google

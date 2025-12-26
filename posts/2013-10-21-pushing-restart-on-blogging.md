@@ -1,3 +1,4 @@
+---
 title: Pushing restart on blogging
 categories:
   - blogging

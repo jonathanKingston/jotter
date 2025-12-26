@@ -1,3 +1,4 @@
+---
 title: Out of the shadows
 categories:
   - JavaScript

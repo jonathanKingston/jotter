@@ -1,3 +1,4 @@
+---
 title: Making a dynamic palette today
 categories:
   - CSS

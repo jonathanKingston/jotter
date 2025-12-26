@@ -17,7 +17,9 @@
   {% endif %}
 
   {% assign is_home = false %}
-  {% if page.permalink == "index.html" or page.permalink == "/" or (page.slug == "index" and page.collection != "posts") %}
+  {% if page.permalink == "index.html" or page.permalink == "/" %}
+    {% assign is_home = true %}
+  {% elsif page.collection != "posts" and page.slug == "index" %}
     {% assign is_home = true %}
   {% endif %}
 

@@ -99,6 +99,42 @@ figcaption {
     font-size: $small-font-size;
 }
 
+// Polaroid-style figure
+figure.polaroid {
+    display: inline-block;
+    background: #fefefe;
+    padding: 10px 10px 0 10px;
+    border: 1px solid $grey-color-light;
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.1),
+        0 4px 12px rgba(0, 0, 0, 0.05);
+    margin: $spacing-unit auto;
+    
+    > img {
+        display: block;
+        max-width: 100%;
+        height: auto;
+    }
+    
+    figcaption {
+        padding: 12px 4px;
+        text-align: center;
+        font-size: $small-font-size;
+        color: $grey-color-dark;
+        font-style: italic;
+    }
+}
+
+// Center polaroid figures in post content
+.post-content figure.polaroid {
+    display: block;
+    text-align: center;
+    
+    > img {
+        display: inline-block;
+    }
+}
+
 
 
 /**
@@ -184,6 +220,7 @@ pre {
 
     > code {
         border: 0;
+        background-color: transparent;
         padding-right: 0;
         padding-left: 0;
     }

@@ -52,7 +52,7 @@ For archiving, when you save a page (via "Save As", web archive formats, or tool
   <figcaption>Poster visible immediately, replaced once canvas draws</figcaption>
 </figure>
 
-I've put together an [explainer](https://github.com/jonathanKingston/canvas-poster/) with the full proposal. There are also prototype patches for [Chromium](https://github.com/jonathanKingston/canvas-poster/blob/main/patches/chromium-canvas-poster.patch) and [Firefox](https://github.com/jonathanKingston/canvas-poster/blob/main/patches/firefox-canvas-poster.patch) if you want to try it out.
+I've put together an [explainer](https://github.com/jonathanKingston/canvas-poster/) with the full proposal. There are also prototype patches for [Chromium](https://github.com/jonathanKingston/canvas-poster/blob/main/patches/chromium-canvas-poster.patch), [Firefox](https://github.com/jonathanKingston/canvas-poster/blob/main/patches/firefox-canvas-poster.patch) and [WebKit](https://github.com/jonathanKingston/canvas-poster/blob/main/patches/webkit-canvas-poster.patch) if you want to try it out.
 
 ## Get Involved
 

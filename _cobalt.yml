@@ -5,6 +5,8 @@ site:
   base_url: https://jotter.jonathankingston.co.uk
   data:
     github_username: jonathankingston
+    linkedin_url: https://www.linkedin.com/in/jonathan-kingston/
+    linkedin_handle: jonathan-kingston
     twitter_username: kingstonTime
     bsky_url: https://bsky.app/profile/kingstontime.bsky.social
     bsky_handle: kingstontime.bsky.social

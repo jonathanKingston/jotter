@@ -28,6 +28,8 @@ The second borrows from how models actually get trained. RLHF (reinforcement lea
 
 You don't need a massive sample to learn something useful. Even a modest set of paired comparisons across a few prompt categories can give you an early signal about whether your carefully crafted MDC file is doing anything at all.
 
+A good recent baseline is [Evaluating AGENTS.md: Are Repository-Level Context Files Helpful for Coding Agents?](https://arxiv.org/pdf/2602.11988). It is a solid place to start if you want concrete methodology, and it also reports a mostly negative impact from LLM-generated `AGENTS.md`/rule-heavy context files on task success, while increasing cost.
+
 <div style="clear: both;"></div>
 
 ## Token cost as a forcing function

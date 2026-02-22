@@ -69,6 +69,12 @@ img {
     height: auto;
 }
 
+// Opt-in image frame for illustrations that need subtle separation from body text.
+.post-content img.image-framed {
+    border-radius: 6px;
+    border: 1px solid $grey-color-light;
+}
+
 // Mobile: prevent any fixed-width media (including inline-styled images) from overflowing the page.
 @include media-query($on-palm) {
     .post-content img {

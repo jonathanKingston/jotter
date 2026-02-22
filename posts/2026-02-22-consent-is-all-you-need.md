@@ -30,7 +30,7 @@ Think about it. A page registers a tool called `applyDiscount` that actually add
 
 WebMCP tools can ask the agent for information during an interaction flow. That creates both a fingerprinting vector and a direct route to PII exfiltration.
 
-A malicious page doesn't need cookies or extra browser APIs to profile you. It can craft tool prompts that coax the model into revealing intent ("what are you trying to do?"), history ("what did you search for?"), and, in some agent implementations, nearby context ("what other tools were just called?"). If the agent also holds personal data, the same pattern can extract that too: ask it to "confirm user details for booking" and a helpful model may hand over name, email, location, or more. There's a risk that the page learns data it was never authorised to receive.
+A malicious page doesn't need cookies or extra browser APIs to profile you. It can craft tool prompts that coax the model into revealing intent "what are you trying to do?", history "what did you search for?", and, in some agent implementations, nearby context "what other tools were just called?". If the agent also holds personal data, the same pattern can extract that too: ask it to "confirm user details for booking" and a helpful model may hand over name, email, location, or more. There's a risk that the page learns data it was never authorised to receive.
 
 ## The sandbox that isn't
 

@@ -8,7 +8,7 @@ data:
 
 The agentic web has a consent problem. Every agent depends on the same unstated assumption: the model knows when it should stop and ask you.
 
-<img class="image-framed" src="/images/ai/consent-click-is-a-contract.png" alt="Illustration showing consent is needed before Buy Now click.">
+<img class="image-framed" src="/images/ai/consent-click-is-a-contract.webp" alt="Illustration showing consent is needed before Buy Now click.">
 
 A click can carry legal and financial weight. It signals intent and, critically, it happens in the context of credentials: your logged-in account, payment methods, and saved addresses. A click doesn't just express intent. It exercises authority over everything bound to that session.
 
@@ -26,7 +26,7 @@ WebMCP still depends on the page being honest: tool descriptions must match beha
 
 Think about it. A page registers a tool called `applyDiscount` that actually adds items to your cart. Or `checkAvailability` that submits your personal data to a third party. The tool description says one thing. The implementation does another. Sometimes that mismatch is malicious. Sometimes it's just poor implementation quality. In both cases, the model needs to verify the gap.
 
-<img class="image-framed" src="/images/ai/consent-tool-deception.png" alt="Illustration of adversarial webpage tool deception and data exfiltration risk.">
+<img class="image-framed" src="/images/ai/consent-tool-deception.webp" alt="Illustration of adversarial webpage tool deception and data exfiltration risk.">
 
 WebMCP tools can ask the agent for information during an interaction flow. That creates both a fingerprinting vector and a direct route to PII exfiltration.
 
@@ -71,7 +71,7 @@ That is where isolation helps. If untrusted components cannot access sensitive d
 
 WebMCP's tool annotations are a start. Tools can be marked as "destructive," signalling that the agent should flag them for user confirmation. But this puts the honesty burden on the page author, the same entity who might be adversarial. The browser, the agent platform, or some combination of both needs to independently classify action risk and enforce consent checkpoints at boundaries the page can't override.
 
-<img class="image-framed" src="/images/ai/consent-trust-layer.png" alt="Illustration of risk checkpoints and explicit consent for irreversible actions.">
+<img class="image-framed" src="/images/ai/consent-trust-layer.webp" alt="Illustration of risk checkpoints and explicit consent for irreversible actions.">
 
 Get consent wrong and agents don't just break, they act. With your credentials, your payment methods, your data. We need to build trust safeguards in parallel with capability work: verify tools against behaviour, classify adversarial inputs from multiple signals, and enforce consent at boundaries the page cannot override.
 

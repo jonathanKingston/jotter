@@ -46,6 +46,11 @@ jobs:
           mkdir -p _site/css
           sass --load-path=_sass css/main.scss _site/css/main.css --style=compressed --no-source-map
 
+      - name: Cache-bust CSS
+        run: |
+          SHA="${{ github.sha }}"
+          find _site -name "*.html" -exec sed -i "s|/css/main.css\"|/css/main.css?v=${SHA:0:7}\"|g" {} \;
+
       - name: Publish to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:

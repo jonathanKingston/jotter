@@ -2,6 +2,7 @@
 title: "Consent is all you need"
 categories:
   - AI
+  - Security
 data:
   updated: "2026-02-22 00:00"
 ---

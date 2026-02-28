@@ -8,13 +8,19 @@ title: "Jonathan Kingston"
   {% assign posts_sorted = collections.posts.pages | sort: "published_date" | reverse %}
   {% for post in posts_sorted %}
     <li>
-    {% if post.published_date %}
-    <span class="post-meta">{{ post.published_date | date: "%b %-d, %Y" }}</span>
-    {% endif %}
-  
-    <h2>
-      <a class="post-link" href="{{ post.permalink }}">{{ post.title }}</a>
-    </h2>
+    <a class="post-summary-link" href="{{ post.permalink }}">
+    <h2 class="post-link">{{ post.title }}</h2>
+    <span class="post-meta">
+      {% if post.published_date %}{{ post.published_date | date: "%b %-d, %Y" }}{% endif %}
+      {% if post.categories.size > 0 %}
+        {% if post.published_date %} · {% endif %}
+        <span class="post-tags">
+          {% for category in post.categories %}
+          <span class="post-tag">{{ category }}</span>
+          {% endfor %}
+        </span>
+      {% endif %}
+    </span>
     {% assign post_summary_html = "" %}
     {% if post.description != blank %}
       {% assign post_summary_html = post.description %}
@@ -33,6 +39,7 @@ title: "Jonathan Kingston"
     {% if post_summary != blank %}
     <p class="post-description">{{ post_summary }}</p>
     {% endif %}
+    </a>
     </li>
   {% endfor %}
   </ul>

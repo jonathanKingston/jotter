@@ -2,6 +2,7 @@
 title: "Breaking into realism with AI"
 categories:
   - AI
+  - Development
 data:
   updated: "2025-12-23 00:00"
 ---

@@ -2,6 +2,7 @@
 title: "Magic words need measuring sticks"
 categories:
   - AI
+  - Development
 data:
   updated: "2026-02-17 00:00"
 ---

@@ -16,7 +16,7 @@ That answer shapes everything: cost, latency, accuracy, and whether you can veri
 
 **RAG** gives you control over context structure but depends on embedding quality and chunking strategy. Swappable: bad documents can be removed without retraining. The hidden cost is maintenance - embeddings drift as your corpus changes, and re-indexing pipelines degrade silently.
 
-**Long context windows** are the brute-force option: put everything in. Simple, but expensive at inference, and models attend unevenly - information in the middle of a large prompt is more likely to be missed [[1]](https://arxiv.org/abs/2307.03172).
+**Long context windows** are the brute-force option: put everything in. Simple, but expensive at inference, and models attend unevenly - information in the middle of a large prompt is more likely to be missed [[1]](https://arxiv.org/abs/2307.03172), though newer models have reduced the effect.
 
 **Agentic tool use** lets the model decide what it needs and fetch dynamically. More flexible than RAG, but latency and cost scale unpredictably. The operational concern is observability: understanding *why* an agent chose a twelve-step path requires structured trace logging most teams do not have yet.
 
@@ -170,7 +170,7 @@ The goldilocks zone for training data is not necessarily the newest or largest c
 
 When you kick off a fine-tuning run, you will see numbers streaming in: loss dropping, accuracy climbing, maybe entropy moving around. It is tempting to watch loss decrease and assume things are working. These metrics can mislead if you do not know what they are measuring.
 
-**Loss** measures how surprised the model is by the correct token. A loss of 2.5-3.0 means the model assigns roughly 8% probability to the correct next token - common early in training. In the privacy assessment corpus I was working with, well-tuned runs converged around 0.5-1.5, though this varies significantly by domain and vocabulary size.
+**Loss** measures how surprised the model is by the correct token. A loss of 2.5-3.0 means the model assigns roughly 5-8% probability to the correct next token - common early in training. In the privacy assessment corpus I was working with, well-tuned runs converged around 0.5-1.5, though this varies significantly by domain and vocabulary size.
 
 The trap: loss can drop while the model learns the wrong patterns confidently. If training data contains conflicting styles, the model learns both and hedges. Low loss, bad outputs.
 
@@ -227,4 +227,4 @@ The model learns whatever patterns you provide. Make sure those are the patterns
 
 [3] Hu, E. J. et al. "LoRA: Low-Rank Adaptation of Large Language Models." 2021. [https://arxiv.org/abs/2106.09685](https://arxiv.org/abs/2106.09685)
 
-[4] Sun, S. et al. "CLaRa: Bridging Retrieval and Generation with Continuous Latent Reasoning." 2025. [https://arxiv.org/abs/2511.18659](https://arxiv.org/abs/2511.18659)
+[4] He, J. et al. "CLaRa: Bridging Retrieval and Generation with Continuous Latent Reasoning." 2025. [https://arxiv.org/abs/2511.18659](https://arxiv.org/abs/2511.18659)

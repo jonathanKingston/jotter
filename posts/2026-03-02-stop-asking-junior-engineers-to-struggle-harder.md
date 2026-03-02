@@ -14,13 +14,13 @@ Geoffrey Huntley, in ["Software development now costs less than the wage of a mi
 
 And the ACM piece ["Redefining the Software Engineering Profession for AI"](https://dl.acm.org/doi/10.1145/3779312) gives this a precise name: **seniority-biased technological change**. AI amplifies engineers who already possess systems judgement while imposing drag on early-in-career developers who lack the context to steer, verify, and integrate output.
 
-<img class="image-framed" src="/images/ai/junior-four-views-blind-spot.jpg" alt="Retro propaganda poster showing four suited figures on pillars looking outward through telescopes while a small worker stands unseen in the gap below.">
+<img class="image-framed" src="/images/ai/junior-four-views-blind-spot.webp" alt="Retro propaganda poster showing four suited figures on pillars looking outward through telescopes while a small worker stands unseen in the gap below.">
 
 Four perspectives. One gap: none of them land on a structural fix for the people at the bottom of the experience ladder.
 
 ## The willpower problem
 
-<img class="basic-alignment right flex-content" src="/images/ai/junior-struggle-harder.jpg" alt="Propaganda poster of a suited figure giving a thumbs up holding a Struggle Harder sign while a worker is overwhelmed by AI velocity machinery behind them.">
+<img class="basic-alignment right flex-content" src="/images/ai/junior-struggle-harder.webp" alt="Propaganda poster of a suited figure giving a thumbs up holding a Struggle Harder sign while a worker is overwhelmed by AI velocity machinery behind them.">
 
 Daniel's advice is good advice. It fails under real conditions.
 
@@ -34,7 +34,7 @@ Telling juniors to struggle harder inside a system that punishes struggling is n
 
 ## The verification gap
 
-<img class="basic-alignment left flex-content" src="/images/ai/junior-verification-gap.jpg" alt="Split propaganda poster: experienced worker sees bugs and warnings in code while junior sees only LGTM. Caption: what you can't see can ship.">
+<img class="basic-alignment left flex-content" src="/images/ai/junior-verification-gap.webp" alt="Split propaganda poster: experienced worker sees bugs and warnings in code while junior sees only LGTM. Caption: what you can't see can ship.">
 
 The ACM paper gives us the frame: AI amplifies engineers who already have systems judgement and drags on those who don't. This isn't a temporary imbalance. It's a property of how the technology works.
 
@@ -48,7 +48,7 @@ We're putting junior engineers in a role - AI output verifier - that requires th
 
 ## Wrong seat, not wrong person
 
-<img class="basic-alignment left flex-content" src="/images/ai/junior-right-seat-right-work.jpg" alt="Retro poster showing five doors: unsupervised AI output crossed out with a warning symbol, and four open doors for research, failure analysis, tooling, and mentored review.">
+<img class="basic-alignment left flex-content" src="/images/ai/junior-right-seat-right-work.webp" alt="Retro poster showing five doors: unsupervised AI output crossed out with a warning symbol, and four open doors for research, failure analysis, tooling, and mentored review.">
 
 Huntley's flattened org chart - senior ICs directing AI agents, middle management dissolved - is probably directionally correct for some greenfield companies. But most of the industry has existing systems, existing teams, and existing junior engineers already on the payroll. The question isn't whether to hire juniors in an AI-native startup. It's what to do with the ones you have.
 
@@ -66,7 +66,7 @@ Failure is how expertise gets built. The senior engineer who spots the bad archi
 
 ## Guardrails as infrastructure
 
-<img class="basic-alignment right flex-content" src="/images/ai/junior-guardrails.jpg" alt="Propaganda poster showing a worker protected by scaffolding labeled CI, Tests, Rules, and Review Gates, contrasted with a crossed-out scene of a boss just pointing a finger.">
+<img class="basic-alignment right flex-content" src="/images/ai/junior-guardrails.webp" alt="Propaganda poster showing a worker protected by scaffolding labeled CI, Tests, Rules, and Review Gates, contrasted with a crossed-out scene of a boss just pointing a finger.">
 
 I wrote about this [back in December](/blog/2025/12/23/breaking-into-realism-with-ai/): staff engineers should be helping juniors build verification skills by adding guardrails so AI assists rather than replacing judgement. The practical version of that looks like engineering infrastructure, not mentoring programmes.
 
@@ -84,7 +84,7 @@ But that's the point. Success there comes from infrastructure and supervision qu
 
 ## What this means for teams
 
-<img src="/images/ai/junior-engineers-or-operators.jpg" alt="Propaganda poster of a balance scale overloaded with implement-with-AI tickets on one side and investigate, evaluate, explore cards on the other. Caption: engineers or prompt operators?">
+<img src="/images/ai/junior-engineers-or-operators.webp" alt="Propaganda poster of a balance scale overloaded with implement-with-AI tickets on one side and investigate, evaluate, explore cards on the other. Caption: engineers or prompt operators?">
 
 Look at what your junior engineers are actually doing:
 

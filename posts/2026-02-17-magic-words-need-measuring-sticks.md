@@ -23,7 +23,7 @@ If someone told you a function worked "most of the time" but couldn't tell you w
 
 The first is deterministic testing. Take a representative set of prompts that exercise the skill, run them with and without the context, then compare outputs against a rubric. This doesn't need to be sophisticated. If your "frontend design" skill is supposed to prevent generic Bootstrap-looking layouts, test that directly. If the skill doesn't shift results in a measurable direction, it's not earning its tokens.
 
-<img class="basic-alignment right flex-content" src="/images/ai/magic-words-rubric-scoring.jpg" alt="Rubric scoring example comparing prompt outputs.">
+<img class="basic-alignment right flex-content" src="/images/ai/magic-words-rubric-scoring.webp" alt="Rubric scoring example comparing prompt outputs.">
 
 The second borrows from how models actually get trained. RLHF (reinforcement learning from human feedback) works by having humans pick the better of two outputs. Generate paired outputs with and without the skill, then have someone with domain expertise pick the better one. Do this across enough examples and you get a signal. Not a perfect one, but a real one.
 
@@ -49,7 +49,7 @@ Run your eval suite across three versions of a skill: full, half-length, absent.
 
 Skills, MCP, PRDs, and prompt engineering are different ways of packaging the same underlying challenge: managing what context reaches the model. The packaging changes but the need to measure effectiveness doesn't.
 
-<img class="basic-alignment left flex-content" src="/images/ai/magic-words-feelings-vs-feedback.jpg" alt="Feelings versus feedback side-by-side illustration.">
+<img class="basic-alignment left flex-content" src="/images/ai/magic-words-feelings-vs-feedback.webp" alt="Feelings versus feedback side-by-side illustration.">
 
 If you have evals in place, the churn can become much more manageable. New approach drops? Port your test prompts, run your comparisons, see if it actually improves outputs for your case. Without evals, each new approach can turn into another round of hope-based adoption.
 

@@ -4,7 +4,7 @@ categories:
   - AI
 ---
 
-When you wire AI into a workflow, the first question is not "which model?" - it is "how does the model get the context it needs?"
+When you wire AI into a workflow, the choice of model matters less than you might expect - often the harder question is "how does the model get the context it needs?"
 
 That answer shapes everything: cost, latency, accuracy, and whether you can verify what went wrong when it does.
 
@@ -14,7 +14,7 @@ That answer shapes everything: cost, latency, accuracy, and whether you can veri
 
 **Prompt engineering at existing tooling** (Copilot 365, Asana AI, etc.) relies on vendor fetch strategies you cannot see inside. Convenient until the tool decides a document is irrelevant and you do not find out until the output is wrong.
 
-**RAG** gives you control over context structure but depends on embedding quality and chunking strategy. Swappable: bad documents can be removed without retraining. The hidden cost is maintenance - embeddings drift as your corpus changes, and re-indexing pipelines degrade silently.
+**RAG (Retrieval-Augmented Generation)** gives you control over context structure but depends on embedding quality and chunking strategy. Swappable: bad documents can be removed without retraining. The hidden cost is maintenance - embeddings drift as your corpus changes, and re-indexing pipelines degrade silently.
 
 **Long context windows** are the brute-force option: put everything in. Simple, but expensive at inference, and models attend unevenly - information in the middle of a large prompt is more likely to be missed [[1]](https://arxiv.org/abs/2307.03172), though newer models have reduced the effect.
 
@@ -81,7 +81,7 @@ The reality is more complicated.
 
 ### You are training on patterns, not just content
 
-Fine-tuning does not just teach the model what to say - it teaches the model *how* to say it. Every stylistic choice, every abbreviation, every inconsistency in training data becomes learned behavior.
+Fine-tuning does not just teach the model what to say - it teaches the model *how* to say it. Every stylistic choice, every abbreviation, every inconsistency in training data becomes learned behaviour.
 
 Unlike RAG, where you can swap out a bad document, or prompting, where you can iterate in minutes, SFT mistakes are expensive. You retrain or live with them.
 
@@ -137,7 +137,7 @@ The model skipped to the end. The data was accurate; it was data from the wrong 
 
 ### The signal is buried, not missing
 
-Identifying what to train on is genuinely hard. Is it the first flag? The key question? The compromise? Each serves a different function. The most useful signal is often buried mid-thread and not labeled as important.
+Identifying what to train on is genuinely hard. Is it the first flag? The key question? The compromise? Each serves a different function. The most useful signal is often buried mid-thread and not labelled as important.
 
 Curating SFT data is not just filtering "bad" examples. It is understanding what task you are training the model to do, and whether the data demonstrates that task or only its outcomes.
 
@@ -176,11 +176,11 @@ The trap: loss can drop while the model learns the wrong patterns confidently. I
 
 **Token accuracy** (how often the top prediction is correct) started at 42-44% in my runs, reaching 55-70% on the best cohorts. This sounds low because many valid continuations exist. But on structured outputs - summaries, reports, specific formats - you usually want this higher. Persistently low accuracy on structured data often signals noisy training examples.
 
-Neither metric tells you whether the model learned the right behavior - only that it learned *something* from your data. This is why held-out evaluation on realistic tasks matters more than watching curves converge.
+Neither metric tells you whether the model learned the right behaviour - only that it learned *something* from your data. This is why held-out evaluation on realistic tasks matters more than watching curves converge.
 
 ### Using LLMs to assess training data
 
-The [workflow mismatch problem](#the-workflow-mismatch-problem) makes manual labeling expensive. You are not just asking "is this example good?" You are asking "which of these 15 messages in a thread represents the behavior we want to train?" That requires domain expertise, repeatedly.
+The [workflow mismatch problem](#the-workflow-mismatch-problem) makes manual labelling expensive. You are not just asking "is this example good?" You are asking "which of these 15 messages in a thread represents the behaviour we want to train?" That requires domain expertise, repeatedly.
 
 LLM-as-judge offers a practical middle ground. Use a model to score or rank candidate examples against explicit criteria:
 
@@ -202,7 +202,7 @@ Training metrics tell you the model is learning. LLM-as-judge tells you whether 
 - **Default to RAG** when your knowledge changes frequently, when you need to trace outputs back to source documents, or when you are just getting started and want fast iteration on what context matters.
 - **Use long context** for prototyping and one-off analysis where simplicity beats cost, or when the full input is small enough that inference cost is acceptable.
 - **Consider agentic tool use** when the task requires multi-step reasoning across different data sources, and you have the trace logging infrastructure to debug it.
-- **Consider SFT** when you need consistent style, tone, or domain behavior that prompting alone cannot reliably produce - and when you have a curated, high-quality dataset and the pipeline to maintain it.
+- **Consider SFT** when you need consistent style, tone, or domain behaviour that prompting alone cannot reliably produce - and when you have a curated, high-quality dataset and the pipeline to maintain it.
 - **Use existing tooling** when time-to-value matters more than control, and you can tolerate the vendor's context decisions.
 
 Most production systems end up hybrid. SFT for *how* to respond, RAG for *what* to respond about, and agentic retrieval for anything that requires following a chain of reasoning across sources.

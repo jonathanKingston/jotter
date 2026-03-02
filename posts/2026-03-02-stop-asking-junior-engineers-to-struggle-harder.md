@@ -4,15 +4,15 @@ categories:
   - AI
 ---
 
-Four pieces landed in the past week that circle the same problem from wildly different altitudes.
+Four pieces landed in the past two weeks that circle the same problem from different altitudes.
 
 Ivan Turkovic's ["AI Made Writing Code Easier. It Made Being an Engineer Harder."](https://www.ivanturkovic.com/2026/02/25/ai-made-writing-code-easier-engineering-harder/) is the systemic view. The baseline moved. Expectations rose without announcement. He names something important: the supervision paradox, where reviewing AI-generated code is often harder than writing it yourself, because you inherit the output without the reasoning.
 
 Daniel at Be a Better Dev takes [the opposite approach](https://www.beabetterdev.com/2026/03/01/ai-is-making-junior-devs-useless/), starting with a title - "AI is Making Junior Devs Useless" - that does his own argument a disservice. The content is more thoughtful than the headline: manufacture the struggle, never ship code you can't defend, prompt for the why not the answer. But the framing tells juniors they're the problem before the first paragraph starts.
 
-Geoffrey Huntley, in ["Software development now costs less than the wage of a minimum wage worker"](https://ghuntley.com/real/), pushes the economic argument furthest. The economics have collapsed. The org charts are flattening. Model-first companies eating incumbents on margin, the cycle compressing.
+Geoffrey Huntley, in ["Software development now costs less than the wage of a minimum wage worker"](https://ghuntley.com/real/), pushes the economic argument furthest. He argues software economics have collapsed, org charts are flattening, and model-first companies are eating incumbents on margin.
 
-And the ACM paper ["Redefining the Software Engineering Profession for AI"](https://dl.acm.org/doi/10.1145/3779312) gives this a precise name: **seniority-biased technological change**. AI amplifies engineers who already possess systems judgement while imposing drag on early-in-career developers who lack the context to steer, verify, and integrate AI output.
+And the ACM piece ["Redefining the Software Engineering Profession for AI"](https://dl.acm.org/doi/10.1145/3779312) gives this a precise name: **seniority-biased technological change**. AI amplifies engineers who already possess systems judgement while imposing drag on early-in-career developers who lack the context to steer, verify, and integrate output.
 
 <img class="image-framed" src="/images/ai/junior-four-views-blind-spot.jpg" alt="Retro propaganda poster showing four suited figures on pillars looking outward through telescopes while a small worker stands unseen in the gap below.">
 
@@ -24,9 +24,9 @@ Four perspectives. One gap: none of them land on a structural fix for the people
 
 Daniel's advice is good advice. It fails under real conditions.
 
-"Manufacture the struggle" assumes a junior engineer has the autonomy to slow down when their team is shipping at AI-accelerated pace. It assumes their manager measures learning, not velocity. It assumes peer pressure from teammates who *are* pasting everything into Claude won't override good intentions within a week.
+"Manufacture the struggle" assumes a junior engineer has autonomy to slow down when their team is shipping at AI-accelerated pace. It assumes their manager measures learning, not velocity. It assumes peer pressure from teammates who *are* pasting everything into Claude won't override good intentions within a week.
 
-Huntley's economics make this worse. When software development costs less than minimum wage, the pressure to produce at AI-accelerated rates isn't a cultural problem you can resist with discipline. It's a market force. The space Daniel is asking juniors to carve out for deliberate practice is the first thing that gets squeezed.
+Huntley's argument makes this worse. If software development is getting priced this aggressively, pressure to produce at AI-accelerated rates isn't just a cultural problem you can resist with discipline. It's a market force. The space Daniel asks juniors to carve out for deliberate practice is the first thing that gets squeezed.
 
 The acceleration trap is self-reinforcing: faster output creates higher expectations, higher expectations demand more AI reliance, less time for the deliberate practice Daniel is prescribing.
 
@@ -40,7 +40,7 @@ The ACM paper gives us the frame: AI amplifies engineers who already have system
 
 Jason Wei's [asymmetry of verification](https://www.jasonwei.net/blog/asymmetry-of-verification-and-verifiers-law) - that AI training effectiveness correlates with how easily you can verify the output - applies just as well to AI *usage*. Call it Verifier's Law for the practitioner side: AI is a force multiplier for your ability to verify, not a replacement for it.
 
-The Project Societas example from the ACM paper illustrates this. Seven part-time engineers, 110,000 lines of code, 98% AI-generated. Human work shifted to directing: specifying goals, verifying correctness, integrating output. That's a story about people who already knew what good code looked like. It is not a template for how a junior should work.
+The Project Societas example in the ACM piece illustrates this. The authors report seven part-time engineers, 110,000 lines of code, and 98% AI-generated output. Human work shifted to directing: specifying goals, verifying correctness, integrating output. That's a story about people who already knew what good code looked like. It is not a template for how a junior should work.
 
 A senior reviews AI-generated code and spots the subtle race condition, the missing edge case, the architectural choice that will hurt in six months. A junior reviews the same code and it looks... fine. It compiles. The tests pass. The PR gets approved. The bug ships three sprints later.
 
@@ -50,7 +50,7 @@ We're putting junior engineers in a role - AI output verifier - that requires th
 
 <img class="basic-alignment left flex-content" src="/images/ai/junior-right-seat-right-work.jpg" alt="Retro poster showing five doors: unsupervised AI output crossed out with a warning symbol, and four open doors for research, failure analysis, tooling, and mentored review.">
 
-Huntley's flattened org chart - senior ICs directing AI agents, middle management dissolved - is probably directionally correct for greenfield companies. But most of the industry has existing systems, existing teams, and existing junior engineers already on the payroll. The question isn't whether to hire juniors in an AI-native startup. It's what to do with the ones you have.
+Huntley's flattened org chart - senior ICs directing AI agents, middle management dissolved - is probably directionally correct for some greenfield companies. But most of the industry has existing systems, existing teams, and existing junior engineers already on the payroll. The question isn't whether to hire juniors in an AI-native startup. It's what to do with the ones you have.
 
 This suggests a different starting point: reconsider whether AI-assisted production work should be a junior engineer's primary role. And when they do work on production code, give them room to fail safely - with guardrails, not blame.
 
@@ -76,14 +76,40 @@ The pattern is always the same: documentation, tooling, and direct support desig
 
 None of this requires telling anyone to struggle harder. It requires building environments where the right kind of struggle is the natural consequence of the work itself.
 
+## Where this can work
+
+There are teams where junior AI-assisted shipping *does* work well: narrow domains, strong test coverage, strict review culture, and clear architectural boundaries. In those environments, juniors can move fast with AI and still build judgement because errors are caught early and discussed explicitly.
+
+But that's the point. Success there comes from infrastructure and supervision quality, not from personal willpower alone. If those conditions are missing, "just struggle harder" still fails.
+
 ## What this means for teams
 
 <img src="/images/ai/junior-engineers-or-operators.jpg" alt="Propaganda poster of a balance scale overloaded with implement-with-AI tickets on one side and investigate, evaluate, explore cards on the other. Caption: engineers or prompt operators?">
 
-Look at your junior engineers' work. How many are "implement this feature with AI assistance"? How many are "investigate why X behaves this way" or "evaluate whether Y would solve our Z problem"?
+Look at what your junior engineers are actually doing:
 
-The ratio tells you whether you're building engineers or building prompt operators.
+- How many tickets are "implement with AI assistance" versus "investigate/evaluate/explain"?
+- How often are juniors doing mentored verification instead of solo verification?
+- Which guardrails fail fast (CI, tests, policy checks) before review?
+- Where can juniors own low-risk exploration with clear feedback loops?
+- Are you measuring only velocity, or learning signals too?
+
+Those answers tell you whether you're building engineers or building prompt operators.
 
 And this matters beyond your current team. Every generation of engineers has reshaped the profession by arriving with different instincts. If we let the junior role collapse into unsupervised AI output verification - the one task they're least equipped for - we lose that pipeline entirely.
 
 Give them the right work. Build the guardrails. Let them explore, break things, and build the judgement that makes AI actually useful. The investment pays for itself.
+
+---
+
+**References**
+
+[1] Turkovic, I. "AI Made Writing Code Easier. It Made Being an Engineer Harder." 2026. [https://www.ivanturkovic.com/2026/02/25/ai-made-writing-code-easier-engineering-harder/](https://www.ivanturkovic.com/2026/02/25/ai-made-writing-code-easier-engineering-harder/)
+
+[2] Daniel. "AI is Making Junior Devs Useless." 2026. [https://www.beabetterdev.com/2026/03/01/ai-is-making-junior-devs-useless/](https://www.beabetterdev.com/2026/03/01/ai-is-making-junior-devs-useless/)
+
+[3] Huntley, G. "Software development now costs less than the wage of a minimum wage worker." 2026. [https://ghuntley.com/real/](https://ghuntley.com/real/)
+
+[4] Russinovich, M. and Hanselman, S. "Redefining the Software Engineering Profession for AI." Communications of the ACM, Online First, 2026. [https://dl.acm.org/doi/10.1145/3779312](https://dl.acm.org/doi/10.1145/3779312)
+
+[5] Wei, J. "Asymmetry of verification and verifier's law." 2026. [https://www.jasonwei.net/blog/asymmetry-of-verification-and-verifiers-law](https://www.jasonwei.net/blog/asymmetry-of-verification-and-verifiers-law)

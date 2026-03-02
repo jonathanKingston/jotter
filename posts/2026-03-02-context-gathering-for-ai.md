@@ -10,7 +10,7 @@ That answer shapes everything: cost, latency, accuracy, and whether you can veri
 
 ## The landscape
 
-<img class="basic-alignment right flex-content" src="/images/ai/context-tradeoffs-mathcore-debate.jpg" alt="People at a whiteboard comparing context gathering approaches.">
+<img class="basic-alignment right flex-content" src="/images/ai/context-tradeoffs-mathcore-debate.webp" alt="People at a whiteboard comparing context gathering approaches.">
 
 **Prompt engineering at existing tooling** (Copilot 365, Asana AI, etc.) relies on vendor fetch strategies you cannot see inside. Convenient until the tool decides a document is irrelevant and you do not find out until the output is wrong.
 
@@ -166,7 +166,7 @@ The goldilocks zone for training data is not necessarily the newest or largest c
 
 ### What training metrics tell you
 
-<img class="basic-alignment left flex-content" src="/images/ai/context-ideas-debugging-traceability.jpg" alt="AI output debugging illustration focused on tracing input, retrieval, and tool calls.">
+<img class="basic-alignment left flex-content" src="/images/ai/context-ideas-debugging-traceability.webp" alt="AI output debugging illustration focused on tracing input, retrieval, and tool calls.">
 
 When you kick off a fine-tuning run, you will see numbers streaming in: loss dropping, accuracy climbing, maybe entropy moving around. It is tempting to watch loss decrease and assume things are working. These metrics can mislead if you do not know what they are measuring.
 
@@ -197,7 +197,7 @@ Training metrics tell you the model is learning. LLM-as-judge tells you whether 
 
 ## Picking the right approach
 
-<img class="basic-alignment right flex-content" src="/images/ai/context-ideas-ship-criteria-checklist.jpg" alt="Ship criteria checklist illustration for AI features with go or no-go framing.">
+<img class="basic-alignment right flex-content" src="/images/ai/context-ideas-ship-criteria-checklist.webp" alt="Ship criteria checklist illustration for AI features with go or no-go framing.">
 
 - **Default to RAG** when your knowledge changes frequently, when you need to trace outputs back to source documents, or when you are just getting started and want fast iteration on what context matters.
 - **Use long context** for prototyping and one-off analysis where simplicity beats cost, or when the full input is small enough that inference cost is acceptable.

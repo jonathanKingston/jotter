@@ -1,0 +1,16 @@
+---
+layout: sitemap.liquid
+permalink: "/sitemap.xml"
+---
+  <url>
+    <loc>{{ site.base_url }}/</loc>
+  </url>
+{% assign posts_sorted = collections.posts.pages | sort: "published_date" | reverse %}
+{% for post in posts_sorted %}
+  <url>
+    <loc>{{ site.base_url }}{{ post.permalink | prepend: "/" }}</loc>
+    {% if post.published_date %}
+    <lastmod>{{ post.published_date | date: "%Y-%m-%d" }}</lastmod>
+    {% endif %}
+  </url>
+{% endfor %}

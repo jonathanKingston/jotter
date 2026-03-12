@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+  {% include "head.liquid" %}
+
+  <body>
+
+    {% include "header.liquid" %}
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="https://schema.org/WebPage">
+          <header class="post-header">
+            <h1 class="post-title" itemprop="name">{{ page.title }}</h1>
+            {% assign published_date = page.data.published %}
+            {% assign updated_date = page.data.updated %}
+            {% assign published_date_display = published_date | split: " " | first %}
+            {% assign updated_date_display = updated_date | split: " " | first %}
+            {% assign show_updated_date = false %}
+            {% if updated_date_display != blank and updated_date_display != published_date_display %}
+              {% assign show_updated_date = true %}
+            {% endif %}
+            {% if published_date_display != blank or show_updated_date %}
+            <p class="post-meta">
+              {% if published_date_display != blank %}
+              <span>Published <time datetime="{{ published_date_display }}" itemprop="datePublished">{{ published_date_display }}</time></span>
+              {% endif %}
+              {% if show_updated_date %}
+                {% if published_date_display != blank %}<br>{% endif %}
+              <span>Last updated <time datetime="{{ updated_date_display }}" itemprop="dateModified">{{ updated_date_display }}</time></span>
+              {% endif %}
+            </p>
+            {% endif %}
+          </header>
+
+          <div class="post-content" itemprop="mainEntityOfPage">
+            {{ page.content }}
+          </div>
+        </article>
+      </div>
+    </div>
+
+    {% include "footer.liquid" %}
+
+  </body>
+
+</html>

@@ -4,7 +4,7 @@ permalink: "/pages/ai-tips/"
 layout: "page.liquid"
 data:
   published: "2026-03-12"
-  updated: ""
+  updated: "2026-03-15"
 ---
 
 ## General tips
@@ -17,7 +17,8 @@ data:
     - Clear chats and context windows regularly.
     - Aim to attach only the most relevant context to the current request.
     - Avoid too many rules and tools.
-- Understanding some basics of machine learning will assist you reasoining with why models behave the way they do.
+- Understanding some basics of machine learning will assist you reasoining with why models behave the way they do. *E.g. percieve, reason, learn, act are the core components of the LLM lifecycle. Expert systems are a good analogy for rules.*
+- Where full automation might be useful: Monotonous tasks with low risk of failure. *E.g. use LLM as a judge to flag for reviews or tag outputs for review.*
 
 ## Rules, skills and documentation
 
@@ -51,6 +52,7 @@ data:
 - Don't use the model to generate endless mocks, property testing is often easier to manage.
 - Use hooks to trigger test and linting on code changes.
 - Ask models to encode agentic behaviour into tests.
+
 
 
 

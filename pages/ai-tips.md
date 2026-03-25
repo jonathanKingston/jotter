@@ -20,6 +20,11 @@ data:
 - Understanding some basics of machine learning will assist you reasoining with why models behave the way they do. *E.g. percieve, reason, learn, act are the core components of the LLM lifecycle. Expert systems are a good analogy for rules.*
 - Where full automation might be useful: Monotonous tasks with low risk of failure. *E.g. use LLM as a judge to flag for reviews or tag outputs for review.*
 
+## Vibe coding
+
+- Vibe coding needs guidance to allow for structure to prevent chaos. *E.g. As codebases grow, debt becomes something that needs to be managed.*
+- Ordering of changes is important to avoid conflicts and maintainability. Resolving issues earlier is more important than ever.
+
 ## Rules, skills and documentation
 
 - Make AI work for everyone:

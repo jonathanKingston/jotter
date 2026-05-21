@@ -24,7 +24,7 @@ data:
 
 - Vibe coding needs guidance to allow for structure to prevent chaos. *E.g. As codebases grow, debt becomes something that needs to be managed.*
 - Ordering of changes is important to avoid conflicts and maintainability. Resolving issues earlier is more important than ever.
-- How a task is verified/validated is often work dependent but is often the most important part of agent work. See also: (Asymmetry of verification and verifier’s rule)[https://www.jasonwei.net/blog/asymmetry-of-verification-and-verifiers-law]
+- How a task is verified/validated is often work dependent but is often the most important part of agent work. See also: [Asymmetry of verification and verifier’s rule](https://www.jasonwei.net/blog/asymmetry-of-verification-and-verifiers-law)
 
 ## Rules, skills and documentation
 

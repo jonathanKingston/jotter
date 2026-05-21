@@ -4,7 +4,7 @@ permalink: "/pages/ai-tips/"
 layout: "page.liquid"
 data:
   published: "2026-03-12"
-  updated: "2026-03-15"
+  updated: "2026-05-21"
 ---
 
 ## General tips
@@ -12,18 +12,19 @@ data:
 - Question everything.
 - Use multiple models to cross validate output.
 - Ask models to assist with writing prompts and rules. Then validate the output and refine.
-- Focus more on describing ambitiously aims rather than how to achieve them. *E.g. instead of using AI to write a similar feature to before, describe the landscape of the nth feature and how we'd scale to that with mimimal effort and ideally less GenAI.*
+- Focus more on describing ambitious aims rather than how to achieve them. *E.g. instead of using AI to write a similar feature to before, describe the landscape of the nth feature and how we'd scale to that with minimal effort and ideally less GenAI.*
 - Context is key to getting the best output from the model.
     - Clear chats and context windows regularly.
     - Aim to attach only the most relevant context to the current request.
     - Avoid too many rules and tools.
-- Understanding some basics of machine learning will assist you reasoining with why models behave the way they do. *E.g. percieve, reason, learn, act are the core components of the LLM lifecycle. Expert systems are a good analogy for rules.*
+- Understanding some basics of machine learning will assist you reasoning with why models behave the way they do. *E.g. perceive, reason, learn, act are the core components of the LLM lifecycle. Expert systems are a good analogy for rules.*
 - Where full automation might be useful: Monotonous tasks with low risk of failure. *E.g. use LLM as a judge to flag for reviews or tag outputs for review.*
 
 ## Vibe coding
 
 - Vibe coding needs guidance to allow for structure to prevent chaos. *E.g. As codebases grow, debt becomes something that needs to be managed.*
 - Ordering of changes is important to avoid conflicts and maintainability. Resolving issues earlier is more important than ever.
+- How a task is verified/validated is often work dependent but is often the most important part of agent work. See also: (Asymmetry of verification and verifier’s rule)[https://www.jasonwei.net/blog/asymmetry-of-verification-and-verifiers-law]
 
 ## Rules, skills and documentation
 
@@ -38,7 +39,7 @@ data:
     - Document old patterns clearly and their preferred alternatives.
 - Progressive disclosure prevents the model suffering from too much context.
 - Wayfind the codebase and processes lightly.
-- Regularly review rules for effectiveness and relevance.
+- Regularly review rules for effectiveness and relevance. Consider making a skill to do this refinement after a failing run.
 - Precision:
     - Avoid lengthy prompts or rules trying to cover everything with high precision.
     - If a codebase is idiomatic, less is more. Don't try to document how language or library features work.

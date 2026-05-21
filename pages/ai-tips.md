@@ -17,14 +17,33 @@ data:
     - Clear chats and context windows regularly.
     - Aim to attach only the most relevant context to the current request.
     - Avoid too many rules and tools.
+    - In ambiguity, models default to the statistical average of the internet — rarely what you want. Feed high-precision context.
 - Understanding some basics of machine learning will assist you reasoning with why models behave the way they do. *E.g. perceive, reason, learn, act are the core components of the LLM lifecycle. Expert systems are a good analogy for rules.*
 - Where full automation might be useful: Monotonous tasks with low risk of failure. *E.g. use LLM as a judge to flag for reviews or tag outputs for review.*
+
+## Workflow patterns
+
+- Default to cloud agents to run from anywhere and parallelise across environments.
+- When an agent goes off the rails, don't rescue it. Ask it to summarise progress, edit that into a fresh prompt, start over.
+- Scope agent autonomy to areas with strong guardrails and a human fallback.
+- In brownfield, keep changes small (ideally under ~1,000 lines).
+
+## Where agents shine
+
+- Greenfield: easy but less interesting. Adversarial competing agents plus regression and compliance tests work well.
+- Brownfield: highest value is research and bug finding, plus chained flows where each agent has a narrow job.
 
 ## Vibe coding
 
 - Vibe coding needs guidance to allow for structure to prevent chaos. *E.g. As codebases grow, debt becomes something that needs to be managed.*
 - Ordering of changes is important to avoid conflicts and maintainability. Resolving issues earlier is more important than ever.
+
+## Verification
+
 - How a task is verified/validated is often work dependent but is often the most important part of agent work. See also: [Asymmetry of verification and verifier’s rule](https://www.jasonwei.net/blog/asymmetry-of-verification-and-verifiers-law)
+- Get the agent to repeat back what it built.
+- Use a second agent (different prompt or model) to mark the first.
+- Lean on run artefacts (videos, logs, traces).
 
 ## Rules, skills and documentation
 

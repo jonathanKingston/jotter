@@ -9,6 +9,8 @@ data:
 
 The lethal trifecta is the security heuristic I reach for most often with agents. Private data, untrusted content, an exfiltration path: hold all three in one context and you have a confused deputy waiting to happen. Simon Willison named the pattern clearly in June 2025, and it has been the easiest way to explain indirect prompt injection to people who do not read security papers.
 
+<img class="image-framed" src="/images/ai/trifecta-capability-not-safety.webp" alt="Retro poster: private data, untrusted content, and exfil path converge on a confused deputy agent. Caption: the trifecta tells you what it can do, not whether it should.">
+
 But it operates at the wrong altitude, and the gap matters more as agents get deployed into real organisations.
 
 The trifecta is a capability test. It asks what an agent *can* do, and answers in binary. You either hold all three powers or you don't. What it cannot tell you is whether a given action is actually harmful, because harm is not a property of the capability. It is a property of the context the capability acts in.
@@ -21,7 +23,11 @@ This is why eval and safety end up task-specific and company-specific, and it is
 
 The cleaner model has been sitting in the privacy literature for twenty years. Helen Nissenbaum's contextual integrity defines a flow of information as appropriate or not relative to a context: who is sending, who is receiving, who the data is about, and under what norm. Move the same information across a context boundary and an entirely acceptable flow becomes a violation. A nurse telling a specialist about your diagnosis is fine. The same nurse telling your employer is not. Nothing about the data changed.
 
-That maps onto agents far better than a capability checklist, and recent benchmarks have made it measurable. ConfAIde and PrivacyLens (2024) showed models disclosing information in contexts a human would not, including during agent trajectories even when explicitly told to protect privacy. The model often knew the norm when asked directly and broke it when acting.
+That maps onto agents far better than a capability checklist, and recent benchmarks have made it measurable.
+
+<img class="image-framed" src="/images/ai/contextual-integrity-same-data.webp" alt="Retro two-panel poster: the same diagnosis shared with a specialist is appropriate, shared with an employer is a violation. Caption: nothing about the data changed.">
+
+ConfAIde and PrivacyLens (2024) showed models disclosing information in contexts a human would not, including during agent trajectories even when explicitly told to protect privacy. The model often knew the norm when asked directly and broke it when acting.
 
 CI-Work (Fu et al., 2026) takes this into the enterprise: upward to your manager, lateral to a peer, outward to a third party. Frontier models violated contextual norms between 16% and 51% of the time. For anyone deploying enterprise agents, the uncomfortable part is that higher task utility correlated with *more* privacy violations. The very thing that makes an enterprise agent useful, pulling in broad internal context to act on your behalf, is the thing that drives the leak.
 

@@ -11,6 +11,8 @@ In [the first post](https://jotter.jonathankingston.co.uk/blog/2026/06/06/the-tr
 
 This post is about the question above all of that.
 
+<img class="image-framed" src="/images/ai/appropriateness-every-check-passes.webp" alt="Retro poster: an agent's clipboard shows capability, flow, policy, and consent all checked, but the recipient is harmed by content matched to hidden state the system cannot see. Caption: every check passes, still harmful.">
+
 ## When every check passes and the act is still harmful
 
 Picture a marketing agent that sends a personalised alcohol offer to a recovering alcoholic. Or a support agent that, asked for help, surfaces a poorly chosen example to someone living with domestic abuse. Walk the requirements from part one in order. The flow is sanctioned: the user opted into marketing, the support channel is exactly the consented one. The capability is benign: send a message, cite an example. A policy file would very likely permit both. No trifecta violation, no contextual-integrity breach in Nissenbaum's sense, no missing authorisation. Every check passes. And the act is still harmful.
@@ -37,7 +39,11 @@ The first is verification. Per-tool checks work because they target properties y
 
 The second is consent. The consumer is a principal whose boundary is being crossed with no channel to have expressed it—the gap [verifiable consent](https://jotter.jonathankingston.co.uk/blog/2026/02/22/consent-is-all-you-need/) is meant to close. But consent is necessary and not sufficient. The vulnerable person often cannot or will not articulate the boundary in advance, and the company is a separate principal with its own stake. Even perfect consent enforcement leaves substantive judgment that someone has to make and own. That judgment cannot be made deterministic. Someone has to make the call, and someone has to own it.
 
-I wish this ended in a neat architecture diagram. It does not. The harm classes are heterogeneous and sit at different levels: capability misuse at the bottom, inappropriate flow above it, missing authority above that, and substantive appropriateness at the top. Each level needs its own mechanism, and the mechanisms are partial and overlapping by necessity. CI-Work already showed that utility and privacy pull against each other rather than stacking neatly. And the appropriateness question at the top never fully mechanises.
+I wish this ended in a neat architecture diagram. It does not. The harm classes are heterogeneous and sit at different levels: capability misuse at the bottom, inappropriate flow above it, missing authority above that, and substantive appropriateness at the top.
+
+<img src="/images/ai/safety-four-levels.svg" alt="Diagram of four safety levels from capability at the bottom to substantive appropriateness at the top, with a note that the top is hardest to automate.">
+
+Each level needs its own mechanism, and the mechanisms are partial and overlapping by necessity. CI-Work already showed that utility and privacy pull against each other rather than stacking neatly. And the appropriateness question at the top never fully mechanises.
 
 The trifecta audit tells you what the agent can do. A policy-scored eval like ST-WebAgentBench tells you whether it should, here, for you. Above both sits a judgment about whether the outcome is appropriate for *this* person on behalf of *these* stakeholders that no benchmark retires. Build the controls from part one because each level catches a class the others miss. Do not expect the top one to finish the job.
 

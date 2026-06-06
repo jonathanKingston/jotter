@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" role="img" aria-labelledby="title desc">
   <title id="title">Four levels of agent safety</title>
-  <desc id="desc">Capability misuse at the bottom, then inappropriate flow, missing authority, and substantive appropriateness at the top. Each level catches a class the others miss.</desc>
+  <desc id="desc">Capability at the bottom, then norms and policy, authority, and substantive appropriateness at the top. Each level catches a class the others miss.</desc>
   <defs>
     <style>
       text { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }

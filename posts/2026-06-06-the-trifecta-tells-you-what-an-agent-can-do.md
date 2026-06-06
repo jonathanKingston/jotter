@@ -31,6 +31,8 @@ ConfAIde (Mireshghallah et al., ICLR 2024) showed GPT-4 and ChatGPT disclosing i
 
 CI-Work (Fu et al., 2026) takes this into the enterprise: upward to your manager, lateral to a peer, outward to a third party. Frontier models violated contextual norms between 16% and 51% of the time. For anyone deploying enterprise agents, higher task utility correlated with *more* privacy violations. The very thing that makes an enterprise agent useful, pulling in broad internal context to act on your behalf, is the thing that drives the leak.
 
+MAGPIE (2025) shows the failure compounding once agents talk to each other. In multi-agent tasks where keeping a secret mattered, agents leaked up to half of it. Under pressure to finish, frontline models sometimes resorted to manipulation. Norm-following does not survive contact with task pressure.
+
 ## Deployment policy
 
 Contextual integrity tells you safety is contextual. It does not tell you whose context. That is where deployment policy comes in, and ST-WebAgentBench (Levy et al., IBM Research) is the clearest answer I have seen.
@@ -55,7 +57,7 @@ Conseca (Tsai and Bagdasarian, HotOS 2025) comes closest to naming this in code:
 
 When that enforcement is missing, the trifecta is what you are left with. "Don't combine these three capabilities" is the only lever available because the system has no way to represent what it was actually permitted to do. The trifecta is the fallback you get without verifiable consent.
 
-That is a lot of engineering, and it is worth building. Deterministic gates on every connector, a contextual-integrity check and a policy check on every flow, verifiable consent before each action, an eval scored against your deployment's policy files. My first instinct is that this is roughly what good looks like.
+That is a lot of engineering, and it is worth building. Each connector deserves its own context-dependent protections: evals, graders, and hard-stop checks tuned to what that tool can do in *this* deployment, not one platform-wide filter applied uniformly. Deterministic gates on every connector, a contextual-integrity check and a policy check on every flow, verifiable consent before each action, an eval scored against your deployment's policy files. My first instinct is that this is roughly what good looks like.
 
 It still is not the whole of safety. [Part two](https://jotter.jonathankingston.co.uk/blog/2026/06/06/appropriateness-is-what-safety-cannot-mechanise/) is about the fourth level: what remains when all of those checks pass.
 
@@ -68,6 +70,7 @@ It still is not the whole of safety. [Part two](https://jotter.jonathankingston.
 - Niloofar Mireshghallah et al. "Can LLMs Keep a Secret?" (ConfAIde). *ICLR* 2024. arXiv:2310.17884.
 - Yijia Shao et al. "PrivacyLens." *NeurIPS* 2024 Datasets and Benchmarks. arXiv:2409.00138.
 - Wenjie Fu et al. "CI-Work: Benchmarking Contextual Integrity in Enterprise LLM Agents." 2026. arXiv:2604.21308.
+- "MAGPIE: A Benchmark for Multi-Agent Contextual Privacy Evaluation." 2025. arXiv:2510.15186.
 - Ido Levy et al. "ST-WebAgentBench." IBM Research. arXiv:2410.06703.
 - Lillian Tsai, Eugene Bagdasarian. "Contextual Agent Security: A Policy for Every Purpose" (Conseca). *HotOS* 2025. arXiv:2501.17070.
 - "How to evaluate control measures for LLM agents? A trajectory from today to superintelligence." 2025. arXiv:2504.05259.

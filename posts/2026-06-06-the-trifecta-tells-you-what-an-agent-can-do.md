@@ -27,7 +27,7 @@ That maps onto agents far better than a capability checklist, and recent benchma
 
 <img class="image-framed" src="/images/ai/contextual-integrity-same-data.webp" alt="Retro two-panel poster: the same diagnosis shared with a specialist is appropriate, shared with an employer is a violation. Caption: nothing about the data changed.">
 
-ConfAIde and PrivacyLens (2024) showed models disclosing information in contexts a human would not, including during agent trajectories even when explicitly told to protect privacy. The model often knew the norm when asked directly and broke it when acting.
+ConfAIde (Mireshghallah et al., ICLR 2024) showed GPT-4 and ChatGPT disclosing information in contexts a human would not, 39% and 57% of the time. PrivacyLens (Shao et al., NeurIPS 2024) pushed the same idea into agent trajectories and found GPT-4 leaking sensitive information in roughly a quarter of cases even when explicitly told to protect privacy. The model often knew the norm when asked directly and broke it when acting.
 
 CI-Work (Fu et al., 2026) takes this into the enterprise: upward to your manager, lateral to a peer, outward to a third party. Frontier models violated contextual norms between 16% and 51% of the time. For anyone deploying enterprise agents, higher task utility correlated with *more* privacy violations. The very thing that makes an enterprise agent useful, pulling in broad internal context to act on your behalf, is the thing that drives the leak.
 
@@ -40,6 +40,8 @@ It scores agents not on whether they finished the task but on whether they finis
 The detail that matters here: the policies are authored, not baked in. There is a policy-authoring interface and a template format, so the same workflow passes or fails depending on what a given organisation has encoded. Your finance team's "never initiate a payment without confirmation" and another firm's "never touch production data" are different policy files over the same agent. The benchmark scores the deployment, not just the model.
 
 You cannot read safety off the model. You read it off the deployment.
+
+That is not only a privacy-benchmark finding. Control-evaluation work on LLM agents (arXiv:2504.05259) treats deployment context as a first-class variable: oversight, criticality of systems touched, incentives toward autonomy. The International AI Safety Report 2026 makes environmental criticality a determinant of how bad a loss of control gets. Frontier AI Regulation (2023) argued risk is contextual and should be judged counterfactually against what was already possible. Recent reliability work (arXiv:2602.16666) argues which safety dimensions matter, and at what threshold, depends on the application, the way nuclear safety prices expected consequence rather than raw failure rate.
 
 Together, contextual integrity and deployment policy make up the norms-and-policy level. Nissenbaum supplies the norm half; your policy files supply the org half. The question at this level is: should this flow happen here, under your rules?
 
@@ -68,3 +70,7 @@ It still is not the whole of safety. [Part two](https://jotter.jonathankingston.
 - Wenjie Fu et al. "CI-Work: Benchmarking Contextual Integrity in Enterprise LLM Agents." 2026. arXiv:2604.21308.
 - Ido Levy et al. "ST-WebAgentBench." IBM Research. arXiv:2410.06703.
 - Lillian Tsai, Eugene Bagdasarian. "Contextual Agent Security: A Policy for Every Purpose" (Conseca). *HotOS* 2025. arXiv:2501.17070.
+- "How to evaluate control measures for LLM agents? A trajectory from today to superintelligence." 2025. arXiv:2504.05259.
+- "Towards a Science of AI Agent Reliability." 2026. arXiv:2602.16666.
+- "International AI Safety Report 2026." arXiv:2602.21012.
+- "Frontier AI Regulation: Managing Emerging Risks to Public Safety." 2023. arXiv:2307.03718.

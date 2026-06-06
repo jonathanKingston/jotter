@@ -7,7 +7,7 @@ data:
   updated: "2026-06-06 00:00"
 ---
 
-In [the first post](https://jotter.jonathankingston.co.uk/blog/2026/06/06/the-trifecta-tells-you-what-an-agent-can-do/), I argued that the lethal trifecta is a capability test, not a safety model. Above capability sit three further levels: norms and policy, authority, and substantive appropriateness. The first post covered the bottom three. Build those controls and you have something defensible.
+In [the first post](https://jotter.jonathankingston.co.uk/blog/2026/06/06/the-trifecta-tells-you-what-an-agent-can-do/), I argued that the lethal trifecta is a capability test, not a safety model. Above capability sit three further levels: norms and policy (contextual integrity plus deployment policy), authority, and substantive appropriateness. The first post covered the bottom three. Build those controls and you have something defensible.
 
 This post is about the fourth.
 
@@ -53,7 +53,7 @@ The trifecta check tells you what the agent can do. An eval scored against your 
 
 - [The trifecta tells you what an agent can do](https://jotter.jonathankingston.co.uk/blog/2026/06/06/the-trifecta-tells-you-what-an-agent-can-do/). Jonathan Kingston, 2026.
 - [Consent is all you need](https://jotter.jonathankingston.co.uk/blog/2026/02/22/consent-is-all-you-need/). Jonathan Kingston, 2026.
-- Helen Nissenbaum. "Privacy as Contextual Integrity." *Washington Law Review* 79, 2004.
+- Helen Nissenbaum. *Privacy in Context: Technology, Policy, and the Integrity of Social Life.* Stanford University Press, 2010.
 - Wenjie Fu et al. "CI-Work." 2026. arXiv:2604.21308.
 - Ido Levy et al. "ST-WebAgentBench." arXiv:2410.06703.
 - Joel Z. Leibo et al. "A theory of appropriateness with applications to generative artificial intelligence." arXiv:2412.19010, 2024.

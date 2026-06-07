@@ -27,6 +27,10 @@
     {% assign meta_description = site.description %}
   {% endif %}
 
+  {% if page.is_draft %}
+  <meta name="robots" content="noindex, nofollow">
+  {% endif %}
+
   {% if is_home and page_content_text != blank and meta_description != page_content_text %}
     {% assign meta_description = meta_description | append: " — " | append: page_content_text %}
   {% endif %}

@@ -11,6 +11,7 @@ permalink: "/sitemap.xml"
   </url>
 {% assign posts_sorted = collections.posts.pages | sort: "published_date" | reverse %}
 {% for post in posts_sorted %}
+  {% if post.is_draft %}{% continue %}{% endif %}
   <url>
     <loc>{{ site.base_url }}{{ post.permalink | prepend: "/" }}</loc>
     {% if post.published_date %}

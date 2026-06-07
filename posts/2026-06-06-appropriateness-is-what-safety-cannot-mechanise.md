@@ -3,6 +3,7 @@ title: "Appropriateness is what safety cannot mechanise"
 categories:
   - AI
   - Security
+is_draft: true
 data:
   updated: "2026-06-06 00:00"
 ---

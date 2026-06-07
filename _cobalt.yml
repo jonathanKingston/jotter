@@ -12,6 +12,7 @@ site:
     bsky_handle: kingstontime.bsky.social
     mastodon_url: https://mastodon.social/@jkt
     mastodon_handle: "@jkt@mastodon.social"
+include_drafts: true
 posts:
   default:
     permalink: /blog/{{year}}/{{month}}/{{day}}/{{slug}}/

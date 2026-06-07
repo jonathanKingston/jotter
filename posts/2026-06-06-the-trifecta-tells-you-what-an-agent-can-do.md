@@ -55,7 +55,7 @@ Conseca (Tsai and Bagdasarian, HotOS 2025) comes closest to naming this in code:
 
 When that enforcement is missing, the trifecta is what you are left with. "Don't combine these three capabilities" is the only lever available because the system has no way to represent what it was actually permitted to do. The trifecta is the fallback you get without verifiable consent.
 
-That is a lot of engineering, and it is worth building. Each connector deserves its own context-dependent protections: evals, graders, and hard-stop checks tuned to what that tool can do in *this* deployment, not one platform-wide filter applied uniformly. Deterministic gates on every connector, a contextual-integrity check and a policy check on every flow, verifiable consent before each action, an eval scored against your deployment's policy files. I would want all of that in place before shipping.
+That is a lot of engineering, and it is worth building. Each connector deserves its own context-dependent protections: evals, graders, and hard-stop checks tuned to what that tool can do in *this* deployment, not one platform-wide filter applied uniformly. Deterministic gates on every connector, a contextual-integrity check and a policy check on every flow, verifiable consent before each action, an eval scored against your deployment's policy files. I would want all of that in place before I'd trust it with real users.
 
 It still is not the whole of safety. [Part two](https://jotter.jonathankingston.co.uk/blog/2026/06/06/appropriateness-is-what-safety-cannot-mechanise/) is about the fourth level: what remains when all of those checks pass.
 

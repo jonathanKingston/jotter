@@ -5,7 +5,7 @@ categories:
   - Security
 is_draft: true
 data:
-  updated: "2026-06-06 00:00"
+  updated: "2026-06-08 00:00"
 ---
 
 The lethal trifecta is the security heuristic I reach for most often with agents. Private data, untrusted content, an exfiltration path: hold all three in one context and you have a confused deputy waiting to happen. I [walked through what that looks like for browser agents](https://jotter.jonathankingston.co.uk/blog/2026/05/10/when-agents-browse-the-web-the-web-wins/) in an earlier post. Simon Willison named the pattern clearly in June 2025, and it has been the easiest way to explain indirect prompt injection to people who do not read security papers.
@@ -14,9 +14,9 @@ The lethal trifecta is the security heuristic I reach for most often with agents
 
 The trifecta is a capability test. It asks what an agent *can* do, and answers in binary. You either hold all three powers or you don't. What it cannot tell you is whether a given action is actually harmful, because harm depends on the context the capability acts in, not on the capability itself.
 
-Take the canonical example from Tsai and Bagdasarian's Conseca paper. Deleting an email is fine when it is clearing out spam and catastrophic when it is destroying evidence. Same capability, same agent, opposite safety verdicts. The deciding factor is the content, the goal, and the account it sits in. None of that is visible to a trifecta check.
+Adapting Conseca's example (Tsai and Bagdasarian), deleting an email may be appropriate when the goal is to erase sensitive messages or clean up trash, or inappropriate depending on the content and whether the address is work or personal. Same capability, same agent, opposite safety verdicts. The deciding factor is the content, the goal, and the account it sits in. None of that is visible to a trifecta check.
 
-This is why eval and safety end up task-specific and company-specific. Better models alone will not change that. This post walks through capability, contextual integrity and org policy rules, and authority. Whether an outcome is right for *this* person is [the subject of the follow-up](https://jotter.jonathankingston.co.uk/blog/2026/06/06/appropriateness-is-what-safety-cannot-mechanise/). The middle layer joins two questions: Helen Nissenbaum's contextual integrity for whether a flow fits the context, and your deployment's policy files for whether your organisation allows it.
+This is why eval and safety end up task-specific and company-specific. Better models alone will not change that. This post walks through three layers above raw capability: contextual integrity and org policy rules, and authority. Capability is the trifecta. The middle layer joins two questions: Helen Nissenbaum's contextual integrity for whether a flow fits the context, and your deployment's policy files for whether your organisation allows it. Authority sits above both. Whether an outcome is right for *this* person is [the subject of the follow-up](https://jotter.jonathankingston.co.uk/blog/2026/06/08/appropriateness-is-what-safety-cannot-mechanise/).
 
 ## Contextual integrity
 
@@ -24,11 +24,11 @@ In *Privacy in Context* (2009), Helen Nissenbaum's contextual integrity defines 
 
 That maps onto agents far better than a capability checklist, and recent benchmarks have made it measurable.
 
+CI-Work (Fu et al., 2026) takes this into the enterprise across five information-flow directions: downward to staff, upward to managers, lateral to peers, diagonal across teams, and external to third parties. Frontier models violated contextual norms between 16% and 51% of the time. For anyone deploying enterprise agents, higher task utility correlated with *more* privacy violations. The very thing that makes an enterprise agent useful, pulling in broad internal context to act on your behalf, is the thing that drives the leak.
+
 <img class="image-framed" src="/images/ai/contextual-integrity-same-data-v2.webp" alt="Retro two-panel poster: the same revenue figures shared with a project peer is appropriate, shared with an external vendor is a violation. Caption: nothing about the data changed.">
 
 ConfAIde (Mireshghallah et al., ICLR 2024) showed GPT-4 and ChatGPT disclosing information in contexts a human would not, 39% and 57% of the time. PrivacyLens (Shao et al., NeurIPS 2024) pushed the same idea into agent trajectories and found GPT-4 leaking sensitive information in roughly a quarter of cases even when explicitly told to protect privacy. The model often knew the norm when asked directly and broke it when acting.
-
-CI-Work (Fu et al., 2026) takes this into the enterprise: upward to your manager, lateral to a peer, outward to a third party. Frontier models violated contextual norms between 16% and 51% of the time. For anyone deploying enterprise agents, higher task utility correlated with *more* privacy violations. The very thing that makes an enterprise agent useful, pulling in broad internal context to act on your behalf, is the thing that drives the leak.
 
 MAGPIE (2025) shows the failure compounding once agents talk to each other. In multi-agent tasks where keeping a secret mattered, agents leaked up to half of it. Under pressure to finish, frontline models sometimes resorted to manipulation. The same models break contextual norms under task pressure that they respect in calm evals.
 
@@ -40,7 +40,7 @@ It scores agents not on whether they finished the task but on whether they finis
 
 The policies are authored, not baked in. There is a policy-authoring interface and a template format, so the same workflow passes or fails depending on what a given organisation has encoded. Your finance team's "never initiate a payment without confirmation" and another firm's "never touch production data" are different policy files over the same agent. The benchmark scores the deployment setup, not the model alone.
 
-The same lesson appears in broader agent-control and reliability work: which systems an agent may touch and what oversight you require are part of the safety question, and useful thresholds depend on expected harm if something goes wrong, not raw failure rate alone.
+Broader agent-control work makes the same point about which systems an agent may touch and what oversight you require. On thresholds, Rabanser et al.'s *Science of AI Agent Reliability* (2026) argues against single-metric success: mean task completion cannot distinguish a formatting slip from a catastrophic delete, and useful safety thresholds depend on bounded error severity, not raw failure rate alone.
 
 Contextual integrity covers whether a flow fits the social context; your policy files cover whether your organisation allows it. The question here is: should this flow happen here, under your rules?
 
@@ -56,7 +56,7 @@ When that enforcement is missing, the trifecta is what you are left with. "Don't
 
 That is a lot of engineering, and it is worth building. Deterministic gates on every connector, a contextual-integrity check and a policy check on every flow, verifiable consent before each action, an eval scored against your deployment's policy files, and [the same measure-don't-hope discipline I argued for skills and MDC files](https://jotter.jonathankingston.co.uk/blog/2026/02/17/magic-words-need-measuring-sticks/). I would want all of that in place before I'd trust it with real users.
 
-It still is not the whole of safety. [Part two](https://jotter.jonathankingston.co.uk/blog/2026/06/06/appropriateness-is-what-safety-cannot-mechanise/) is about what remains when all of those checks pass.
+It still is not the whole of safety. [Part two](https://jotter.jonathankingston.co.uk/blog/2026/06/08/appropriateness-is-what-safety-cannot-mechanise/) is about what remains when all of those checks pass.
 
 ---
 
@@ -71,6 +71,6 @@ It still is not the whole of safety. [Part two](https://jotter.jonathankingston.
 - Ido Levy et al. "ST-WebAgentBench." IBM Research. arXiv:2410.06703.
 - Lillian Tsai, Eugene Bagdasarian. "Contextual Agent Security: A Policy for Every Purpose" (Conseca). *HotOS* 2025. arXiv:2501.17070.
 - "How to evaluate control measures for LLM agents? A trajectory from today to superintelligence." 2025. arXiv:2504.05259.
-- "Towards a Science of AI Agent Reliability." 2026. arXiv:2602.16666.
+- Stephan Rabanser et al. "Towards a Science of AI Agent Reliability." 2026. arXiv:2602.16666.
 - "International AI Safety Report 2026." arXiv:2602.21012.
 - "Frontier AI Regulation: Managing Emerging Risks to Public Safety." 2023. arXiv:2307.03718.

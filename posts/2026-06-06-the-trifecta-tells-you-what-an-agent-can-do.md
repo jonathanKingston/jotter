@@ -21,7 +21,7 @@ This is why eval and safety end up task-specific and company-specific. That shap
 
 ## Contextual integrity
 
-The cleaner model has been sitting in the privacy literature for twenty years. In *Privacy in Context* and the earlier law-review paper that introduced the framework, Helen Nissenbaum's contextual integrity defines a flow of information as appropriate or not relative to a context: who is sending, who is receiving, who the data is about, and under what norm. Move the same information across a context boundary and an entirely acceptable flow becomes a violation. A nurse telling a specialist about your diagnosis is fine. The same nurse telling your employer is not. Nothing about the data changed.
+Helen Nissenbaum introduced contextual integrity in a 2004 law-review paper and developed it further in *Privacy in Context* (2009). The framework defines a flow of information as appropriate or not relative to a context: who is sending, who is receiving, who the data is about, and under what norm. Move the same information across a context boundary and an entirely acceptable flow becomes a violation. A nurse telling a specialist about your diagnosis is fine. The same nurse telling your employer is not. Nothing about the data changed.
 
 That maps onto agents far better than a capability checklist, and recent benchmarks have made it measurable.
 

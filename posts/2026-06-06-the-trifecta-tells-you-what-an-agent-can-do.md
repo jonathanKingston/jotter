@@ -40,7 +40,7 @@ It scores agents not on whether they finished the task but on whether they finis
 
 The policies are authored, not baked in. There is a policy-authoring interface and a template format, so the same workflow passes or fails depending on what a given organisation has encoded. Your finance team's "never initiate a payment without confirmation" and another firm's "never touch production data" are different policy files over the same agent. The benchmark scores the deployment setup, not the model alone.
 
-The same lesson appears in broader agent-control and reliability work: which systems an agent may touch and what oversight you require are part of the safety question, and useful thresholds depend on expected harm if something goes wrong—not raw failure rate alone.
+The same lesson appears in broader agent-control and reliability work: which systems an agent may touch and what oversight you require are part of the safety question, and useful thresholds depend on expected harm if something goes wrong, not raw failure rate alone.
 
 Contextual integrity covers whether a flow fits the social context; your policy files cover whether your organisation allows it. The question here is: should this flow happen here, under your rules?
 
@@ -54,7 +54,7 @@ Conseca (Tsai and Bagdasarian, HotOS 2025) comes closest to naming this in code:
 
 When that enforcement is missing, the trifecta is what you are left with. "Don't combine these three capabilities" is the only lever available because the system has no way to represent what it was actually permitted to do. The trifecta is the fallback you get without verifiable consent.
 
-That is a lot of engineering, and it is worth building. Each connector deserves its own context-dependent protections: evals, graders, and hard-stop checks tuned to what that tool can do in *this* deployment, not one platform-wide filter applied uniformly. Deterministic gates on every connector, a contextual-integrity check and a policy check on every flow, verifiable consent before each action, an eval scored against your deployment's policy files — and [the same measure-don't-hope discipline I argued for skills and MDC files](https://jotter.jonathankingston.co.uk/blog/2026/02/17/magic-words-need-measuring-sticks/). I would want all of that in place before I'd trust it with real users.
+That is a lot of engineering, and it is worth building. Deterministic gates on every connector, a contextual-integrity check and a policy check on every flow, verifiable consent before each action, an eval scored against your deployment's policy files, and [the same measure-don't-hope discipline I argued for skills and MDC files](https://jotter.jonathankingston.co.uk/blog/2026/02/17/magic-words-need-measuring-sticks/). I would want all of that in place before I'd trust it with real users.
 
 It still is not the whole of safety. [Part two](https://jotter.jonathankingston.co.uk/blog/2026/06/06/appropriateness-is-what-safety-cannot-mechanise/) is about what remains when all of those checks pass.
 

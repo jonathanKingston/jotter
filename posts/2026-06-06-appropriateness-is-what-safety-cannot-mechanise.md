@@ -12,7 +12,7 @@ In [the first post](https://jotter.jonathankingston.co.uk/blog/2026/06/06/the-tr
 
 This post is about the fourth check.
 
-<img class="image-framed" src="/images/ai/appropriateness-every-check-passes-v2.webp" alt="Retro poster: an agent's clipboard shows capability, norms, policy, and consent all checked, but the recipient is harmed by a wine offer matched to hidden recovery state the system cannot see. Caption: every check passes, still harmful.">
+<img class="image-framed" src="/images/ai/appropriateness-every-check-passes-v2.webp" alt="Retro poster: an agent's clipboard shows capability, norms, policy, and consent all checked; a wine offer reaches a distressed recipient at her desk whose recovery the system cannot see. Caption: every check passes, still harmful.">
 
 ## When every check passes and the act is still harmful
 

@@ -18,7 +18,7 @@ The trifecta is a capability test. It asks what an agent *can* do, and answers i
 
 Take the canonical example from Tsai and Bagdasarian's Conseca paper. Deleting an email is fine when it is clearing out spam and catastrophic when it is destroying evidence. Same capability, same agent, opposite safety verdicts. The deciding factor is the content, the goal, and the account it sits in. None of that is visible to a trifecta check.
 
-This is why eval and safety end up task-specific and company-specific. That shape will not be engineered away by better models alone. This post walks through three of four checks: capability, norms and policy, and authority. The fourth, whether an outcome is appropriate for *this* person, is [the subject of the follow-up](https://jotter.jonathankingston.co.uk/blog/2026/06/06/appropriateness-is-what-safety-cannot-mechanise/). Norms and policy is one check with two parts: Helen Nissenbaum's contextual integrity for whether a flow fits the context, and your deployment's policy files for whether your organisation allows it.
+This is why eval and safety end up task-specific and company-specific. That shape will not be engineered away by better models alone. This post walks through capability, norms and policy, and authority. Whether an outcome is appropriate for *this* person is [the subject of the follow-up](https://jotter.jonathankingston.co.uk/blog/2026/06/06/appropriateness-is-what-safety-cannot-mechanise/). Norms and policy combines two questions: Helen Nissenbaum's contextual integrity for whether a flow fits the context, and your deployment's policy files for whether your organisation allows it.
 
 ## Contextual integrity
 
@@ -58,7 +58,7 @@ When that enforcement is missing, the trifecta is what you are left with. "Don't
 
 That is a lot of engineering, and it is worth building. Each connector deserves its own context-dependent protections: evals, graders, and hard-stop checks tuned to what that tool can do in *this* deployment, not one platform-wide filter applied uniformly. Deterministic gates on every connector, a contextual-integrity check and a policy check on every flow, verifiable consent before each action, an eval scored against your deployment's policy files — and [the same measure-don't-hope discipline I argued for skills and MDC files](https://jotter.jonathankingston.co.uk/blog/2026/02/17/magic-words-need-measuring-sticks/). I would want all of that in place before I'd trust it with real users.
 
-It still is not the whole of safety. [Part two](https://jotter.jonathankingston.co.uk/blog/2026/06/06/appropriateness-is-what-safety-cannot-mechanise/) is about the fourth check: what remains when all of those checks pass.
+It still is not the whole of safety. [Part two](https://jotter.jonathankingston.co.uk/blog/2026/06/06/appropriateness-is-what-safety-cannot-mechanise/) is about what remains when all of those checks pass.
 
 ---
 

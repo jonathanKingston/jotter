@@ -11,7 +11,7 @@ In [the first post](https://jotter.jonathankingston.co.uk/blog/2026/06/06/the-tr
 
 This post is about the fourth.
 
-<img class="image-framed" src="/images/ai/appropriateness-every-check-passes.webp" alt="Retro poster: an agent's clipboard shows capability, norms, policy, and consent all checked, but the recipient is harmed by content matched to hidden state the system cannot see. Caption: every check passes, still harmful.">
+<img class="image-framed" src="/images/ai/appropriateness-every-check-passes-v2.webp" alt="Retro poster: an agent's clipboard shows capability, norms, policy, and consent all checked, but the recipient is harmed by a wine offer matched to hidden recovery state the system cannot see. Caption: every check passes, still harmful.">
 
 ## When every check passes and the act is still harmful
 
@@ -45,7 +45,7 @@ The second is consent. The consumer is a principal whose boundary is being cross
 
 I wish this ended in a neat architecture diagram. It does not. The harm classes are heterogeneous and sit at four levels: capability at the bottom, norms and policy above it, authority above that, and substantive appropriateness at the top.
 
-<img src="/images/ai/safety-four-levels.svg" alt="Diagram of four safety levels from capability at the bottom to substantive appropriateness at the top, with a note that the top is hardest to automate.">
+<img class="image-framed" src="/images/ai/safety-four-levels.svg" alt="Walkthrough diagram: a personalised alcohol offer email passes capability, norms and policy, and authority gates, but substantive appropriateness still needs a human call and the outcome can remain harmful.">
 
 Each level needs its own mechanism, and the mechanisms are partial and overlapping by necessity. CI-Work already showed that utility and privacy pull against each other rather than stacking neatly. And the appropriateness question at the top never fully mechanises.
 

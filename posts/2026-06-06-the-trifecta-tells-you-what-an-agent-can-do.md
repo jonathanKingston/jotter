@@ -9,7 +9,7 @@ data:
 
 The lethal trifecta is the security heuristic I reach for most often with agents. Private data, untrusted content, an exfiltration path: hold all three in one context and you have a confused deputy waiting to happen. I [walked through what that looks like for browser agents](https://jotter.jonathankingston.co.uk/blog/2026/05/10/when-agents-browse-the-web-the-web-wins/) in an earlier post. Simon Willison named the pattern clearly in June 2025, and it has been the easiest way to explain indirect prompt injection to people who do not read security papers.
 
-<img class="image-framed" src="/images/ai/trifecta-capability-not-safety.webp" alt="Retro poster: private data, untrusted content, and exfil path converge on a confused deputy agent. Caption: the trifecta tells you what it can do, not whether it should.">
+<img class="image-framed" src="/images/ai/trifecta-capability-not-safety-v2.webp" alt="Retro poster: private data, untrusted content, and exfil path converge on a confused deputy agent. Caption: the trifecta tells you what it can do, not whether it should.">
 
 But it operates at the wrong altitude, and the gap matters more as agents get deployed into real organisations.
 
@@ -25,7 +25,7 @@ In *Privacy in Context* (2009), Helen Nissenbaum's contextual integrity defines 
 
 That maps onto agents far better than a capability checklist, and recent benchmarks have made it measurable.
 
-<img class="image-framed" src="/images/ai/contextual-integrity-same-data.webp" alt="Retro two-panel poster: the same diagnosis shared with a specialist is appropriate, shared with an employer is a violation. Caption: nothing about the data changed.">
+<img class="image-framed" src="/images/ai/contextual-integrity-same-data-v2.webp" alt="Retro two-panel poster: the same revenue figures shared with a project peer is appropriate, shared with an external vendor is a violation. Caption: nothing about the data changed.">
 
 ConfAIde (Mireshghallah et al., ICLR 2024) showed GPT-4 and ChatGPT disclosing information in contexts a human would not, 39% and 57% of the time. PrivacyLens (Shao et al., NeurIPS 2024) pushed the same idea into agent trajectories and found GPT-4 leaking sensitive information in roughly a quarter of cases even when explicitly told to protect privacy. The model often knew the norm when asked directly and broke it when acting.
 

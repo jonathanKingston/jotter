@@ -1,44 +1,72 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" role="img" aria-labelledby="title desc">
-  <title id="title">Four levels of agent safety</title>
-  <desc id="desc">Capability at the bottom, then norms and policy, authority, and substantive appropriateness at the top. Each level catches a class the others miss.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 720" role="img" aria-labelledby="title desc">
+  <title id="title">Four-level safety walkthrough</title>
+  <desc id="desc">An agent action passes capability, norms and policy, and authority checks, but substantive appropriateness still needs human judgment. Each gate catches a different failure class.</desc>
   <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#334155"/>
+    </marker>
     <style>
       text { font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-      .label { fill: #0f172a; font-size: 22px; font-weight: 700; }
-      .small { fill: #334155; font-size: 16px; }
-      .tiny { fill: #475569; font-size: 14px; }
+      .title { fill: #0f172a; font-size: 24px; font-weight: 700; }
+      .label { fill: #0f172a; font-size: 18px; font-weight: 700; }
+      .small { fill: #334155; font-size: 14px; }
+      .tiny { fill: #475569; font-size: 12px; }
+      .pass { fill: #166534; font-size: 14px; font-weight: 700; }
+      .warn { fill: #b45309; font-size: 14px; font-weight: 700; }
       .box { stroke-width: 2.5; rx: 14; }
+      .arrow { stroke: #334155; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
     </style>
   </defs>
 
-  <rect x="20" y="20" width="860" height="520" rx="22" fill="#fff7ed" stroke="#fed7aa" stroke-width="2"/>
+  <rect x="20" y="20" width="880" height="680" rx="22" fill="#fff7ed" stroke="#fed7aa" stroke-width="2"/>
 
-  <text x="450" y="58" text-anchor="middle" class="tiny">Each level catches a class the others miss. The top never fully mechanises.</text>
+  <text x="460" y="58" text-anchor="middle" class="title">One action, four gates</text>
+  <text x="460" y="82" text-anchor="middle" class="tiny">Example: send a personalised alcohol offer email</text>
 
-  <rect x="120" y="88" width="660" height="78" class="box" fill="#fdf2f8" stroke="#db2777"/>
-  <text x="450" y="118" text-anchor="middle" class="label">Substantive appropriateness</text>
-  <text x="450" y="146" text-anchor="middle" class="small">Is this right for this person and these stakeholders?</text>
+  <rect x="250" y="104" width="420" height="64" class="box" fill="#ffffff" stroke="#64748b"/>
+  <text x="460" y="132" text-anchor="middle" class="label">Agent action</text>
+  <text x="460" y="154" text-anchor="middle" class="small">Send promo email to one recipient</text>
 
-  <rect x="120" y="182" width="660" height="78" class="box" fill="#fef3c7" stroke="#f59e0b"/>
-  <text x="450" y="212" text-anchor="middle" class="label">Authority</text>
-  <text x="450" y="240" text-anchor="middle" class="small">Was this action authorised and verifiable?</text>
+  <path class="arrow" d="M460 168 V186"/>
 
-  <rect x="120" y="276" width="660" height="78" class="box" fill="#eef2ff" stroke="#6366f1"/>
-  <text x="450" y="306" text-anchor="middle" class="label">Norms and policy</text>
-  <text x="450" y="334" text-anchor="middle" class="small">Should this flow happen here, under your rules?</text>
+  <rect x="170" y="188" width="580" height="88" class="box" fill="#ecfeff" stroke="#0891b2"/>
+  <text x="200" y="218" class="label">1. Capability</text>
+  <text x="200" y="242" class="small">Trifecta: send message only — no private data + untrusted content + exfil path</text>
+  <text x="200" y="262" class="tiny">Catches confused deputy and exfiltration combos</text>
+  <text x="720" y="232" text-anchor="end" class="pass">PASS</text>
 
-  <rect x="120" y="370" width="660" height="78" class="box" fill="#ecfeff" stroke="#0891b2"/>
-  <text x="450" y="400" text-anchor="middle" class="label">Capability</text>
-  <text x="450" y="428" text-anchor="middle" class="small">What powers are combined? (the lethal trifecta)</text>
+  <path class="arrow" d="M460 276 V294"/>
 
-  <text x="72" y="124" class="tiny">hardest</text>
-  <text x="72" y="144" class="tiny">to</text>
-  <text x="72" y="164" class="tiny">automate</text>
+  <rect x="170" y="296" width="580" height="88" class="box" fill="#eef2ff" stroke="#6366f1"/>
+  <text x="200" y="326" class="label">2. Norms and policy</text>
+  <text x="200" y="350" class="small">Contextual integrity + deployment policy files</text>
+  <text x="200" y="370" class="tiny">Catches wrong flow for the context and org rule breaks</text>
+  <text x="720" y="340" text-anchor="end" class="pass">PASS</text>
 
-  <text x="72" y="404" class="tiny">easiest</text>
-  <text x="72" y="424" class="tiny">to</text>
-  <text x="72" y="444" class="tiny">gate</text>
+  <path class="arrow" d="M460 384 V402"/>
 
-  <rect x="170" y="478" width="560" height="44" rx="12" fill="#ffffff" stroke="#94a3b8" stroke-width="2"/>
-  <text x="450" y="506" text-anchor="middle" class="small">Better models amplify verification where it is tractable, not where it is not.</text>
+  <rect x="170" y="404" width="580" height="88" class="box" fill="#fef3c7" stroke="#f59e0b"/>
+  <text x="200" y="434" class="label">3. Authority</text>
+  <text x="200" y="458" class="small">Verifiable consent: marketing opt-in on file</text>
+  <text x="200" y="478" class="tiny">Catches actions the principal never authorised</text>
+  <text x="720" y="448" text-anchor="end" class="pass">PASS</text>
+
+  <path class="arrow" d="M460 492 V510"/>
+
+  <rect x="170" y="512" width="580" height="88" class="box" fill="#fdf2f8" stroke="#db2777"/>
+  <text x="200" y="542" class="label">4. Substantive appropriateness</text>
+  <text x="200" y="566" class="small">Hidden state: recipient is in recovery — not observable to the system</text>
+  <text x="200" y="586" class="tiny">Needs judgment across welfare, brand, and task success</text>
+  <text x="720" y="556" text-anchor="end" class="warn">HUMAN CALL</text>
+
+  <path class="arrow" d="M460 600 V618"/>
+
+  <rect x="250" y="620" width="420" height="64" class="box" fill="#fff1f2" stroke="#e11d48"/>
+  <text x="460" y="648" text-anchor="middle" class="label">Outcome: harmful to this person</text>
+  <text x="460" y="670" text-anchor="middle" class="small">Every automated gate passed</text>
+
+  <text x="52" y="232" class="tiny">easier</text>
+  <text x="52" y="250" class="tiny">to gate</text>
+  <text x="52" y="556" class="tiny">hardest</text>
+  <text x="52" y="574" class="tiny">to mechanise</text>
 </svg>

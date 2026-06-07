@@ -21,7 +21,7 @@ This is why eval and safety end up task-specific and company-specific. That shap
 
 ## Contextual integrity
 
-Helen Nissenbaum introduced contextual integrity in a 2004 law-review paper and developed it further in *Privacy in Context* (2009). The framework defines a flow of information as appropriate or not relative to a context: who is sending, who is receiving, who the data is about, and under what norm. Move the same information across a context boundary and an entirely acceptable flow becomes a violation. A nurse telling a specialist about your diagnosis is fine. The same nurse telling your employer is not. Nothing about the data changed.
+In *Privacy in Context* (2009), Helen Nissenbaum's contextual integrity defines a flow of information as appropriate or not relative to a context: who is sending, who is receiving, who the data is about, and under what norm. Move the same information across a context boundary and an entirely acceptable flow becomes a violation. A nurse telling a specialist about your diagnosis is fine. The same nurse telling your employer is not. Nothing about the data changed.
 
 That maps onto agents far better than a capability checklist, and recent benchmarks have made it measurable.
 
@@ -39,9 +39,7 @@ Contextual integrity tells you safety is contextual. It does not tell you whose 
 
 It scores agents not on whether they finished the task but on whether they finished it *under policy*. Each task carries machine-readable policies across dimensions like consent, boundaries, hierarchy, and so on. The headline metric, Completion under Policy, only credits runs that respected every applicable rule. Across the open agents they tested, that number came in below two-thirds of the nominal completion rate. A third of the "successful" runs broke a rule on the way.
 
-The detail that matters here: the policies are authored, not baked in. There is a policy-authoring interface and a template format, so the same workflow passes or fails depending on what a given organisation has encoded. Your finance team's "never initiate a payment without confirmation" and another firm's "never touch production data" are different policy files over the same agent. The benchmark scores the deployment, not just the model.
-
-You cannot read safety off the model. You read it off the deployment.
+The policies are authored, not baked in. There is a policy-authoring interface and a template format, so the same workflow passes or fails depending on what a given organisation has encoded. Your finance team's "never initiate a payment without confirmation" and another firm's "never touch production data" are different policy files over the same agent. The benchmark scores the deployment, not just the model.
 
 That is not only a privacy-benchmark finding. Control-evaluation work on LLM agents (arXiv:2504.05259) treats deployment context as a first-class variable: oversight, criticality of systems touched, incentives toward autonomy. The International AI Safety Report 2026 makes environmental criticality a determinant of how bad a loss of control gets. Frontier AI Regulation (2023) argued risk is contextual and should be judged counterfactually against what was already possible. Recent reliability work (arXiv:2602.16666) argues which safety dimensions matter, and at what threshold, depends on the application, the way nuclear safety prices expected consequence rather than raw failure rate.
 
@@ -57,7 +55,7 @@ Conseca (Tsai and Bagdasarian, HotOS 2025) comes closest to naming this in code:
 
 When that enforcement is missing, the trifecta is what you are left with. "Don't combine these three capabilities" is the only lever available because the system has no way to represent what it was actually permitted to do. The trifecta is the fallback you get without verifiable consent.
 
-That is a lot of engineering, and it is worth building. Each connector deserves its own context-dependent protections: evals, graders, and hard-stop checks tuned to what that tool can do in *this* deployment, not one platform-wide filter applied uniformly. Deterministic gates on every connector, a contextual-integrity check and a policy check on every flow, verifiable consent before each action, an eval scored against your deployment's policy files. My first instinct is that this is roughly what good looks like.
+That is a lot of engineering, and it is worth building. Each connector deserves its own context-dependent protections: evals, graders, and hard-stop checks tuned to what that tool can do in *this* deployment, not one platform-wide filter applied uniformly. Deterministic gates on every connector, a contextual-integrity check and a policy check on every flow, verifiable consent before each action, an eval scored against your deployment's policy files. I would want all of that in place before shipping.
 
 It still is not the whole of safety. [Part two](https://jotter.jonathankingston.co.uk/blog/2026/06/06/appropriateness-is-what-safety-cannot-mechanise/) is about the fourth level: what remains when all of those checks pass.
 

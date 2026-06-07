@@ -95,7 +95,7 @@ Tightening alignment helps with the loud attacks. It doesn't help with the quiet
 
 A better refusal policy would not fix the common problem here. The browser-agent stack still needs to know when a page is shaping an action that uses the user's authority.
 
-I [wrote earlier](https://jotter.jonathankingston.co.uk/blog/2026/02/22/consent-is-all-you-need/) that consent is the missing layer in agentic systems, because a bad decision becomes a real action with the user's account, payment methods, or data behind it. The WAAA paper is, in my reading, the empirical case for that argument. Twenty attacks, eighteen working proofs of concept, four models, and the through-line is the same: there is no point in the agent's loop where the question "should I be doing this?" is structurally enforceable.
+I [wrote earlier](https://jotter.jonathankingston.co.uk/blog/2026/02/22/consent-is-all-you-need/) that consent is the missing layer in agentic systems, because a bad decision becomes a real action with the user's account, payment methods, or data behind it. More recently I [mapped what sits above the capability layer](https://jotter.jonathankingston.co.uk/blog/2026/06/06/the-trifecta-tells-you-what-an-agent-can-do/): norms, policy, authority, and appropriateness. WAAA sits at the bottom of that stack. The paper is, in my reading, the empirical case for the consent argument. Twenty attacks, eighteen working proofs of concept, four models, and the through-line is the same: there is no point in the agent's loop where the question "should I be doing this?" is structurally enforceable.
 
 The paper's own recommendations are pragmatic and align with that frame:
 

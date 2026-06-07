@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 720" role="img" aria-labelledby="title desc">
-  <title id="title">Four-level safety walkthrough</title>
+  <title id="title">Four-gate safety walkthrough</title>
   <desc id="desc">An agent action passes capability, norms and policy, and authority checks, but substantive appropriateness still needs human judgment. Each gate catches a different failure class.</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto">

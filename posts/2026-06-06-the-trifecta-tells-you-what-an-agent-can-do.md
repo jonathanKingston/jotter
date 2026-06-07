@@ -17,7 +17,7 @@ The trifecta is a capability test. It asks what an agent *can* do, and answers i
 
 Take the canonical example from Tsai and Bagdasarian's Conseca paper. Deleting an email is fine when it is clearing out spam and catastrophic when it is destroying evidence. Same capability, same agent, opposite safety verdicts. The deciding factor is the content, the goal, and the account it sits in. None of that is visible to a trifecta check.
 
-This is why eval and safety end up task-specific and company-specific. That shape will not be engineered away by better models alone. This post walks through three of four levels: capability, norms and policy, and authority. The fourth, whether an outcome is appropriate for *this* person, is [the subject of the follow-up](https://jotter.jonathankingston.co.uk/blog/2026/06/06/appropriateness-is-what-safety-cannot-mechanise/). Norms and policy is one level with two parts: Helen Nissenbaum's contextual integrity for whether a flow fits the context, and your deployment's policy files for whether your organisation allows it.
+This is why eval and safety end up task-specific and company-specific. That shape will not be engineered away by better models alone. This post walks through three of four checks: capability, norms and policy, and authority. The fourth, whether an outcome is appropriate for *this* person, is [the subject of the follow-up](https://jotter.jonathankingston.co.uk/blog/2026/06/06/appropriateness-is-what-safety-cannot-mechanise/). Norms and policy is one check with two parts: Helen Nissenbaum's contextual integrity for whether a flow fits the context, and your deployment's policy files for whether your organisation allows it.
 
 ## Contextual integrity
 
@@ -43,21 +43,21 @@ The policies are authored, not baked in. There is a policy-authoring interface a
 
 That is not only a privacy-benchmark finding. Control-evaluation work on LLM agents (arXiv:2504.05259) treats deployment context as a first-class variable: oversight, criticality of systems touched, incentives toward autonomy. The International AI Safety Report 2026 makes environmental criticality a determinant of how bad a loss of control gets. Frontier AI Regulation (2023) argued risk is contextual and should be judged counterfactually against what was already possible. Recent reliability work (arXiv:2602.16666) argues which safety dimensions matter, and at what threshold, depends on the application, the way nuclear safety prices expected consequence rather than raw failure rate.
 
-Together, contextual integrity and deployment policy make up the norms-and-policy level. Nissenbaum supplies the norm half; your policy files supply the org half. The question at this level is: should this flow happen here, under your rules?
+Together, contextual integrity and deployment policy make up norms and policy. Nissenbaum supplies the norm half; your policy files supply the org half. The question here is: should this flow happen here, under your rules?
 
-## The missing level is authority
+## Authority
 
 Above norms and policy sits authority: was this flow authorised in this context, and can the system prove it?
 
-Somebody has to say which flows are sanctioned in *this* context, and the system has to be able to check that they were. In the four-level model, that is a separate question from whether the flow fits the context or your policy files. It is [consent](https://jotter.jonathankingston.co.uk/blog/2026/02/22/consent-is-all-you-need/), expressed by a principal and verifiable by the system.
+Somebody has to say which flows are sanctioned in *this* context, and the system has to be able to check that they were. That is a separate question from whether the flow fits the context or your policy files. It is [consent](https://jotter.jonathankingston.co.uk/blog/2026/02/22/consent-is-all-you-need/), expressed by a principal and verifiable by the system.
 
-Conseca (Tsai and Bagdasarian, HotOS 2025) comes closest to naming this in code: just-in-time, contextual, human-verifiable security policies per task. ST-WebAgentBench's policy files handle the deployment-policy half of the level below; Conseca's human-verifiable policies handle authority. Both point at enforcement that today often reduces to a YAML file someone wrote in advance, or to nothing at all.
+Conseca (Tsai and Bagdasarian, HotOS 2025) comes closest to naming this in code: just-in-time, contextual, human-verifiable security policies per task. ST-WebAgentBench's policy files handle the deployment-policy half of norms and policy; Conseca's human-verifiable policies handle authority. Both point at enforcement that today often reduces to a YAML file someone wrote in advance, or to nothing at all.
 
 When that enforcement is missing, the trifecta is what you are left with. "Don't combine these three capabilities" is the only lever available because the system has no way to represent what it was actually permitted to do. The trifecta is the fallback you get without verifiable consent.
 
 That is a lot of engineering, and it is worth building. Each connector deserves its own context-dependent protections: evals, graders, and hard-stop checks tuned to what that tool can do in *this* deployment, not one platform-wide filter applied uniformly. Deterministic gates on every connector, a contextual-integrity check and a policy check on every flow, verifiable consent before each action, an eval scored against your deployment's policy files — and [the same measure-don't-hope discipline I argued for skills and MDC files](https://jotter.jonathankingston.co.uk/blog/2026/02/17/magic-words-need-measuring-sticks/). I would want all of that in place before I'd trust it with real users.
 
-It still is not the whole of safety. [Part two](https://jotter.jonathankingston.co.uk/blog/2026/06/06/appropriateness-is-what-safety-cannot-mechanise/) is about the fourth level: what remains when all of those checks pass.
+It still is not the whole of safety. [Part two](https://jotter.jonathankingston.co.uk/blog/2026/06/06/appropriateness-is-what-safety-cannot-mechanise/) is about the fourth check: what remains when all of those checks pass.
 
 ---
 

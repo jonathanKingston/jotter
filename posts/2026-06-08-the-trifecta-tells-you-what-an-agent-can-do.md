@@ -54,8 +54,6 @@ When that enforcement is missing, the trifecta is what you are left with. "Don't
 
 That is a lot of engineering, and it is worth building. Deterministic gates on every connector, a contextual-integrity check and a policy check on every flow, verifiable consent before each action, an eval scored against your deployment's policy files, and [the same measure-don't-hope discipline I argued for agent steering rules](https://jotter.jonathankingston.co.uk/blog/2026/02/17/magic-words-need-measuring-sticks/). I would want all of that in place before I'd trust it with real users.
 
-It still is not the whole of safety. Even when all of those checks pass, the outcome can still be wrong for the person on the receiving end.
-
 ---
 
 ## References

@@ -34,7 +34,7 @@ MAGPIE (2025) shows the failure compounding once agents talk to each other. In m
 
 ## Deployment policy
 
-Contextual integrity tells you safety is contextual. It does not tell you whose context. That is where deployment policy comes in; benchmarks such as ST-WebAgentBench (Levy et al., IBM Research) are good illustrations.
+Contextual integrity tells you safety is contextual. It does not tell you whose context. That is where deployment policy comes in; a benchmark like ST-WebAgentBench (Levy et al., IBM Research) is a good illustration.
 
 It scores agents not on whether they finished the task but on whether they finished it *under policy*. Each task carries machine-readable policies across dimensions like consent, boundaries, hierarchy, and so on. The headline metric, Completion under Policy, only credits runs that respected every applicable rule. Across the open agents they tested, that number came in below two-thirds of the nominal completion rate. A third of the "successful" runs broke a rule on the way.
 

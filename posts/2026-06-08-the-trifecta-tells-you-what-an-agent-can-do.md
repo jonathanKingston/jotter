@@ -16,7 +16,7 @@ The trifecta is a capability test. It asks what an agent *can* do, and answers i
 
 Adapting Conseca's example (Tsai and Bagdasarian), deleting an email may be appropriate when the goal is to erase sensitive messages or clean up trash, or inappropriate depending on the content and whether the address is work or personal. Same capability, same agent, opposite safety verdicts. The deciding factor is the content, the goal, and the account it sits in. None of that is visible to a trifecta check.
 
-This is why eval and safety end up task-specific and company-specific. Better models alone will not change that. This post walks through three checks beyond raw capability: contextual integrity, org policy, and authority.
+This is why eval and safety end up task-specific and company-specific. Better models alone will not change that. This post walks through further checks beyond raw capability, from contextual integrity and org policy through to authority.
 
 ## Contextual integrity
 
@@ -34,13 +34,13 @@ MAGPIE (2025) shows the failure compounding once agents talk to each other. In m
 
 ## Deployment policy
 
-Contextual integrity tells you safety is contextual. It explains when a flow fits a social context, not which rules your organisation has chosen to enforce. Deployment policy covers that gap; a benchmark like ST-WebAgentBench (Levy et al., IBM Research) is a good illustration.
+Contextual integrity tells you safety is contextual. It explains when a flow fits a social context. Which rules apply is a deployment question; policy files answer it. ST-WebAgentBench (Levy et al., IBM Research) shows what scoring that looks like in practice.
 
-It scores agents not on whether they finished the task but on whether they finished it *under policy*. Each task carries machine-readable policies across dimensions like consent, boundaries, hierarchy, and so on. The headline metric, Completion under Policy, only credits runs that respected every applicable rule. Across the open agents they tested, that number came in below two-thirds of the nominal completion rate. A third of the "successful" runs broke a rule on the way.
+It credits completion only when every applicable policy rule was respected. Each task carries machine-readable policies across dimensions like consent, boundaries, hierarchy, and so on. The headline metric, Completion under Policy, uses that bar. Across the open agents they tested, that number came in below two-thirds of the nominal completion rate. A third of the "successful" runs broke a rule on the way.
 
-Organisations write the policies. There is a policy-authoring interface and a template format, so the same workflow passes or fails depending on what a given organisation has encoded. Your finance team's "never initiate a payment without confirmation" and another firm's "never touch production data" are different policy files over the same agent. The benchmark scores the deployment setup, not the model alone.
+Organisations write the policies. There is a policy-authoring interface and a template format, so the same workflow passes or fails depending on what a given organisation has encoded. Your finance team's "never initiate a payment without confirmation" and another firm's "never touch production data" are different policy files over the same agent. The score tracks that deployment envelope more than the base model.
 
-Broader agent-control work makes the same point about which systems an agent may touch and what oversight you require. On thresholds, Rabanser et al.'s *Science of AI Agent Reliability* (2026) argues against single-metric success: mean task completion cannot distinguish a formatting slip from a catastrophic delete, and useful safety thresholds depend on bounded error severity, not raw failure rate alone.
+"How to evaluate control measures for LLM agents?" (2025, arXiv:2504.05259) stresses which systems an agent may touch and what oversight you require. On thresholds, Rabanser et al.'s *Science of AI Agent Reliability* (2026) argues against single-metric success: mean task completion cannot distinguish a formatting slip from a catastrophic delete, and useful safety thresholds depend on bounded error severity rather than raw failure rate alone.
 
 ## Authority
 

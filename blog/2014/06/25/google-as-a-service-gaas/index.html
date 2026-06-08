@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#454545">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Google as a Service (GaaS)</title>
+  
+  
+  
+    
+  
+  
+
+  
+  
+
+  
+
+  
+
+  
+  <meta name="description" content="Google appears to be pushing further into the open internet platform in a land grab bid against closed source providers. As other articles are suggesting, Go...">
+
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon-48x48.png" type="image/png" sizes="48x48">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon-192x192.png" type="image/png" sizes="192x192">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="https://jotter.jonathankingston.co.uk/apple-touch-icon.png" sizes="180x180">
+
+  <link rel="stylesheet" href="https://jotter.jonathankingston.co.uk/css/main.css?v=cb4cec6">
+  <link rel="canonical" href="https://jotter.jonathankingston.co.uk/blog/2014/06/25/google-as-a-service-gaas/">
+  <link rel="alternate" type="application/rss+xml" title="Jonathan Kingston" href="https://jotter.jonathankingston.co.uk/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+  <div class="wrapper">
+    <a class="site-title" href="https://jotter.jonathankingston.co.uk/">Jonathan Kingston</a>
+    <nav class="site-nav">
+      <a class="page-link" href="https://jonathankingston.co.uk">About me</a>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        
+          <header class="post-header">
+            <h1 class="post-title" itemprop="name headline">Google as a Service (GaaS)</h1>
+            <p class="post-meta">
+              
+              <time datetime="2014-06-25 00:00:00 +0000" itemprop="datePublished">Jun 25, 2014</time>
+              
+              
+            </p>
+          </header>
+        
+          <div class="post-content" itemprop="articleBody">
+            <p>Google appears to be pushing further into the open internet platform in a land grab bid against closed source providers. As other articles are suggesting, Google is pushing the 'Android everywhere' idea however I am seeing this more as a two pronged approach with an 'Internet everywhere' approach as the main driver for Google's other profitable offerings.</p>
+<p>This article covers some of what we might see at <a href="https://www.google.com/events/io">Google I/O</a> but also some of which could even be for next year. Google seem to want to close the gap between the open internet and native applications, retrofitting much of the tech that is provided in native applications into web based offerings. I would likely argue this is to win over some of the adopters of <a href="https://developer.apple.com/swift/">Apple's new Swift offering</a> but also backed by consumer to corporate offerings that markets using "Google for Everything"</p>
+<p>The latest Google I/O talks seem to be very much focused on the developers this time: probably to counter the new Swift language by Apple but also to push more of Google's platform to the early adopters. So, we are seeing less consumer and business announcements this year and instead a focus on a long game of developer adoptions for an array of new Google services.</p>
+<!-- more -->
+<h1>Backing the open internet</h1>
+<p>Google is investing further time and money into being an open platform which gives developers the confidence that the tech they integrate with should hopefully stay longer than heavy investment in Google APIs. They are also spending a lot of time bridging the open internet divide with Android as it brings further contention to the closed source application frameworks by bringing a near-native experience to all of the web. I think they are doing this mostly to further open up integration to pushing their main profit making storage, server, applications and devices.</p>
+<h2>Investment into Universal 2nd Factor payment mechanisms</h2>
+<p>Google has spent a lot of its efforts in writing and developing a strong authentication called <a href="https://sites.google.com/site/oauthgoog/gnubby">U2F</a> method between two factor authentication and web applications. This has now been opened into an <a href="http://fidoalliance.org/">alliance</a> which looks to be opening ID management and authentication online.</p>
+<h2>Polymer</h2>
+<p><a href="http://www.polymer-project.org">Polymer</a> is a patch for the future of the net, a patch that was made by Google</p>
+<p><a href="http://www.polymer-project.org/docs/polymer/node_bind.html">Active web updates for changes</a></p>
+<p>Polymer gives developers the ability to write out an application and give a modern unified look and feel to their applications cross browser. Features such as reusable templates in the front end, with the ability to bind changes on the back-end to these templates (Think Meteor but native).</p>
+<p><a href="https://www.google.com/events/io/schedule/session/de22e147-07b6-e311-8491-00155d5066d7">Google I/O talk on Polymer</a></p>
+<h2>Native app feel for mobile web</h2>
+<p>Google is now pushing a new feature on Android '<a href="https://developer.chrome.com/multidevice/android/installtohomescreen">Install to homescreen</a>' which is implemented with <code>mobile-web-app-capable</code> as a meta extension.</p>
+<p><code>brand-color</code> - <a href="https://groups.google.com/a/chromium.org/forum/#!msg/blink-dev/nzRY-h_-_ig/KR3XWn73tDoJ">this feature</a> is to add a hint to mobile tech on what colour represents the site; the browser specific implementations in Apple and IE pick tile colours and status bar colours.
+This thread also mentions showing at Google I/O which likely shows further push into making the mobile web native in this Google I/O.</p>
+<h2>Geofencing</h2>
+<p>Geofencing is the ability to monitor when the user enters a certain geographical area and provide notifications based upon it. This is a further step to bringing mobile based tech to websites of any nature.</p>
+<p><a href="https://code.google.com/p/chromium/issues/detail?id=383125&amp;q=getRegisteredRegions&amp;colspec=ID%20Pri%20M%20Iteration%20ReleaseBlock%20Cr%20Status%20Owner%20Summary%20OS%20Modified">Geofencing bug</a></p>
+<h2>Harmony between SVG and HTML</h2>
+<p><a href="https://code.google.com/p/chromium/issues/detail?id=243882">Some effort</a> has been made by Google focused on changing over SVG rendering into the same as HTML.</p>
+<p>This looks like it is to pave the way for the following new specifications:</p>
+<ul>
+<li><a href="http://dev.w3.org/fxtf/geometry/">Geometry interfaces module</a></li>
+<li><a href="http://www.w3.org/TR/svg-integration/">SVG integration</a></li>
+</ul>
+<p><strong>What this likely means:</strong>
+SVG features and customisations become closer to HTML, giving a native application user experience to the web.</p>
+<p>##Investments in web tech
+Google are building apps, platforms and guides which all promote further more of Google's latest technologies they are preferring at the moment.</p>
+<p><a href="https://developers.google.com/web/fundamentals/">Web fundamentals site</a>
+Google is providing yet more guides in building web sites; the latest is advice and dev support in multiple device technologies.</p>
+<p>They have published a <a href="https://developers.google.com/web/starter-kit/">starter kit</a> which promotes some of Google's best practices and development tools. Interestingly this appears to be backing the <a href="http://www.w3.org/TR/appmanifest/">appmanifest</a> which in the particular form it is in with a <code>.webapp</code> extension was designed for the <a href="https://marketplace.firefox.com/developers/?src=nav_logo">Firefox marketplace</a>.</p>
+<h3>Angular and friends</h3>
+<p>More support into providing Google services and ideas into the web stack. For example Angular promotes web components and other new technologies mentioned in this article.</p>
+<h1>Marketing Google as a Service</h1>
+<p>As well as ramping up marketing new cloud based services to developers - <a href="https://developers.google.com/drive/">With fancy visual developer pages</a> and Google are also advancing their offerings in cloud which are also marketing the ecosytem too.</p>
+<h2>Google domains</h2>
+<p>Google is going to be a <a href="http://domains.google.com/about/">domain provider</a> which is another promotion for apps and hosting services that they provide. Linking together Google mail and other quick web app tools they already have with domains is likely to give the consumers and companies a much quicker way to get online.</p>
+<p><a href="https://www.google.com/events/io/schedule/session/22ce27dc-7cbf-e311-b297-00155d5066d7">Google talk on the future of domains</a> - this will likely talk through Google entering into the domain market, after all they have secretly been backing some of the <a href="http://newgtlds.icann.org/en/">new GTLD's</a> with its new <a href="https://www.google.com/registry/">Charleston road registry which has become public recently</a> including other extensions like: <a href="https://gtldresult.icann.org/application-result/applicationstatus/applicationdetails/1339">.dev</a>, <a href="https://gtldresult.icann.org/application-result/applicationstatus/applicationdetails/499">.family</a>, <a href="https://gtldresult.icann.org/applicationstatus/applicationdetails/519">.android</a> and <a href="https://gtldresult.icann.org/application-result/applicationstatus/applicationdetails/511">.page</a>.</p>
+<p>Future expansions could lead to one click installation of analytics, hosting, cloud applications.</p>
+<h2>Enterprise offerings</h2>
+<p>Google is making waves in changes for content distributors from becoming its own <a href="https://fiber.google.com/about/">ISP</a> to building corporate friends with the likes of <a href="https://www.google.com/takeaction/">Netflix by lobbying with them for an open internet</a> against companies like Comcast and the FCC.</p>
+<h3>ISP content distribution</h3>
+<p>Google's clear support for distribution of web media is a focus for them as a whole company:</p>
+<ul>
+<li><a href="https://www.google.com/events/io/schedule/session/0486a8f4-4acb-e311-b297-00155d5066d7">Making your cloud apps Google-fast</a> - providing new companies the architecture and tools to be as good as Google for performance is likely to save companies a lot of money.</li>
+<li>Advancement into web encodings like <a href="https://developers.google.com/speed/webp/?csw=1">WebP</a> and <a href="http://www.webmproject.org/">WebM</a> put trust in companies that Google has their back, also the storage and network savings will likely be massive.</li>
+<li><a href="http://googlefiberblog.blogspot.co.uk/2014/05/minimizing-buffering.html">Fiber to content</a> - through colocation of content the service improvements would be huge.</li>
+<li><a href="https://dvcs.w3.org/hg/html-media/raw-file/tip/encrypted-media/encrypted-media.html">Encrypted media extensions support</a> - Unfortunately media companies being what they are with the lack of encrypted media on the web content providers would refuse to distribute content over the open web. Even on the outset this seems a step backwards for web standards actually; it promotes the web as a full stack application with no proprietary plugins. By standardising this approach web authors; browsers and content distributors won't need to bring their own tech to the table.</li>
+<li>Adding improvements in their cloud platform to compete in the market with: <a href="https://developers.google.com/compute/docs/containers">Investment in Docker for scaling of applications</a> and <a href="http://techcrunch.com/2014/06/19/googles-new-cloud-import-tool-makes-switching-from-aws-easier/">New import from AWS tool</a> giving corporates less trouble in designing for scale makes Google a great AWS competitor.</li>
+</ul>
+<h3>Universal Communications</h3>
+<p>Google's technologies appear to be aligning slowly whereby I can see an always-on approach to communication going through the best path of communication:</p>
+<ul>
+<li><a href="https://www.twilio.com/blog/2014/06/twilio-and-google-twilio-cx-for-chromebooks-nt.html">Partnership with Twilio</a> - Leveraging <a href="http://www.webrtc.org/">WebRTC</a> which is another open Google backed service</li>
+<li><a href="https://plus.google.com/+googleplus/posts/8irsMuNR3ZK">Improvements of hangouts</a> merged conversations with SMS chats is the first step to providing a communication tool where the user doesn't need to worry about which of the N contact mechanisms to take - the software can decide and pick the most convenient for the recipient.</li>
+<li><a href="https://developers.google.com/glass/distribute/glass-at-work">'Glass at work'</a> partnerships - likely to roll out tech for down time for employees; commuting etc</li>
+<li><a href="https://developers.google.com/cast/">Google casting</a> - Which is bringing the ability to share media cross device and could be modified to open up universal communications for video conferencing.</li>
+<li>Google cloud messaging on more devices with <a href="https://developer.chrome.com/apps/cloudMessaging">Chrome based devices with native gcm</a> - This was announced last year but has only just dropped into <a href="http://googlechromereleases.blogspot.co.uk/2014/06/stable-channel-update.html">Chrome 35</a> as unified API. Allowing sending and receiving Google cloud messages through chrome applications. This means developers should be able to communicate with all apps soon. Internally <a href="http://www.google.co.uk/cloudprint/learn/">Google's cloud print</a> used GCM; imagine the potential with Google opening this up to all developers.</li>
+</ul>
+<h1>Conclusion</h1>
+<p>Google appears to be playing a very long game with helping developers; which I think will likely pay off for them in advertising and distributing their tech services and products. By offering up a complete web solution to most in the market, above and beyond what its competitors can it will likely attract a wide range of consumers to companies. Google is betting on whole companies riding on their platform from handset to servers.</p>
+
+          </div>
+        
+        </article>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+    <p>
+      <a class="page-link" href="https://jotter.jonathankingston.co.uk/pages/ai-tips/">AI Tips</a>
+    </p>
+    <ul class="social-media-list">
+      
+      <li>
+        <a href="https://github.com/jonathankingston"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">jonathankingston</span></a>
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" href="https://www.linkedin.com/in/jonathan-kingston/" aria-label="LinkedIn">
+  <span class="icon icon--linkedin"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7 0h3.84v2.05h.05c.53-1.01 1.84-2.08 3.79-2.08 4.05 0 4.8 2.67 4.8 6.14V23h-4v-7.7c0-1.84-.03-4.2-2.56-4.2-2.56 0-2.95 2-2.95 4.06V23h-4V8z"/>
+</svg>
+</span>
+  <span class="username">jonathan-kingston</span>
+</a>
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" href="https://bsky.app/profile/kingstontime.bsky.social" aria-label="Bluesky">
+  <span class="icon icon--bluesky"><svg viewBox="0 0 600 530" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <!-- Source: https://commons.wikimedia.org/wiki/File:Bluesky_Logo.svg -->
+  <path d="m135.72 44.03c66.496 49.921 138.02 151.14 164.28 205.46 26.262-54.316 97.782-155.54 164.28-205.46 47.98-36.021 125.72-63.892 125.72 24.795 0 17.712-10.155 148.79-16.111 170.07-20.703 73.984-96.144 92.854-163.25 81.433 117.3 19.964 147.14 86.092 82.697 152.22-122.39 125.59-175.91-31.511-189.63-71.766-2.514-7.3797-3.6904-10.832-3.7077-7.8964-0.0174-2.9357-1.1937 0.51669-3.7077 7.8964-13.714 40.255-67.233 197.36-189.63 71.766-64.444-66.128-34.605-132.26 82.697-152.22-67.108 11.421-142.55-7.4491-163.25-81.433-5.9562-21.282-16.111-152.36-16.111-170.07 0-88.687 77.742-60.816 125.72-24.795z"/>
+</svg>
+</span>
+  <span class="username">kingstontime.bsky.social</span>
+</a>
+
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" rel="me" href="https://mastodon.social/@jkt" aria-label="Mastodon">
+  <span class="icon icon--mastodon"><svg viewBox="0 0 216.4144 232.00976" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <!-- Source: https://commons.wikimedia.org/wiki/File:Mastodon_Logotype_(Simple).svg -->
+  <path d="M211.80734 139.0875c-3.18125 16.36625-28.4925 34.2775-57.5625 37.74875-15.15875 1.80875-30.08375 3.47125-45.99875 2.74125-26.0275-1.1925-46.565-6.2125-46.565-6.2125 0 2.53375.15625 4.94625.46875 7.2025 3.38375 25.68625 25.47 27.225 46.39125 27.9425 21.11625.7225 39.91875-5.20625 39.91875-5.20625l.8675 19.09s-14.77 7.93125-41.08125 9.39c-14.50875.7975-32.52375-.365-53.50625-5.91875C9.23234 213.82 1.40609 165.31125.20859 116.09125c-.365-14.61375-.14-28.39375-.14-39.91875 0-50.33 32.97625-65.0825 32.97625-65.0825C49.67234 3.45375 78.20359.2425 107.86484 0h.72875c29.66125.2425 58.21125 3.45375 74.8375 11.09 0 0 32.975 14.7525 32.975 65.0825 0 0 .41375 37.13375-4.59875 62.915"/>
+  <!-- Force the inner 'M' to match the page background so it stays a cutout. -->
+  <path style="fill:#fdfdfd" d="M177.50984 80.077v60.94125h-24.14375v-59.15c0-12.46875-5.24625-18.7975-15.74-18.7975-11.6025 0-17.4175 7.5075-17.4175 22.3525v32.37625H96.20734V85.42325c0-14.845-5.81625-22.3525-17.41875-22.3525-10.49375 0-15.74 6.32875-15.74 18.7975v59.15H38.90484V80.077c0-12.455 3.17125-22.3525 9.54125-29.675 6.56875-7.3225 15.17125-11.07625 25.85-11.07625 12.355 0 21.71125 4.74875 27.8975 14.2475l6.01375 10.08125 6.015-10.08125c6.185-9.49875 15.54125-14.2475 27.8975-14.2475 10.6775 0 19.28 3.75375 25.85 11.07625 6.36875 7.3225 9.54 17.22 9.54 29.675"/>
+</svg>
+</span>
+  <span class="username">@jkt@mastodon.social</span>
+</a>
+
+
+      </li>
+      
+
+      
+      <li>
+        <span class="social-link social-link--retired" aria-label="Twitter (retired)">
+  <span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span>
+  <span class="username"><s>kingstonTime</s></span>
+</span>
+
+      </li>
+      
+    </ul>
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

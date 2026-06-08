@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#454545">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>The trifecta tells you what an agent can do</title>
+  
+  
+  
+    
+  
+  
+
+  
+  
+
+  
+
+  
+
+  
+  <meta name="description" content="The lethal trifecta is the security heuristic I reach for most often with agents. Private data, untrusted content, an exfiltration path: hold all three in on...">
+
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon-48x48.png" type="image/png" sizes="48x48">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon-192x192.png" type="image/png" sizes="192x192">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="https://jotter.jonathankingston.co.uk/apple-touch-icon.png" sizes="180x180">
+
+  <link rel="stylesheet" href="https://jotter.jonathankingston.co.uk/css/main.css?v=cb4cec6">
+  <link rel="canonical" href="https://jotter.jonathankingston.co.uk/blog/2026/06/08/the-trifecta-tells-you-what-an-agent-can-do/">
+  <link rel="alternate" type="application/rss+xml" title="Jonathan Kingston" href="https://jotter.jonathankingston.co.uk/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+  <div class="wrapper">
+    <a class="site-title" href="https://jotter.jonathankingston.co.uk/">Jonathan Kingston</a>
+    <nav class="site-nav">
+      <a class="page-link" href="https://jonathankingston.co.uk">About me</a>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        
+          <header class="post-header">
+            <h1 class="post-title" itemprop="name headline">The trifecta tells you what an agent can do</h1>
+            <p class="post-meta">
+              
+              <time datetime="2026-06-08 00:00:00 +0000" itemprop="datePublished">Jun 8, 2026</time>
+              
+              
+            </p>
+          </header>
+        
+          <div class="post-content" itemprop="articleBody">
+            <p>The lethal trifecta is the security heuristic I reach for most often with agents. Private data, untrusted content, an exfiltration path: hold all three in one context and you have a confused deputy waiting to happen. I <a href="https://jotter.jonathankingston.co.uk/blog/2026/05/10/when-agents-browse-the-web-the-web-wins/">walked through what that looks like for browser agents</a> in an earlier post. Simon Willison named the pattern clearly in June 2025, and it has been the easiest way to explain indirect prompt injection to people who do not read security papers.</p>
+<img class="image-framed" src="/images/ai/trifecta-capability-not-safety-v2.webp" alt="Retro poster: private data, untrusted content, and exfil path converge on a confused deputy agent. Caption: the trifecta tells you what it can do, not whether it should.">
+<p>The trifecta is a capability test. It asks what an agent <em>can</em> do, and answers in binary. You either hold all three powers or you don't. What it cannot tell you is whether a given action is actually harmful, because harm depends on the context the capability acts in, not on the capability itself.</p>
+<p>Adapting Conseca's example (Tsai and Bagdasarian), deleting an email may be appropriate when the goal is to erase sensitive messages or clean up trash, or inappropriate depending on the content and whether the address is work or personal. Same capability, same agent, opposite safety verdicts. The deciding factor is the content, the goal, and the account it sits in. None of that is visible to a trifecta check.</p>
+<p>This is why eval and safety end up task-specific and company-specific. Better models alone will not change that. This post walks through further checks beyond raw capability, from contextual integrity and deployment policy through to authority.</p>
+<h2>Contextual integrity</h2>
+<p>In <em>Privacy in Context</em> (2009), Helen Nissenbaum's contextual integrity defines a flow of information as appropriate or not relative to a context: who is sending, who is receiving, who the data is about, and under what norm. Move the same information across a context boundary and an entirely acceptable flow becomes a violation. A nurse telling a specialist about your diagnosis is fine. The same nurse telling your employer is not. Nothing about the data changed.</p>
+<p>That maps onto agents far better than a capability checklist, and recent benchmarks have made it measurable.</p>
+<p>CI-Work (Fu et al., 2026) takes this into the enterprise across five information-flow directions: downward to staff, upward to managers, lateral to peers, diagonal across teams, and external to third parties. Frontier models violated contextual norms between 16% and 51% of the time. For anyone deploying enterprise agents, higher task utility correlated with <em>more</em> privacy violations. The very thing that makes an enterprise agent useful, pulling in broad internal context to act on your behalf, is the thing that drives the leak.</p>
+<img class="image-framed" src="/images/ai/contextual-integrity-same-data-v2.webp" alt="Retro two-panel poster: the same revenue figures shared with a project peer is appropriate, shared with an external vendor is a violation. Caption: nothing about the data changed.">
+<p>ConfAIde (Mireshghallah et al., ICLR 2024) showed GPT-4 and ChatGPT disclosing information in contexts a human would not, 39% and 57% of the time. PrivacyLens (Shao et al., NeurIPS 2024) pushed the same idea into agent trajectories and found GPT-4 leaking sensitive information in roughly a quarter of cases even when explicitly told to protect privacy. The model often knew the norm when asked directly and broke it when acting.</p>
+<p>MAGPIE (2025) shows the failure compounding once agents talk to each other. In multi-agent tasks where keeping a secret mattered, agents leaked up to half of it. Under pressure to finish, frontier models sometimes resorted to manipulation. The same models break contextual norms under task pressure that they respect in calm evals.</p>
+<h2>Deployment policy</h2>
+<p>Contextual integrity tells you safety is contextual. It explains when a flow fits a social context. Which rules apply is a deployment question; policy files answer it. ST-WebAgentBench (Levy et al., IBM Research) shows what scoring that looks like in practice.</p>
+<p>It credits completion only when every applicable policy rule was respected. Each task carries machine-readable policies across dimensions like consent, boundaries, hierarchy, and so on. The headline metric, Completion under Policy, uses that bar. Across the open agents they tested, that number came in below two-thirds of the nominal completion rate. A third of the "successful" runs broke a rule on the way.</p>
+<p>Organisations write the policies. There is a policy-authoring interface and a template format, so the same workflow passes or fails depending on what a given organisation has encoded. Your finance team's "never initiate a payment without confirmation" and another firm's "never touch production data" are different policy files over the same agent. The score tracks that deployment setup (policies, connectors, evals) more than the base model alone.</p>
+<p>"How to evaluate control measures for LLM agents?" (2025, arXiv:2504.05259) stresses which systems an agent may touch and what oversight you require. On thresholds, Rabanser et al.'s <em>Science of AI Agent Reliability</em> (2026) argues against single-metric success: mean task completion cannot distinguish a formatting slip from a catastrophic delete, and useful safety thresholds depend on bounded error severity rather than raw failure rate alone.</p>
+<h2>Authority</h2>
+<p>Authority is the next check: was this flow authorised in this context, and can the system prove it?</p>
+<p>Somebody has to say which flows are sanctioned in <em>this</em> context, and the system has to be able to check that they were. That is a separate question from whether the flow fits the context or your policy files. It is <a href="https://jotter.jonathankingston.co.uk/blog/2026/02/22/consent-is-all-you-need/">consent</a>, verifiable by the system.</p>
+<p>Conseca (Tsai and Bagdasarian, HotOS 2025) comes closest to naming this in code: just-in-time, contextual, human-verifiable security policies per task. That still points at enforcement that today often reduces to a YAML file someone wrote in advance, or to nothing at all.</p>
+<p>When that enforcement is missing, the trifecta is what you are left with. "Don't combine these three capabilities" is the only lever available because the system has no way to represent what it was actually permitted to do. The trifecta is the fallback you get without verifiable consent.</p>
+<p>That is a lot of engineering, and it is worth building. Deterministic gates on every connector, a contextual-integrity check and a policy check on every flow, verifiable consent before each action, an eval scored against your deployment's policy files, and <a href="https://jotter.jonathankingston.co.uk/blog/2026/02/17/magic-words-need-measuring-sticks/">the same measure-don't-hope discipline I argued for agent steering rules</a>. I would want all of that in place before I'd trust it with real users.</p>
+<p>It still is not the whole of safety. Even when all of those checks pass, the outcome can still be wrong for the person on the receiving end.</p>
+<hr />
+<h2>References</h2>
+<ul>
+<li>Simon Willison. "The lethal trifecta for AI agents: private data, untrusted content, and external communication." 16 June 2025. <a href="https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/">https://simonwillison.net/2025/Jun/16/the-lethal-trifecta/</a></li>
+<li>Helen Nissenbaum. <em>Privacy in Context: Technology, Policy, and the Integrity of Social Life.</em> Stanford University Press, 2009. See also "Privacy as Contextual Integrity." <em>Washington Law Review</em> 79, 2004; Barth, Datta, Mitchell, Nissenbaum. "Privacy and Contextual Integrity: Framework and Applications." <em>IEEE S&amp;P</em>, 2006.</li>
+<li>Niloofar Mireshghallah et al. "Can LLMs Keep a Secret?" (ConfAIde). <em>ICLR</em> 2024. arXiv:2310.17884.</li>
+<li>Yijia Shao et al. "PrivacyLens." <em>NeurIPS</em> 2024 Datasets and Benchmarks. arXiv:2409.00138.</li>
+<li>Wenjie Fu et al. "CI-Work: Benchmarking Contextual Integrity in Enterprise LLM Agents." 2026. arXiv:2604.21308.</li>
+<li>"MAGPIE: A Benchmark for Multi-Agent Contextual Privacy Evaluation." 2025. arXiv:2510.15186.</li>
+<li>Ido Levy et al. "ST-WebAgentBench." IBM Research. arXiv:2410.06703.</li>
+<li>Lillian Tsai, Eugene Bagdasarian. "Contextual Agent Security: A Policy for Every Purpose" (Conseca). <em>HotOS</em> 2025. arXiv:2501.17070.</li>
+<li>"How to evaluate control measures for LLM agents? A trajectory from today to superintelligence." 2025. arXiv:2504.05259.</li>
+<li>Stephan Rabanser et al. "Towards a Science of AI Agent Reliability." 2026. arXiv:2602.16666.</li>
+<li>"International AI Safety Report 2026." arXiv:2602.21012.</li>
+<li>"Frontier AI Regulation: Managing Emerging Risks to Public Safety." 2023. arXiv:2307.03718.</li>
+</ul>
+
+          </div>
+        
+        </article>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+    <p>
+      <a class="page-link" href="https://jotter.jonathankingston.co.uk/pages/ai-tips/">AI Tips</a>
+    </p>
+    <ul class="social-media-list">
+      
+      <li>
+        <a href="https://github.com/jonathankingston"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">jonathankingston</span></a>
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" href="https://www.linkedin.com/in/jonathan-kingston/" aria-label="LinkedIn">
+  <span class="icon icon--linkedin"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7 0h3.84v2.05h.05c.53-1.01 1.84-2.08 3.79-2.08 4.05 0 4.8 2.67 4.8 6.14V23h-4v-7.7c0-1.84-.03-4.2-2.56-4.2-2.56 0-2.95 2-2.95 4.06V23h-4V8z"/>
+</svg>
+</span>
+  <span class="username">jonathan-kingston</span>
+</a>
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" href="https://bsky.app/profile/kingstontime.bsky.social" aria-label="Bluesky">
+  <span class="icon icon--bluesky"><svg viewBox="0 0 600 530" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <!-- Source: https://commons.wikimedia.org/wiki/File:Bluesky_Logo.svg -->
+  <path d="m135.72 44.03c66.496 49.921 138.02 151.14 164.28 205.46 26.262-54.316 97.782-155.54 164.28-205.46 47.98-36.021 125.72-63.892 125.72 24.795 0 17.712-10.155 148.79-16.111 170.07-20.703 73.984-96.144 92.854-163.25 81.433 117.3 19.964 147.14 86.092 82.697 152.22-122.39 125.59-175.91-31.511-189.63-71.766-2.514-7.3797-3.6904-10.832-3.7077-7.8964-0.0174-2.9357-1.1937 0.51669-3.7077 7.8964-13.714 40.255-67.233 197.36-189.63 71.766-64.444-66.128-34.605-132.26 82.697-152.22-67.108 11.421-142.55-7.4491-163.25-81.433-5.9562-21.282-16.111-152.36-16.111-170.07 0-88.687 77.742-60.816 125.72-24.795z"/>
+</svg>
+</span>
+  <span class="username">kingstontime.bsky.social</span>
+</a>
+
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" rel="me" href="https://mastodon.social/@jkt" aria-label="Mastodon">
+  <span class="icon icon--mastodon"><svg viewBox="0 0 216.4144 232.00976" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <!-- Source: https://commons.wikimedia.org/wiki/File:Mastodon_Logotype_(Simple).svg -->
+  <path d="M211.80734 139.0875c-3.18125 16.36625-28.4925 34.2775-57.5625 37.74875-15.15875 1.80875-30.08375 3.47125-45.99875 2.74125-26.0275-1.1925-46.565-6.2125-46.565-6.2125 0 2.53375.15625 4.94625.46875 7.2025 3.38375 25.68625 25.47 27.225 46.39125 27.9425 21.11625.7225 39.91875-5.20625 39.91875-5.20625l.8675 19.09s-14.77 7.93125-41.08125 9.39c-14.50875.7975-32.52375-.365-53.50625-5.91875C9.23234 213.82 1.40609 165.31125.20859 116.09125c-.365-14.61375-.14-28.39375-.14-39.91875 0-50.33 32.97625-65.0825 32.97625-65.0825C49.67234 3.45375 78.20359.2425 107.86484 0h.72875c29.66125.2425 58.21125 3.45375 74.8375 11.09 0 0 32.975 14.7525 32.975 65.0825 0 0 .41375 37.13375-4.59875 62.915"/>
+  <!-- Force the inner 'M' to match the page background so it stays a cutout. -->
+  <path style="fill:#fdfdfd" d="M177.50984 80.077v60.94125h-24.14375v-59.15c0-12.46875-5.24625-18.7975-15.74-18.7975-11.6025 0-17.4175 7.5075-17.4175 22.3525v32.37625H96.20734V85.42325c0-14.845-5.81625-22.3525-17.41875-22.3525-10.49375 0-15.74 6.32875-15.74 18.7975v59.15H38.90484V80.077c0-12.455 3.17125-22.3525 9.54125-29.675 6.56875-7.3225 15.17125-11.07625 25.85-11.07625 12.355 0 21.71125 4.74875 27.8975 14.2475l6.01375 10.08125 6.015-10.08125c6.185-9.49875 15.54125-14.2475 27.8975-14.2475 10.6775 0 19.28 3.75375 25.85 11.07625 6.36875 7.3225 9.54 17.22 9.54 29.675"/>
+</svg>
+</span>
+  <span class="username">@jkt@mastodon.social</span>
+</a>
+
+
+      </li>
+      
+
+      
+      <li>
+        <span class="social-link social-link--retired" aria-label="Twitter (retired)">
+  <span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span>
+  <span class="username"><s>kingstonTime</s></span>
+</span>
+
+      </li>
+      
+    </ul>
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

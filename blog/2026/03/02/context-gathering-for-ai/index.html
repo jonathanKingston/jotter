@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#454545">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Context gathering for AI: a tradeoff guide</title>
+  
+  
+  
+    
+  
+  
+
+  
+  
+
+  
+
+  
+
+  
+  <meta name="description" content="When you wire AI into a workflow, the choice of model matters less than you might expect - often the harder question is &quot;how does the model get the cont...">
+
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon-48x48.png" type="image/png" sizes="48x48">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon-192x192.png" type="image/png" sizes="192x192">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="https://jotter.jonathankingston.co.uk/apple-touch-icon.png" sizes="180x180">
+
+  <link rel="stylesheet" href="https://jotter.jonathankingston.co.uk/css/main.css?v=cb4cec6">
+  <link rel="canonical" href="https://jotter.jonathankingston.co.uk/blog/2026/03/02/context-gathering-for-ai/">
+  <link rel="alternate" type="application/rss+xml" title="Jonathan Kingston" href="https://jotter.jonathankingston.co.uk/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+  <div class="wrapper">
+    <a class="site-title" href="https://jotter.jonathankingston.co.uk/">Jonathan Kingston</a>
+    <nav class="site-nav">
+      <a class="page-link" href="https://jonathankingston.co.uk">About me</a>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        
+          <header class="post-header">
+            <h1 class="post-title" itemprop="name headline">Context gathering for AI: a tradeoff guide</h1>
+            <p class="post-meta">
+              
+              <time datetime="2026-03-02 00:00:00 +0000" itemprop="datePublished">Mar 2, 2026</time>
+              
+              
+            </p>
+          </header>
+        
+          <div class="post-content" itemprop="articleBody">
+            <p>When you wire AI into a workflow, the choice of model matters less than you might expect - often the harder question is "how does the model get the context it needs?"</p>
+<p>That answer shapes everything: cost, latency, accuracy, and whether you can verify what went wrong when it does.</p>
+<h2>The landscape</h2>
+<img class="basic-alignment right flex-content" src="/images/ai/context-tradeoffs-mathcore-debate.webp" alt="People at a whiteboard comparing context gathering approaches.">
+<p><strong>Prompt engineering at existing tooling</strong> (Copilot 365, Asana AI, etc.) relies on vendor fetch strategies you cannot see inside. Convenient until the tool decides a document is irrelevant and you do not find out until the output is wrong.</p>
+<p><strong>RAG (Retrieval-Augmented Generation)</strong> gives you control over context structure but depends on embedding quality and chunking strategy. Swappable: bad documents can be removed without retraining. The hidden cost is maintenance - embeddings drift as your corpus changes, and re-indexing pipelines degrade silently.</p>
+<p><strong>Long context windows</strong> are the brute-force option: put everything in. Simple, but expensive at inference, and models attend unevenly - information in the middle of a large prompt is more likely to be missed <a href="https://arxiv.org/abs/2307.03172">[1]</a>, though newer models have reduced the effect.</p>
+<p><strong>Agentic tool use</strong> lets the model decide what it needs and fetch dynamically. More flexible than RAG, but latency and cost scale unpredictably. The operational concern is observability: understanding <em>why</em> an agent chose a twelve-step path requires structured trace logging most teams do not have yet.</p>
+<p><strong>SFT (Supervised Fine-Tuning)</strong> encodes knowledge into model weights. No retrieval latency, no context window limits. But the work is front-loaded into data curation, and mistakes require retraining.</p>
+<table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+  <thead>
+    <tr>
+      <th style="text-align: left; padding: 0.5rem 0.75rem;">Approach</th>
+      <th style="text-align: left; padding: 0.5rem 0.75rem;">End-to-end latency</th>
+      <th style="text-align: left; padding: 0.5rem 0.75rem;">Freshness</th>
+      <th style="text-align: left; padding: 0.5rem 0.75rem;">Cost</th>
+      <th style="text-align: left; padding: 0.5rem 0.75rem;">Inference-time traceability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="padding: 0.5rem 0.75rem;">Existing tooling</td>
+      <td style="padding: 0.5rem 0.75rem;">Medium</td>
+      <td style="padding: 0.5rem 0.75rem;">Good</td>
+      <td style="padding: 0.5rem 0.75rem;">High</td>
+      <td style="padding: 0.5rem 0.75rem;">Depends on vendor</td>
+    </tr>
+    <tr>
+      <td style="padding: 0.5rem 0.75rem;">RAG</td>
+      <td style="padding: 0.5rem 0.75rem;">Medium</td>
+      <td style="padding: 0.5rem 0.75rem;">Good</td>
+      <td style="padding: 0.5rem 0.75rem;">Medium</td>
+      <td style="padding: 0.5rem 0.75rem;">High - retrieved chunks visible</td>
+    </tr>
+    <tr>
+      <td style="padding: 0.5rem 0.75rem;">Long context</td>
+      <td style="padding: 0.5rem 0.75rem;">High (scales with tokens)</td>
+      <td style="padding: 0.5rem 0.75rem;">Good</td>
+      <td style="padding: 0.5rem 0.75rem;">High</td>
+      <td style="padding: 0.5rem 0.75rem;">High - input visible</td>
+    </tr>
+    <tr>
+      <td style="padding: 0.5rem 0.75rem;">Agentic</td>
+      <td style="padding: 0.5rem 0.75rem;">Variable</td>
+      <td style="padding: 0.5rem 0.75rem;">Best (real-time if tools hit live APIs)</td>
+      <td style="padding: 0.5rem 0.75rem;">Variable</td>
+      <td style="padding: 0.5rem 0.75rem;">Medium - tool calls logged</td>
+    </tr>
+    <tr>
+      <td style="padding: 0.5rem 0.75rem;">SFT</td>
+      <td style="padding: 0.5rem 0.75rem;">Low</td>
+      <td style="padding: 0.5rem 0.75rem;">Poor</td>
+      <td style="padding: 0.5rem 0.75rem;">High upfront</td>
+      <td style="padding: 0.5rem 0.75rem;">None</td>
+    </tr>
+  </tbody>
+</table>
+<p>That last column matters more than it first appears. With RAG, when something goes wrong, you can trace it: "the model said X because chunk Y was retrieved." With long context, you can inspect the input window. With SFT, knowledge is dissolved into weights - you cannot point to one training example and say "that is where this output came from."</p>
+<h2>SFT: baking knowledge into weights</h2>
+<p>The promise is compelling: encode your corpus into the model itself. No retrieval latency. No context window limits. The model just <em>knows</em>.</p>
+<p>The reality is more complicated.</p>
+<h3>You are training on patterns, not just content</h3>
+<p>Fine-tuning does not just teach the model what to say - it teaches the model <em>how</em> to say it. Every stylistic choice, every abbreviation, every inconsistency in training data becomes learned behaviour.</p>
+<p>Unlike RAG, where you can swap out a bad document, or prompting, where you can iterate in minutes, SFT mistakes are expensive. You retrain or live with them.</p>
+<h3>The workflow mismatch problem</h3>
+<p>Training data often captures outcomes, not processes. This creates models that confidently state conclusions without doing the actual work.</p>
+<p>For example:</p>
+<pre style="background-color:#2b303b;">
+<code><span style="color:#c0c5ce;">User 1: &quot;I would like to add URL data collection to feature Y&quot;
+</span><span style="color:#c0c5ce;">User 2: &quot;Thanks for filing&quot;
+</span><span style="color:#c0c5ce;">User 3: &quot;This needs to go to the privacy team&quot;
+</span><span style="color:#c0c5ce;">Privacy team: &quot;Can we truncate to hostname or ask for consent?&quot;
+</span><span style="color:#c0c5ce;">User 1: &quot;Yes - we do not need the path, and we will ask for consent&quot;
+</span><span style="color:#c0c5ce;">Privacy team: &quot;Summary: Adding hostname collection with consent&quot;
+</span></code></pre>
+<p>If you collapse that thread into a summary-only training pair, the model may learn:</p>
+<pre style="background-color:#2b303b;">
+<code><span style="color:#c0c5ce;">Input: &quot;We&#39;d like to add URL data collection to feature Y&quot;
+</span><span style="color:#c0c5ce;">Output: &quot;We&#39;re going to collect Hostname with consent&quot;
+</span></code></pre>
+<p>But the real workflow was:</p>
+<svg viewBox="0 0 720 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Workflow: Initial review to Questions/concerns to Discussion to Resolution" style="max-width:720px;width:100%;height:auto;font-family:system-ui,sans-serif;font-size:14px">
+  <title>Workflow: Initial review, Questions/concerns, Discussion, Resolution</title>
+  <defs>
+    <marker id="ar" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#64748b"/></marker>
+  </defs>
+  <g fill="#f1f5f9" stroke="#94a3b8">
+    <rect x="0" y="8" width="138" height="32" rx="6"/>
+    <rect x="192" y="8" width="168" height="32" rx="6"/>
+    <rect x="414" y="8" width="118" height="32" rx="6"/>
+    <rect x="586" y="8" width="118" height="32" rx="6"/>
+  </g>
+  <g fill="#334155" text-anchor="middle" dominant-baseline="central">
+    <text x="69" y="24">Initial review</text>
+    <text x="276" y="24">Questions/concerns</text>
+    <text x="473" y="24">Discussion</text>
+    <text x="645" y="24">Resolution</text>
+  </g>
+  <g stroke="#64748b" stroke-width="1.5" fill="none" marker-end="url(#ar)">
+    <line x1="140" y1="24" x2="188" y2="24"/>
+    <line x1="362" y1="24" x2="410" y2="24"/>
+    <line x1="534" y1="24" x2="582" y2="24"/>
+  </g>
+</svg>
+<p>The model skipped to the end. The data was accurate; it was data from the wrong point in the workflow. The valuable signal may be the escalation "This needs to go to the privacy team" or the clarifying question about truncation vs consent.</p>
+<h3>The signal is buried, not missing</h3>
+<p>Identifying what to train on is genuinely hard. Is it the first flag? The key question? The compromise? Each serves a different function. The most useful signal is often buried mid-thread and not labelled as important.</p>
+<p>Curating SFT data is not just filtering "bad" examples. It is understanding what task you are training the model to do, and whether the data demonstrates that task or only its outcomes.</p>
+<h3>The knowledge cutoff problem</h3>
+<p>SFT creates a snapshot. A fine-tuned model knows what is in training data and nothing after. For stable knowledge (style guide, terminology, domain patterns), this can work. For anything that changes (current events, recent projects, updated process), you need retrieval.</p>
+<p>That often means hybrid architecture: SFT for <em>how</em> to respond, RAG for <em>what</em> to respond about. This boundary may soften: Apple's CLaRa <a href="https://arxiv.org/abs/2511.18659">[4]</a> compresses documents into dense latent representations that the model attends to at inference time - preserving the swappability of RAG with inference characteristics closer to SFT. Early results hint at a spectrum rather than a binary choice.</p>
+<p>SFT has one deployment advantage: if users already have the base model, the update artifact can be small. A LoRA <a href="https://arxiv.org/abs/2106.09685">[3]</a> adapter may be a few hundred MB instead of shipping full model weights.</p>
+<p>The catch: LoRA adapters are tied to specific base model weights. When upstream weights change, your adapter needs retraining. You are maintaining a pipeline, not just a dataset. Include that in operational cost.</p>
+<h2>The actual work: evaluating training data</h2>
+<p>Data curation is not prep work for SFT. It <em>is</em> the work.</p>
+<p>Before touching a training script, answer:</p>
+<ul>
+<li>Which examples represent the quality you want to replicate?</li>
+<li>What patterns in your data should <em>not</em> be learned?</li>
+<li>How will you handle the long tail of edge cases?</li>
+<li>What is your plan for knowledge that changes?</li>
+</ul>
+<p>The goldilocks zone for training data is not necessarily the newest or largest cohort. Volume does not distinguish quality - a consistent smaller set will outperform a larger mixed one because the model learns cleaner patterns rather than hedging between conflicting signals.</p>
+<h3>What training metrics tell you</h3>
+<img class="basic-alignment left flex-content" src="/images/ai/context-ideas-debugging-traceability.webp" alt="AI output debugging illustration focused on tracing input, retrieval, and tool calls.">
+<p>When you kick off a fine-tuning run, you will see numbers streaming in: loss dropping, accuracy climbing, maybe entropy moving around. It is tempting to watch loss decrease and assume things are working. These metrics can mislead if you do not know what they are measuring.</p>
+<p><strong>Loss</strong> measures how surprised the model is by the correct token. A loss of 2.5-3.0 means the model assigns roughly 5-8% probability to the correct next token - common early in training. In the privacy assessment corpus I was working with, well-tuned runs converged around 0.5-1.5, though this varies significantly by domain and vocabulary size.</p>
+<p>The trap: loss can drop while the model learns the wrong patterns confidently. If training data contains conflicting styles, the model learns both and hedges. Low loss, bad outputs.</p>
+<p><strong>Token accuracy</strong> (how often the top prediction is correct) started at 42-44% in my runs, reaching 55-70% on the best cohorts. This sounds low because many valid continuations exist. But on structured outputs - summaries, reports, specific formats - you usually want this higher. Persistently low accuracy on structured data often signals noisy training examples.</p>
+<p>Neither metric tells you whether the model learned the right behaviour - only that it learned <em>something</em> from your data. This is why held-out evaluation on realistic tasks matters more than watching curves converge.</p>
+<h3>Using LLMs to assess training data</h3>
+<p>The <a href="#the-workflow-mismatch-problem">workflow mismatch problem</a> makes manual labelling expensive. You are not just asking "is this example good?" You are asking "which of these 15 messages in a thread represents the behaviour we want to train?" That requires domain expertise, repeatedly.</p>
+<p>LLM-as-judge offers a practical middle ground. Use a model to score or rank candidate examples against explicit criteria:</p>
+<ul>
+<li>Which message first identifies a concern missing from the original spec?</li>
+<li>Does this response ask clarifying questions before stating conclusions?</li>
+</ul>
+<p>The economics can work. A human reviewer may process 20-30 complex thread evaluations per hour. An LLM can process thousands in the same time at a fraction of the cost per evaluation - often two orders of magnitude cheaper. Humans then review the edge cases.</p>
+<p>This is not complete automation - you are still encoding judgment, just at the meta level. Output quality depends on rubric quality, and ambiguous cases still need human eyes.</p>
+<p>LLMs can also generate variance your dataset lacks. If examples cluster around URL privacy reviews, an LLM can generate plausible variants: API key handling, PII in logs, third-party sharing. This can improve coverage faster than waiting for real examples, though synthetic edge cases still need domain validation.</p>
+<p>Training metrics tell you the model is learning. LLM-as-judge tells you whether it is learning from the right examples. Neither replaces held-out evaluation on realistic tasks, but together they close the gap between "we have data" and "we have data worth training on."</p>
+<h2>Picking the right approach</h2>
+<img class="basic-alignment right flex-content" src="/images/ai/context-ideas-ship-criteria-checklist.webp" alt="Ship criteria checklist illustration for AI features with go or no-go framing.">
+<ul>
+<li><strong>Default to RAG</strong> when your knowledge changes frequently, when you need to trace outputs back to source documents, or when you are just getting started and want fast iteration on what context matters.</li>
+<li><strong>Use long context</strong> for prototyping and one-off analysis where simplicity beats cost, or when the full input is small enough that inference cost is acceptable.</li>
+<li><strong>Consider agentic tool use</strong> when the task requires multi-step reasoning across different data sources, and you have the trace logging infrastructure to debug it.</li>
+<li><strong>Consider SFT</strong> when you need consistent style, tone, or domain behaviour that prompting alone cannot reliably produce - and when you have a curated, high-quality dataset and the pipeline to maintain it.</li>
+<li><strong>Use existing tooling</strong> when time-to-value matters more than control, and you can tolerate the vendor's context decisions.</li>
+</ul>
+<p>Most production systems end up hybrid. SFT for <em>how</em> to respond, RAG for <em>what</em> to respond about, and agentic retrieval for anything that requires following a chain of reasoning across sources.</p>
+<p>Research directions exist for SFT traceability - influence functions try to estimate which training examples most affected an output, and memorization probes can sometimes detect whether specific text was in training data. But these are computationally expensive, approximate, and not production-ready <a href="https://arxiv.org/abs/2308.03296">[2]</a>. If your use case requires explaining <em>why</em> an output happened (compliance, debugging, trust), pure SFT is a poor fit. Hybrid setups preserve traceability where it matters most.</p>
+<h2>The bottom line</h2>
+<p>Every approach in this guide trades off different things, but they share one constraint: the model can only work with the context it receives. How you gather, filter, and structure that context matters more than which model you run.</p>
+<p>For SFT specifically, the core question is not "do we have enough data?" It is "do we have enough <em>good</em> data, and can we identify which data that is?"</p>
+<p>The model learns whatever patterns you provide. Make sure those are the patterns you actually want.</p>
+<hr />
+<p><strong>References</strong></p>
+<p>[1] Liu, N. F. et al. "Lost in the Middle: How Language Models Use Long Contexts." 2023. <a href="https://arxiv.org/abs/2307.03172">https://arxiv.org/abs/2307.03172</a></p>
+<p>[2] Grosse, R. et al. "Studying Large Language Model Generalization with Influence Functions." 2023. <a href="https://arxiv.org/abs/2308.03296">https://arxiv.org/abs/2308.03296</a></p>
+<p>[3] Hu, E. J. et al. "LoRA: Low-Rank Adaptation of Large Language Models." 2021. <a href="https://arxiv.org/abs/2106.09685">https://arxiv.org/abs/2106.09685</a></p>
+<p>[4] He, J. et al. "CLaRa: Bridging Retrieval and Generation with Continuous Latent Reasoning." 2025. <a href="https://arxiv.org/abs/2511.18659">https://arxiv.org/abs/2511.18659</a></p>
+
+          </div>
+        
+        </article>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+    <p>
+      <a class="page-link" href="https://jotter.jonathankingston.co.uk/pages/ai-tips/">AI Tips</a>
+    </p>
+    <ul class="social-media-list">
+      
+      <li>
+        <a href="https://github.com/jonathankingston"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">jonathankingston</span></a>
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" href="https://www.linkedin.com/in/jonathan-kingston/" aria-label="LinkedIn">
+  <span class="icon icon--linkedin"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7 0h3.84v2.05h.05c.53-1.01 1.84-2.08 3.79-2.08 4.05 0 4.8 2.67 4.8 6.14V23h-4v-7.7c0-1.84-.03-4.2-2.56-4.2-2.56 0-2.95 2-2.95 4.06V23h-4V8z"/>
+</svg>
+</span>
+  <span class="username">jonathan-kingston</span>
+</a>
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" href="https://bsky.app/profile/kingstontime.bsky.social" aria-label="Bluesky">
+  <span class="icon icon--bluesky"><svg viewBox="0 0 600 530" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <!-- Source: https://commons.wikimedia.org/wiki/File:Bluesky_Logo.svg -->
+  <path d="m135.72 44.03c66.496 49.921 138.02 151.14 164.28 205.46 26.262-54.316 97.782-155.54 164.28-205.46 47.98-36.021 125.72-63.892 125.72 24.795 0 17.712-10.155 148.79-16.111 170.07-20.703 73.984-96.144 92.854-163.25 81.433 117.3 19.964 147.14 86.092 82.697 152.22-122.39 125.59-175.91-31.511-189.63-71.766-2.514-7.3797-3.6904-10.832-3.7077-7.8964-0.0174-2.9357-1.1937 0.51669-3.7077 7.8964-13.714 40.255-67.233 197.36-189.63 71.766-64.444-66.128-34.605-132.26 82.697-152.22-67.108 11.421-142.55-7.4491-163.25-81.433-5.9562-21.282-16.111-152.36-16.111-170.07 0-88.687 77.742-60.816 125.72-24.795z"/>
+</svg>
+</span>
+  <span class="username">kingstontime.bsky.social</span>
+</a>
+
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" rel="me" href="https://mastodon.social/@jkt" aria-label="Mastodon">
+  <span class="icon icon--mastodon"><svg viewBox="0 0 216.4144 232.00976" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <!-- Source: https://commons.wikimedia.org/wiki/File:Mastodon_Logotype_(Simple).svg -->
+  <path d="M211.80734 139.0875c-3.18125 16.36625-28.4925 34.2775-57.5625 37.74875-15.15875 1.80875-30.08375 3.47125-45.99875 2.74125-26.0275-1.1925-46.565-6.2125-46.565-6.2125 0 2.53375.15625 4.94625.46875 7.2025 3.38375 25.68625 25.47 27.225 46.39125 27.9425 21.11625.7225 39.91875-5.20625 39.91875-5.20625l.8675 19.09s-14.77 7.93125-41.08125 9.39c-14.50875.7975-32.52375-.365-53.50625-5.91875C9.23234 213.82 1.40609 165.31125.20859 116.09125c-.365-14.61375-.14-28.39375-.14-39.91875 0-50.33 32.97625-65.0825 32.97625-65.0825C49.67234 3.45375 78.20359.2425 107.86484 0h.72875c29.66125.2425 58.21125 3.45375 74.8375 11.09 0 0 32.975 14.7525 32.975 65.0825 0 0 .41375 37.13375-4.59875 62.915"/>
+  <!-- Force the inner 'M' to match the page background so it stays a cutout. -->
+  <path style="fill:#fdfdfd" d="M177.50984 80.077v60.94125h-24.14375v-59.15c0-12.46875-5.24625-18.7975-15.74-18.7975-11.6025 0-17.4175 7.5075-17.4175 22.3525v32.37625H96.20734V85.42325c0-14.845-5.81625-22.3525-17.41875-22.3525-10.49375 0-15.74 6.32875-15.74 18.7975v59.15H38.90484V80.077c0-12.455 3.17125-22.3525 9.54125-29.675 6.56875-7.3225 15.17125-11.07625 25.85-11.07625 12.355 0 21.71125 4.74875 27.8975 14.2475l6.01375 10.08125 6.015-10.08125c6.185-9.49875 15.54125-14.2475 27.8975-14.2475 10.6775 0 19.28 3.75375 25.85 11.07625 6.36875 7.3225 9.54 17.22 9.54 29.675"/>
+</svg>
+</span>
+  <span class="username">@jkt@mastodon.social</span>
+</a>
+
+
+      </li>
+      
+
+      
+      <li>
+        <span class="social-link social-link--retired" aria-label="Twitter (retired)">
+  <span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span>
+  <span class="username"><s>kingstonTime</s></span>
+</span>
+
+      </li>
+      
+    </ul>
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

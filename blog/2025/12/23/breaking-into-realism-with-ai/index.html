@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#454545">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Breaking into realism with AI</title>
+  
+  
+  
+    
+  
+  
+
+  
+  
+
+  
+
+  
+
+  
+  <meta name="description" content="AI isn&#39;t magic. It hallucinates, misses context, and confidently produces junk. But if you understand where it&#39;s useful, it becomes powerful for ampl...">
+
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon-48x48.png" type="image/png" sizes="48x48">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon-192x192.png" type="image/png" sizes="192x192">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="https://jotter.jonathankingston.co.uk/apple-touch-icon.png" sizes="180x180">
+
+  <link rel="stylesheet" href="https://jotter.jonathankingston.co.uk/css/main.css?v=cb4cec6">
+  <link rel="canonical" href="https://jotter.jonathankingston.co.uk/blog/2025/12/23/breaking-into-realism-with-ai/">
+  <link rel="alternate" type="application/rss+xml" title="Jonathan Kingston" href="https://jotter.jonathankingston.co.uk/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+  <div class="wrapper">
+    <a class="site-title" href="https://jotter.jonathankingston.co.uk/">Jonathan Kingston</a>
+    <nav class="site-nav">
+      <a class="page-link" href="https://jonathankingston.co.uk">About me</a>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        
+          <header class="post-header">
+            <h1 class="post-title" itemprop="name headline">Breaking into realism with AI</h1>
+            <p class="post-meta">
+              
+              <time datetime="2025-12-23 00:00:00 +0000" itemprop="datePublished">Dec 23, 2025</time>
+              
+              
+            </p>
+          </header>
+        
+          <div class="post-content" itemprop="articleBody">
+            <p>AI isn't magic. It hallucinates, misses context, and confidently produces junk. But if you understand <em>where</em> it's useful, it becomes powerful for amplifying what you do.</p>
+<p>My good pal <a href="https://www.theautomatedtester.co.uk/">David Burns</a> often talks about the <em>"force multiplier"</em> effect that AI can create for those with expertise. <a href="https://youtu.be/7bzyLcK5cqc?si=iRZOdhsAiJxrGNMD">He and Dan Makarov talk about this in the testing context in this video</a>.</p>
+<p>Research on AI and developer productivity tells a messy story. Juniors see larger relative productivity gains (<a href="https://mitsloan.mit.edu/ideas-made-to-matter/how-generative-ai-affects-highly-skilled-workers">MIT/Microsoft, 2024</a>), but seniors ship more AI-generated code to production and trust it more because they can spot when it's wrong (<a href="https://www.fastly.com/blog/senior-developers-ship-more-ai-code">Fastly, 2025</a>).</p>
+<p>My expectation is that staff engineers should be helping juniors build those verification skills by adding guardrails so AI assists, rather than replacing judgment.</p>
+<p>Here are some of the ways I've been using it lately.</p>
+<h2>Tightening Feedback Loops</h2>
+<p>The fastest way to unblock someone is to shrink the gap between "I wonder if..." and "here's what that looks like." AI is surprisingly good at this:</p>
+<ul>
+<li>Prototyping rough ideas before investing real engineering time</li>
+<li>Scaffolding build setups so you're not starting from zero</li>
+<li>Moving docs into git</li>
+<li>Creating throwaway charts and dashboards to explore ideas before committing to a proper implementation</li>
+</ul>
+<p>None of this replaces careful review. But it gets you to something concrete faster, with faster feedback and less waste.</p>
+<h2>Offloading Cognitive Load</h2>
+<p>Engineering requires deep concentration, or at least it used to. AI can act as a scratchpad you think out loud to, holding context while you context-switch.</p>
+<img class="basic-alignment right flex-content" src="/images/ai/skelly-to-laptop.svg" alt="Jot the idea on your phone, then later review outputs like a todo list.">
+<p>I've taken a laptop to distracting environments and been as productive as I would be in a quiet room. The cognitive load drops when you're not holding everything in your head. You can sketch an idea, let the AI flesh it out, and review it later with fresh eyes.</p>
+<p><a href="https://cursor.com/blog/cloud-agents">Cursor cloud agents</a> help here. With a monorepo that has all our codebases on it, I can jot ideas or ask questions from my phone while on the move. By the time I'm back at my desk, there's a list of outputs to review like a todo list. Thinking happens in the gaps; verification happens when I have focus.</p>
+<div style="clear: both;"></div>
+<h2>First-Pass Work at Scale</h2>
+<p>Some tasks are tedious but important: reviewing broken sites, auditing privacy policies, checking for consistency across processes. This is where AI works well as a first pass, flagging issues for human review rather than being the final word.</p>
+<p>To make it useful, give it enough structure. A well-prompted review includes examples of what good looks like, an overview of what you're checking, and your assumptions upfront.</p>
+<p>For example, when auditing a privacy policy: I provide 2-3 examples of policies we've approved with annotations on why, a checklist of red flags (vague data retention, broad third-party sharing, missing deletion rights), and context about our specific requirements. The AI returns a structured assessment. It's not a legal opinion, but a first pass that surfaces "these three clauses need human review" rather than me reading the whole thing cold.</p>
+<p>Same pattern works for broken site audits: give it screenshots or HTML, examples of known issues we've caught before, and a rubric. It flags; humans verify.</p>
+<p>Do I think it's better than human review? It depends. A well-focused human that has endless time will likely be better. That simply isn't feasible for all tasks.</p>
+<h2>Filling Gaps in Human Coverage</h2>
+<p>AI is most valuable in the places where human attention is already thin: where the job isn't getting done as well as you'd like, or isn't getting done at all.</p>
+<p>Take PR follow-up reviews. The initial review gets careful attention, but once changes are requested, that follow-up often sails through. Deadlines have tightened, memory of the original review has warped, feedback wasn't quite implemented as asked, or there's a breakdown in communication between author and reviewer. These are the moments where last-minute mistakes creep in.</p>
+<p><a href="https://cursor.com/bugbot">Bugbot</a> fits well here. It works across all time zones, doesn't get tired, and catches the small things humans skim past on a second look. It can replace the follow-up human review entirely. Not because it's smarter, but because it's more consistent at a task that was already getting short-changed.</p>
+<h2>Knowing When "Good Enough" Is Good Enough</h2>
+<p>Not every problem needs a proper solution. Sometimes the right tool to catch a bug would take a week to build, or requires expertise you don't have, or isn't worth the investment for a low-risk edge case. AI can backfill these gaps with something "good enough."</p>
+<p>Decide whether something should become a deterministic tool (a linter, a workflow), an <a href="https://docs.cursor.com/context/rules">MDC rule</a>, or stay a human task. Risk and frequency usually guide the answer. And when you do decide on a deterministic tool or MDC rule, AI can often write that for you too: a "good enough" version that covers 80% of cases. It's not perfect, but it's better than nothing. And nothing is what you had before.</p>
+<h2>Workspaces &amp; Automation</h2>
+<p>I've been building a coordination monorepo that sits across our other repositories: a place to hold prompt engineering, tests suites, and shared context for AI agents. Rather than duplicating prompts or losing what works, this gives us a single source of truth for how we're using AI across projects.</p>
+<p>Pair that with Bugbot for automated code reviews, and you start building a system where AI augments your pipeline rather than living in a silo. Bugbot can be prompted, either through a <code>BUGBOT.md</code> file or direct instructions, to check work in specific ways. Lately I've been triggering it on Dependabot PRs to flag coverage gaps and riskier upgrades in dependencies. It's not perfect, but it catches things humans skim past on routine updates.</p>
+<h2>Combining AI with Traditional Approaches</h2>
+<p>Deterministic tests and build pipelines limit AI's unpredictability. If an AI suggests a change, the test suite still has to pass. If it generates a dependency update, Bugbot still flags coverage. The AI doesn't get a free pass; it feeds into the same gates as human work.</p>
+<p>Where possible, prefer traditional tooling over prompting. GitHub workflows, linting rules, and type checking are predictable and debuggable in ways that LLM output isn't. Use AI to generate the scaffolding, then lock it down with conventional checks. A well-configured workflow will catch issues more reliably than hoping the model remembers your instructions.</p>
+<p>Instead of handing someone an open-ended AI assistant and hoping for the best, you wrap it in guardrails: CI that fails on bad output, templates that constrain the problem space, review gates that catch mistakes before they ship. They get the speed boost; the system absorbs the risk.</p>
+<p>The key to trusting AI output: don't trust it. Verify it with the same tooling you'd use anyway.</p>
+<h2>The Caveat</h2>
+<p>All of this requires understanding what you're looking at. AI is a force multiplier for expertise, not a replacement for it.</p>
+<p>I've seen people try to automate every single interaction they have: emails, messages, even casual conversations. I think this drives toward mediocrity. If everything you produce is AI-assisted, nothing has a sense of 'you'.</p>
+<p>Use the time AI saves you to hone in on the work you actually enjoy. Go deeper on the problems that interest you. Invest in human connection: the conversations, mentoring, and collaboration that can't be templated.</p>
+
+          </div>
+        
+        </article>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+    <p>
+      <a class="page-link" href="https://jotter.jonathankingston.co.uk/pages/ai-tips/">AI Tips</a>
+    </p>
+    <ul class="social-media-list">
+      
+      <li>
+        <a href="https://github.com/jonathankingston"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">jonathankingston</span></a>
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" href="https://www.linkedin.com/in/jonathan-kingston/" aria-label="LinkedIn">
+  <span class="icon icon--linkedin"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7 0h3.84v2.05h.05c.53-1.01 1.84-2.08 3.79-2.08 4.05 0 4.8 2.67 4.8 6.14V23h-4v-7.7c0-1.84-.03-4.2-2.56-4.2-2.56 0-2.95 2-2.95 4.06V23h-4V8z"/>
+</svg>
+</span>
+  <span class="username">jonathan-kingston</span>
+</a>
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" href="https://bsky.app/profile/kingstontime.bsky.social" aria-label="Bluesky">
+  <span class="icon icon--bluesky"><svg viewBox="0 0 600 530" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <!-- Source: https://commons.wikimedia.org/wiki/File:Bluesky_Logo.svg -->
+  <path d="m135.72 44.03c66.496 49.921 138.02 151.14 164.28 205.46 26.262-54.316 97.782-155.54 164.28-205.46 47.98-36.021 125.72-63.892 125.72 24.795 0 17.712-10.155 148.79-16.111 170.07-20.703 73.984-96.144 92.854-163.25 81.433 117.3 19.964 147.14 86.092 82.697 152.22-122.39 125.59-175.91-31.511-189.63-71.766-2.514-7.3797-3.6904-10.832-3.7077-7.8964-0.0174-2.9357-1.1937 0.51669-3.7077 7.8964-13.714 40.255-67.233 197.36-189.63 71.766-64.444-66.128-34.605-132.26 82.697-152.22-67.108 11.421-142.55-7.4491-163.25-81.433-5.9562-21.282-16.111-152.36-16.111-170.07 0-88.687 77.742-60.816 125.72-24.795z"/>
+</svg>
+</span>
+  <span class="username">kingstontime.bsky.social</span>
+</a>
+
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" rel="me" href="https://mastodon.social/@jkt" aria-label="Mastodon">
+  <span class="icon icon--mastodon"><svg viewBox="0 0 216.4144 232.00976" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <!-- Source: https://commons.wikimedia.org/wiki/File:Mastodon_Logotype_(Simple).svg -->
+  <path d="M211.80734 139.0875c-3.18125 16.36625-28.4925 34.2775-57.5625 37.74875-15.15875 1.80875-30.08375 3.47125-45.99875 2.74125-26.0275-1.1925-46.565-6.2125-46.565-6.2125 0 2.53375.15625 4.94625.46875 7.2025 3.38375 25.68625 25.47 27.225 46.39125 27.9425 21.11625.7225 39.91875-5.20625 39.91875-5.20625l.8675 19.09s-14.77 7.93125-41.08125 9.39c-14.50875.7975-32.52375-.365-53.50625-5.91875C9.23234 213.82 1.40609 165.31125.20859 116.09125c-.365-14.61375-.14-28.39375-.14-39.91875 0-50.33 32.97625-65.0825 32.97625-65.0825C49.67234 3.45375 78.20359.2425 107.86484 0h.72875c29.66125.2425 58.21125 3.45375 74.8375 11.09 0 0 32.975 14.7525 32.975 65.0825 0 0 .41375 37.13375-4.59875 62.915"/>
+  <!-- Force the inner 'M' to match the page background so it stays a cutout. -->
+  <path style="fill:#fdfdfd" d="M177.50984 80.077v60.94125h-24.14375v-59.15c0-12.46875-5.24625-18.7975-15.74-18.7975-11.6025 0-17.4175 7.5075-17.4175 22.3525v32.37625H96.20734V85.42325c0-14.845-5.81625-22.3525-17.41875-22.3525-10.49375 0-15.74 6.32875-15.74 18.7975v59.15H38.90484V80.077c0-12.455 3.17125-22.3525 9.54125-29.675 6.56875-7.3225 15.17125-11.07625 25.85-11.07625 12.355 0 21.71125 4.74875 27.8975 14.2475l6.01375 10.08125 6.015-10.08125c6.185-9.49875 15.54125-14.2475 27.8975-14.2475 10.6775 0 19.28 3.75375 25.85 11.07625 6.36875 7.3225 9.54 17.22 9.54 29.675"/>
+</svg>
+</span>
+  <span class="username">@jkt@mastodon.social</span>
+</a>
+
+
+      </li>
+      
+
+      
+      <li>
+        <span class="social-link social-link--retired" aria-label="Twitter (retired)">
+  <span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span>
+  <span class="username"><s>kingstonTime</s></span>
+</span>
+
+      </li>
+      
+    </ul>
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

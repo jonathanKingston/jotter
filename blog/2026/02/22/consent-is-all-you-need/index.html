@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#454545">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Consent is all you need</title>
+  
+  
+  
+    
+  
+  
+
+  
+  
+
+  
+
+  
+
+  
+  <meta name="description" content="The agentic web has a consent problem. Every agent depends on the same unstated assumption: the model knows when it should stop and ask you.">
+
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon-48x48.png" type="image/png" sizes="48x48">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon-192x192.png" type="image/png" sizes="192x192">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="https://jotter.jonathankingston.co.uk/apple-touch-icon.png" sizes="180x180">
+
+  <link rel="stylesheet" href="https://jotter.jonathankingston.co.uk/css/main.css?v=cb4cec6">
+  <link rel="canonical" href="https://jotter.jonathankingston.co.uk/blog/2026/02/22/consent-is-all-you-need/">
+  <link rel="alternate" type="application/rss+xml" title="Jonathan Kingston" href="https://jotter.jonathankingston.co.uk/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+  <div class="wrapper">
+    <a class="site-title" href="https://jotter.jonathankingston.co.uk/">Jonathan Kingston</a>
+    <nav class="site-nav">
+      <a class="page-link" href="https://jonathankingston.co.uk">About me</a>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        
+          <header class="post-header">
+            <h1 class="post-title" itemprop="name headline">Consent is all you need</h1>
+            <p class="post-meta">
+              
+              <time datetime="2026-02-22 00:00:00 +0000" itemprop="datePublished">Feb 22, 2026</time>
+              
+              
+            </p>
+          </header>
+        
+          <div class="post-content" itemprop="articleBody">
+            <p>The agentic web has a consent problem. Every agent depends on the same unstated assumption: the model knows when it should stop and ask you.</p>
+<img class="image-framed" src="/images/ai/consent-click-is-a-contract.webp" alt="Illustration showing consent is needed before Buy Now click.">
+<p>A click can carry legal and financial weight. It signals intent and, critically, it happens in the context of credentials: your logged-in account, payment methods, and saved addresses. A click doesn't just express intent. It exercises authority over everything bound to that session.</p>
+<p>Now we're building systems that click on your behalf. The key question is: when does the agent need to come back and ask?</p>
+<p>This is a core unsolved problem of agentic AI. The IEEE survey on agentic AI systems <a href="https://ieeexplore.ieee.org/document/10849561">[1]</a> frames it well. These are autonomous systems pursuing complex goals with minimal human intervention. "Minimal human intervention" is the feature being sold. It's also the attack surface.</p>
+<h2>WebMCP: the new frontier of adversarial pages</h2>
+<p>Google and Microsoft released the <a href="https://webmachinelearning.github.io/webmcp/">WebMCP</a> API, an approach that lets web pages expose their functionality as structured tools for AI agents. Instead of an agent guessing where the "Submit" button is by staring at a screenshot, the page declares its capabilities as callable functions with schemas.</p>
+<p>This is a genuine improvement over the screenshot-and-pray approach. But it also removes a safety signal humans rely on. People notice when a form redirects somewhere unexpected, or when clicking "Cancel" triggers a download. An agent consuming structured tool calls has no equivalent intuition.</p>
+<p>WebMCP still depends on the page being honest: tool descriptions must match behaviour, and schemas must reflect reality. Those are the same assumptions that enabled phishing, clickjacking, and social engineering on the early web, except now the target is a model that will execute what the tool description says.</p>
+<p>Think about it. A page registers a tool called <code>applyDiscount</code> that actually adds items to your cart. Or <code>checkAvailability</code> that submits your personal data to a third party. The tool description says one thing. The implementation does another. Sometimes that mismatch is malicious. Sometimes it's just poor implementation quality. In both cases, the model needs to verify the gap.</p>
+<img class="image-framed" src="/images/ai/consent-tool-deception.webp" alt="Illustration of adversarial webpage tool deception and data exfiltration risk.">
+<p>WebMCP tools can ask the agent for information during an interaction flow. That creates both a fingerprinting vector and a direct route to PII exfiltration.</p>
+<p>A malicious page doesn't need cookies or extra browser APIs to profile you. It can craft tool prompts that coax the model into revealing intent "what are you trying to do?", history "what did you search for?", and, in some agent implementations, nearby context "what other tools were just called?". If the agent also holds personal data, the same pattern can extract that too: ask it to "confirm user details for booking" and a helpful model may hand over name, email, location, or more. There's a risk that the page learns data it was never authorised to receive.</p>
+<h2>The sandbox that isn't</h2>
+<p>IsolateGPT <a href="https://arxiv.org/abs/2403.04960">[2]</a> proposed execution isolation as a defence, treating LLM apps the way we treat untrusted code, with strict boundaries between components. The paper demonstrates that isolation protects against many security and privacy issues without losing functionality. The architecture borrows from operating system design: separate the planner from the executor, sandbox third-party interactions, and enforce information flow controls. A key strength of this approach is that it applies classical programming techniques to keep high-risk operations deterministic wherever possible.</p>
+<p>The concern I keep coming back to: the LLM is still the planner. Operator-and-hub style architectures help by separating planning from execution and constraining privileged actions. But they don't remove the core tension. Useful planning needs rich context, and richer context increases the surface area for adversarial shaping. We're already seeing this trade-off in on-device agentics, where stronger models and larger context windows materially improve outcomes while expanding what the system must trust <a href="https://v-chandra.github.io/on-device-llms/">[4]</a>.</p>
+<p>This is the sandbox escape problem reframed for language models. You can isolate the execution all you want, but if a poisoned tool description or adversarial page content has already convinced the planner to take the wrong action, the isolation is protecting the wrong boundary. The poisoning happens upstream of the sandbox.</p>
+<p>This isn't only a WebMCP issue. Any deep research, search-augmented, or retrieval-augmented system that consumes web content has the same trust problem: is this input helping the user, or manipulating the model?</p>
+<h2>Treat it like web data</h2>
+<p>I suspect AI systems will eventually need to treat tool descriptions and page-provided context the same way we treat untrusted web data: with multi-signal classification methods that don't rely on any single signal.</p>
+<p>Recent work on hybrid ensemble deep learning for malicious website detection <a href="https://doi.org/10.1038/s41598-025-33695-z">[3]</a> points toward a promising direction for agentic risk modelling. Don't trust any single feature. Extract multiple signals (structural, behavioural, semantic) and let an ensemble of classifiers vote on whether something is adversarial. In this framing, risk is learned as a multi-factor classification problem rather than a single-rule heuristic.</p>
+<p>For agentic systems, this means multi-signal checks, including an LLM-as-judge pass that compares claimed tool intent with observed behaviour:</p>
+<ul>
+<li>Does the tool description match the observed behaviour?</li>
+<li>Does the page's declared intent align with its actual data flows?</li>
+<li>Are the requested permissions proportional to the stated task?</li>
+<li>Does the interaction pattern match known adversarial fingerprinting techniques?</li>
+</ul>
+<p>No single check catches everything. But a multi-signal trust model, trained on real adversarial examples, might get close enough.</p>
+<h2>The consent layer we actually need</h2>
+<p>The web already has a consent architecture. It's imperfect, and cookie banners are widely disliked, but the principle is sound: before something consequential happens, the user should know about it and agree to it.</p>
+<p>We already know where this breaks down. Cookie banners, app permissions, and OAuth screens taught us that frequent prompts create habitual approval.</p>
+<p>Agentic systems need the equivalent. Not a blanket "let the AI do whatever" and not a tedious confirmation for every API call, but something in between.</p>
+<p>An agent that asks "Can I click Submit?" forty times a session trains users to stop reading. So the consent model needs to understand which actions are reversible and which aren't, which carry financial or legal weight, and which cross trust boundaries. Recent work on automating data-access permissions in AI agents suggests this can be learned from user context and preferences, rather than hardcoded as one-size-fits-all prompts <a href="https://arxiv.org/abs/2511.17959">[5]</a>.</p>
+<p>That is where isolation helps. If untrusted components cannot access sensitive data or perform privileged actions, many prompts disappear by design. Then remaining prompts can focus on genuinely consequential actions. The design challenge is not just "when should we ask?" but "how do we make asking rare enough to matter?"</p>
+<p>WebMCP's tool annotations are a start. Tools can be marked as "destructive," signalling that the agent should flag them for user confirmation. But this puts the honesty burden on the page author, the same entity who might be adversarial. The browser, the agent platform, or some combination of both needs to independently classify action risk and enforce consent checkpoints at boundaries the page can't override.</p>
+<img class="image-framed" src="/images/ai/consent-trust-layer.webp" alt="Illustration of risk checkpoints and explicit consent for irreversible actions.">
+<p>Get consent wrong and agents don't just break, they act. With your credentials, your payment methods, your data. We need to build trust safeguards in parallel with capability work: verify tools against behaviour, classify adversarial inputs from multiple signals, and enforce consent at boundaries the page cannot override.</p>
+<p>Attention may be all you need for intelligence. But consent is what builds trust.</p>
+<p><strong>References</strong></p>
+<p>[1] "Agentic AI: Autonomous Intelligence for Complex Goals: A Comprehensive Survey." IEEE Access, 2025. <a href="https://ieeexplore.ieee.org/document/10849561">https://ieeexplore.ieee.org/document/10849561</a></p>
+<p>[2] Wu, Y. et al. "IsolateGPT: An Execution Isolation Architecture for LLM-Based Agentic Systems." NDSS Symposium, 2025. <a href="https://arxiv.org/abs/2403.04960">https://arxiv.org/abs/2403.04960</a></p>
+<p>[3] Yang, T. and Sun, J. "A hybrid ensemble deep learning framework with novel metaheuristic optimization for scalable malicious website detection." Scientific Reports, 2025. <a href="https://doi.org/10.1038/s41598-025-33695-z">https://doi.org/10.1038/s41598-025-33695-z</a></p>
+<p>[4] Chandra, V. and Krishnamoorthi, R. "On-Device LLMs: State of the Union, 2026." <a href="https://v-chandra.github.io/on-device-llms/">https://v-chandra.github.io/on-device-llms/</a></p>
+<p>[5] Wu, Y. et al. "Towards Automating Data Access Permissions in AI Agents." IEEE Symposium on Security and Privacy, 2026. <a href="https://arxiv.org/abs/2511.17959">https://arxiv.org/abs/2511.17959</a></p>
+
+          </div>
+        
+        </article>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+    <p>
+      <a class="page-link" href="https://jotter.jonathankingston.co.uk/pages/ai-tips/">AI Tips</a>
+    </p>
+    <ul class="social-media-list">
+      
+      <li>
+        <a href="https://github.com/jonathankingston"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">jonathankingston</span></a>
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" href="https://www.linkedin.com/in/jonathan-kingston/" aria-label="LinkedIn">
+  <span class="icon icon--linkedin"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7 0h3.84v2.05h.05c.53-1.01 1.84-2.08 3.79-2.08 4.05 0 4.8 2.67 4.8 6.14V23h-4v-7.7c0-1.84-.03-4.2-2.56-4.2-2.56 0-2.95 2-2.95 4.06V23h-4V8z"/>
+</svg>
+</span>
+  <span class="username">jonathan-kingston</span>
+</a>
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" href="https://bsky.app/profile/kingstontime.bsky.social" aria-label="Bluesky">
+  <span class="icon icon--bluesky"><svg viewBox="0 0 600 530" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <!-- Source: https://commons.wikimedia.org/wiki/File:Bluesky_Logo.svg -->
+  <path d="m135.72 44.03c66.496 49.921 138.02 151.14 164.28 205.46 26.262-54.316 97.782-155.54 164.28-205.46 47.98-36.021 125.72-63.892 125.72 24.795 0 17.712-10.155 148.79-16.111 170.07-20.703 73.984-96.144 92.854-163.25 81.433 117.3 19.964 147.14 86.092 82.697 152.22-122.39 125.59-175.91-31.511-189.63-71.766-2.514-7.3797-3.6904-10.832-3.7077-7.8964-0.0174-2.9357-1.1937 0.51669-3.7077 7.8964-13.714 40.255-67.233 197.36-189.63 71.766-64.444-66.128-34.605-132.26 82.697-152.22-67.108 11.421-142.55-7.4491-163.25-81.433-5.9562-21.282-16.111-152.36-16.111-170.07 0-88.687 77.742-60.816 125.72-24.795z"/>
+</svg>
+</span>
+  <span class="username">kingstontime.bsky.social</span>
+</a>
+
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" rel="me" href="https://mastodon.social/@jkt" aria-label="Mastodon">
+  <span class="icon icon--mastodon"><svg viewBox="0 0 216.4144 232.00976" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <!-- Source: https://commons.wikimedia.org/wiki/File:Mastodon_Logotype_(Simple).svg -->
+  <path d="M211.80734 139.0875c-3.18125 16.36625-28.4925 34.2775-57.5625 37.74875-15.15875 1.80875-30.08375 3.47125-45.99875 2.74125-26.0275-1.1925-46.565-6.2125-46.565-6.2125 0 2.53375.15625 4.94625.46875 7.2025 3.38375 25.68625 25.47 27.225 46.39125 27.9425 21.11625.7225 39.91875-5.20625 39.91875-5.20625l.8675 19.09s-14.77 7.93125-41.08125 9.39c-14.50875.7975-32.52375-.365-53.50625-5.91875C9.23234 213.82 1.40609 165.31125.20859 116.09125c-.365-14.61375-.14-28.39375-.14-39.91875 0-50.33 32.97625-65.0825 32.97625-65.0825C49.67234 3.45375 78.20359.2425 107.86484 0h.72875c29.66125.2425 58.21125 3.45375 74.8375 11.09 0 0 32.975 14.7525 32.975 65.0825 0 0 .41375 37.13375-4.59875 62.915"/>
+  <!-- Force the inner 'M' to match the page background so it stays a cutout. -->
+  <path style="fill:#fdfdfd" d="M177.50984 80.077v60.94125h-24.14375v-59.15c0-12.46875-5.24625-18.7975-15.74-18.7975-11.6025 0-17.4175 7.5075-17.4175 22.3525v32.37625H96.20734V85.42325c0-14.845-5.81625-22.3525-17.41875-22.3525-10.49375 0-15.74 6.32875-15.74 18.7975v59.15H38.90484V80.077c0-12.455 3.17125-22.3525 9.54125-29.675 6.56875-7.3225 15.17125-11.07625 25.85-11.07625 12.355 0 21.71125 4.74875 27.8975 14.2475l6.01375 10.08125 6.015-10.08125c6.185-9.49875 15.54125-14.2475 27.8975-14.2475 10.6775 0 19.28 3.75375 25.85 11.07625 6.36875 7.3225 9.54 17.22 9.54 29.675"/>
+</svg>
+</span>
+  <span class="username">@jkt@mastodon.social</span>
+</a>
+
+
+      </li>
+      
+
+      
+      <li>
+        <span class="social-link social-link--retired" aria-label="Twitter (retired)">
+  <span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span>
+  <span class="username"><s>kingstonTime</s></span>
+</span>
+
+      </li>
+      
+    </ul>
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

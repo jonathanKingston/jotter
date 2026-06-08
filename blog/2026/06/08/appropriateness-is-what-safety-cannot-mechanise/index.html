@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#454545">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Appropriateness is what safety cannot mechanise</title>
+  
+  
+  
+    
+  
+  
+
+  
+  
+
+  
+
+  
+  <meta name="robots" content="noindex, nofollow">
+  
+
+  
+  <meta name="description" content="In the first post, I argued that the lethal trifecta is a capability test, not a safety model. Above capability sit further checks: contextual integrity and ...">
+
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon-48x48.png" type="image/png" sizes="48x48">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon-192x192.png" type="image/png" sizes="192x192">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="https://jotter.jonathankingston.co.uk/apple-touch-icon.png" sizes="180x180">
+
+  <link rel="stylesheet" href="https://jotter.jonathankingston.co.uk/css/main.css?v=cb4cec6">
+  <link rel="canonical" href="https://jotter.jonathankingston.co.uk/blog/2026/06/08/appropriateness-is-what-safety-cannot-mechanise/">
+  <link rel="alternate" type="application/rss+xml" title="Jonathan Kingston" href="https://jotter.jonathankingston.co.uk/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+  <div class="wrapper">
+    <a class="site-title" href="https://jotter.jonathankingston.co.uk/">Jonathan Kingston</a>
+    <nav class="site-nav">
+      <a class="page-link" href="https://jonathankingston.co.uk">About me</a>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        
+          <header class="post-header">
+            <h1 class="post-title" itemprop="name headline">Appropriateness is what safety cannot mechanise</h1>
+            <p class="post-meta">
+              
+              <time datetime="2026-06-08 00:00:00 +0000" itemprop="datePublished">Jun 8, 2026</time>
+              
+              
+            </p>
+          </header>
+        
+          <div class="post-content" itemprop="articleBody">
+            <p>In <a href="https://jotter.jonathankingston.co.uk/blog/2026/06/08/the-trifecta-tells-you-what-an-agent-can-do/">the first post</a>, I argued that the lethal trifecta is a capability test, not a safety model. Above capability sit further checks: contextual integrity and deployment policy, authority, and appropriateness for the recipient. The first post covered capability through authority. Build those controls and you have something defensible.</p>
+<p>This post is about the case where every one of those checks passes and the recipient is still harmed.</p>
+<img class="image-framed" src="/images/ai/appropriateness-every-check-passes-v2.webp" alt="Retro poster: an agent's clipboard shows capability, context, deployment policy, and consent all checked; a wine offer reaches a distressed recipient at her desk whose recovery the system cannot see. Caption: every check passes, still harmful.">
+<h2>When every check passes and the act is still harmful</h2>
+<p>Picture a marketing agent that sends a personalised alcohol offer to a recovering alcoholic. Or a support agent that, asked for help, surfaces a poorly chosen example to someone living with domestic abuse. Walk the checks from part one in order. The flow fits the context and your policy files. The action was authorised. The capability is benign: send a message, cite an example. No trifecta violation, no contextual-integrity breach in Nissenbaum's sense, no missing authorisation. Every check passes. And the act is still harmful.</p>
+<p>The user record is accurate, the offer is valid, nothing leaked. The harm is the match between <em>this content</em> and <em>this recipient's state</em> (the alcoholism, the abuse), something the system cannot observe.</p>
+<p><strong>Per-connector gates handle structural harm.</strong> Deterministic per-connector gates are excellent for the enumerable, local, structural harms: don't delete production systems, don't wire money without confirmation, don't exfiltrate. Those checks are cheap to automate and should absolutely exist as defence in depth. They catch one class of harm only. The alcohol harm emerges across the trajectory, not in any single tool call. It is about meaning, not structure, and it turns on facts about the recipient the system cannot see. No number of per-call checks adds up to that.</p>
+<p><strong>Platform classifiers focus on prompt injection.</strong> Platform safety classifiers, like those shipped with Claude and Cursor, are built to catch prompt injection: the attacker's instructions smuggled into content the agent reads. That is necessary work on capability, and <a href="https://jotter.jonathankingston.co.uk/blog/2026/05/10/when-agents-browse-the-web-the-web-wins/">a poor match for scam pages and social engineering on the open web</a>: in the Web Adversaries Against Agentic Browsers (WAAA) benchmarks, BrowseSafe classified representative scam pages as benign because they contained no prompt injection. A generic filter can miss task-specific harm in a workflow: the wrong offer to the wrong person, an example that retraumatises a caller, a step your org's policy file forbids but no platform classifier has heard of.</p>
+<p><strong>Each tool needs its own evals.</strong> The per-tool instinct is right for that gap, and still incomplete. Each Model Context Protocol (MCP) connector, each workflow, should carry its own context-dependent evals, graders, and protections: rules written for what <em>this</em> tool does in <em>this</em> deployment, and <a href="https://jotter.jonathankingston.co.uk/blog/2026/02/17/magic-words-need-measuring-sticks/">you need to measure them, not assume they work</a>. A filesystem tool needs different gates from a payment tool or a customer messaging tool. Generic classifiers cannot substitute for per-tool rules.</p>
+<p>Those per-tool checks catch structural misuse and deployment-specific policy breaks. They still do not catch harm to a specific person, the question this post is about.</p>
+<h2>Appropriateness, not a universal standard</h2>
+<p>Leibo et al.'s <em>A theory of appropriateness with applications to generative AI</em> (Google DeepMind, 2024) argues that appropriateness, not a single correctness score or a fixed safety label, is what you should optimise for in generative systems. They also argue against one universal standard, because it collapses into a lowest-common-denominator model that tries to please every context and pleases none. User, developer, company, and regulator each apply different expectations at once.</p>
+<p>The company's image and the consumer's welfare are both inside "safety", and they are not the same thing. Brand and consumer are distinct loss functions, and they do not move together. Send an alcohol offer to a recovering alcoholic and both welfare and brand lose immediately. Run engagement-maximising dark patterns and the short-term metric wins while the consumer loses; brand damage is slower and diffused. Mis-chosen support content for someone in domestic abuse is mainly a welfare and competence failure; brand harm arrives only if the mistake becomes public.</p>
+<p>So "safety" here is a bundle of objectives (consumer welfare, legal exposure, brand, task success) on different scales, with weighting that is itself company-specific and jurisdiction-specific. That is why eval and safety are task-specific and company-specific: the stakeholder set and its weighting are, not a footnote.</p>
+<h2>What better models cannot close</h2>
+<p>Better models still leave a gap for two separate reasons.</p>
+<p><strong>Facts the system cannot see.</strong> Per-tool checks work because they target properties you can confirm mechanically: "no payment without confirmation." Appropriateness harms need the opposite kind of check. Verifying "is this offer harmful to this specific person right now" needs the recipient's hidden state and a judgment across facts the system cannot observe. The alcohol and domestic-abuse examples at the top fail here before any trade-off between stakeholders enters the picture. This is <a href="https://www.jasonwei.net/blog/asymmetry-of-verification-and-verifiers-law">Verifier's Law</a> again: AI amplifies verification where it is tractable. Appropriateness verification is not, so better models do not close that gap.</p>
+<p><strong>Stakeholder trade-offs.</strong> Even with perfect visibility into the recipient, appropriateness still would not reduce to one number. Consumer welfare, legal exposure, brand, and task success pull in different directions, on scales that do not combine into one score. The weighting is company-specific and jurisdiction-specific. No single metric finishes the judgment call, which is what the title means by "cannot mechanise".</p>
+<p>Consent bears on both gaps. The consumer is a principal whose boundary is being crossed with no channel to have expressed it. That is the gap <a href="https://jotter.jonathankingston.co.uk/blog/2026/02/22/consent-is-all-you-need/">verifiable consent</a> is meant to close. Consent helps; it does not replace judgment. The vulnerable person often cannot or will not articulate the boundary in advance, and the company is a separate principal with its own stake. Even perfect consent enforcement leaves calls about appropriateness for that person that someone must make and own, and those calls cannot be made deterministic.</p>
+<p>Different harm types need different checks: capability, contextual integrity and deployment policy, authority, and appropriateness for the recipient.</p>
+<img class="image-framed" src="/images/ai/safety-four-gates.svg" alt="Walkthrough diagram: a personalised alcohol offer email passes capability, context and deployment policy, and authority gates, but appropriateness for the recipient still needs a human call and the outcome can remain harmful.">
+<p>CI-Work already showed that utility and privacy trade off in practice, so stacking contextual-integrity checks and policy evals does not by itself answer whether an alcohol offer fits one recipient. You still need an owner for that call.</p>
+<p>Passing the trifecta and your policy eval leaves cases like the opening examples: appropriateness for <em>this</em> person on behalf of <em>these</em> stakeholders. Build the controls from part one because each check catches a class the others miss.</p>
+<hr />
+<h2>References</h2>
+<ul>
+<li>Helen Nissenbaum. <em>Privacy in Context: Technology, Policy, and the Integrity of Social Life.</em> Stanford University Press, 2009.</li>
+<li>Wenjie Fu et al. "CI-Work." 2026. arXiv:2604.21308.</li>
+<li>Ido Levy et al. "ST-WebAgentBench." arXiv:2410.06703.</li>
+<li>Joel Z. Leibo et al. "A theory of appropriateness with applications to generative artificial intelligence." arXiv:2412.19010, 2024.</li>
+<li>Jason Wei. "Asymmetry of verification and verifier's law." 2025. <a href="https://www.jasonwei.net/blog/asymmetry-of-verification-and-verifiers-law">https://www.jasonwei.net/blog/asymmetry-of-verification-and-verifiers-law</a></li>
+</ul>
+
+          </div>
+        
+        </article>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+    <p>
+      <a class="page-link" href="https://jotter.jonathankingston.co.uk/pages/ai-tips/">AI Tips</a>
+    </p>
+    <ul class="social-media-list">
+      
+      <li>
+        <a href="https://github.com/jonathankingston"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">jonathankingston</span></a>
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" href="https://www.linkedin.com/in/jonathan-kingston/" aria-label="LinkedIn">
+  <span class="icon icon--linkedin"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7 0h3.84v2.05h.05c.53-1.01 1.84-2.08 3.79-2.08 4.05 0 4.8 2.67 4.8 6.14V23h-4v-7.7c0-1.84-.03-4.2-2.56-4.2-2.56 0-2.95 2-2.95 4.06V23h-4V8z"/>
+</svg>
+</span>
+  <span class="username">jonathan-kingston</span>
+</a>
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" href="https://bsky.app/profile/kingstontime.bsky.social" aria-label="Bluesky">
+  <span class="icon icon--bluesky"><svg viewBox="0 0 600 530" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <!-- Source: https://commons.wikimedia.org/wiki/File:Bluesky_Logo.svg -->
+  <path d="m135.72 44.03c66.496 49.921 138.02 151.14 164.28 205.46 26.262-54.316 97.782-155.54 164.28-205.46 47.98-36.021 125.72-63.892 125.72 24.795 0 17.712-10.155 148.79-16.111 170.07-20.703 73.984-96.144 92.854-163.25 81.433 117.3 19.964 147.14 86.092 82.697 152.22-122.39 125.59-175.91-31.511-189.63-71.766-2.514-7.3797-3.6904-10.832-3.7077-7.8964-0.0174-2.9357-1.1937 0.51669-3.7077 7.8964-13.714 40.255-67.233 197.36-189.63 71.766-64.444-66.128-34.605-132.26 82.697-152.22-67.108 11.421-142.55-7.4491-163.25-81.433-5.9562-21.282-16.111-152.36-16.111-170.07 0-88.687 77.742-60.816 125.72-24.795z"/>
+</svg>
+</span>
+  <span class="username">kingstontime.bsky.social</span>
+</a>
+
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" rel="me" href="https://mastodon.social/@jkt" aria-label="Mastodon">
+  <span class="icon icon--mastodon"><svg viewBox="0 0 216.4144 232.00976" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <!-- Source: https://commons.wikimedia.org/wiki/File:Mastodon_Logotype_(Simple).svg -->
+  <path d="M211.80734 139.0875c-3.18125 16.36625-28.4925 34.2775-57.5625 37.74875-15.15875 1.80875-30.08375 3.47125-45.99875 2.74125-26.0275-1.1925-46.565-6.2125-46.565-6.2125 0 2.53375.15625 4.94625.46875 7.2025 3.38375 25.68625 25.47 27.225 46.39125 27.9425 21.11625.7225 39.91875-5.20625 39.91875-5.20625l.8675 19.09s-14.77 7.93125-41.08125 9.39c-14.50875.7975-32.52375-.365-53.50625-5.91875C9.23234 213.82 1.40609 165.31125.20859 116.09125c-.365-14.61375-.14-28.39375-.14-39.91875 0-50.33 32.97625-65.0825 32.97625-65.0825C49.67234 3.45375 78.20359.2425 107.86484 0h.72875c29.66125.2425 58.21125 3.45375 74.8375 11.09 0 0 32.975 14.7525 32.975 65.0825 0 0 .41375 37.13375-4.59875 62.915"/>
+  <!-- Force the inner 'M' to match the page background so it stays a cutout. -->
+  <path style="fill:#fdfdfd" d="M177.50984 80.077v60.94125h-24.14375v-59.15c0-12.46875-5.24625-18.7975-15.74-18.7975-11.6025 0-17.4175 7.5075-17.4175 22.3525v32.37625H96.20734V85.42325c0-14.845-5.81625-22.3525-17.41875-22.3525-10.49375 0-15.74 6.32875-15.74 18.7975v59.15H38.90484V80.077c0-12.455 3.17125-22.3525 9.54125-29.675 6.56875-7.3225 15.17125-11.07625 25.85-11.07625 12.355 0 21.71125 4.74875 27.8975 14.2475l6.01375 10.08125 6.015-10.08125c6.185-9.49875 15.54125-14.2475 27.8975-14.2475 10.6775 0 19.28 3.75375 25.85 11.07625 6.36875 7.3225 9.54 17.22 9.54 29.675"/>
+</svg>
+</span>
+  <span class="username">@jkt@mastodon.social</span>
+</a>
+
+
+      </li>
+      
+
+      
+      <li>
+        <span class="social-link social-link--retired" aria-label="Twitter (retired)">
+  <span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span>
+  <span class="username"><s>kingstonTime</s></span>
+</span>
+
+      </li>
+      
+    </ul>
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

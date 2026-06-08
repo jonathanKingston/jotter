@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#454545">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Containers website assignment</title>
+  
+  
+  
+    
+  
+  
+
+  
+  
+
+  
+
+  
+
+  
+  <meta name="description" content="At Mozilla we have been working on a feature called containers, which gives users the ability to separate their lives online to prevent being tracked.">
+
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon-48x48.png" type="image/png" sizes="48x48">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon-192x192.png" type="image/png" sizes="192x192">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="https://jotter.jonathankingston.co.uk/apple-touch-icon.png" sizes="180x180">
+
+  <link rel="stylesheet" href="https://jotter.jonathankingston.co.uk/css/main.css?v=cb4cec6">
+  <link rel="canonical" href="https://jotter.jonathankingston.co.uk/blog/2017/04/04/containers-assignment/">
+  <link rel="alternate" type="application/rss+xml" title="Jonathan Kingston" href="https://jotter.jonathankingston.co.uk/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+  <div class="wrapper">
+    <a class="site-title" href="https://jotter.jonathankingston.co.uk/">Jonathan Kingston</a>
+    <nav class="site-nav">
+      <a class="page-link" href="https://jonathankingston.co.uk">About me</a>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        
+          <header class="post-header">
+            <h1 class="post-title" itemprop="name headline">Containers website assignment</h1>
+            <p class="post-meta">
+              
+              <time datetime="2017-04-04 00:00:00 +0000" itemprop="datePublished">Apr 4, 2017</time>
+              
+              
+            </p>
+          </header>
+        
+          <div class="post-content" itemprop="articleBody">
+            <p>At Mozilla we have been working on a feature called <a href="https://testpilot.firefox.com/experiments/containers">containers</a>, which gives users the ability to separate their lives online to prevent being tracked.</p>
+<p><img src="/images/containers/intro.gif" alt="" /></p>
+<p>Since <a href="https://blog.mozilla.org/tanvi/2016/06/16/contextual-identities-on-the-web/">launching containers in Nightly</a> and now in <a href="https://hacks.mozilla.org/2017/03/containers-come-to-test-pilot/">Test Pilot</a>, the most requested feature for containers was the ability to assign a website to a container. When a user assigns a website to a container the browser will then load that website in said container whenever the website is requested.</p>
+<p><em>To get the features mentioned in this article <a href="https://testpilot.firefox.com/experiments/containers">download Containers in Test Pilot</a></em></p>
+<h1>How it works</h1>
+<p>Launching <strong>today</strong> you will be able to assign websites to your containers using the following flow:</p>
+<p>Open a bbc.com in a News container:</p>
+<p><img src="/images/containers/open.png" alt="Screenshot of opening bbc.com in a container using a context menu" /></p>
+<p>Assign the container to the link by picking "Always Open in This Container":</p>
+<p><img src="/images/containers/assign.png" alt="Screenshot of a context menu assigning website to a container" /></p>
+<p>When you click a link to bbc.com you will see this prompt asking you to confirm opening in the container you asked for:</p>
+<p><img src="/images/containers/prompt.png" alt="Screenshot of user prompt to confirm opening website" /></p>
+<p>When you want to remove the assignment use the same context menu:
+<img src="/images/containers/unassign.png" alt="Screenshot of context menu to unassign website to a container" /></p>
+<p>Using the example we can see how a user will be able to prevent their browsing history being shared from advertisers, news and shopping sites whilst only adding minimal effort to their browsing flow.</p>
+<h1>Hard decisions</h1>
+<p>For a long time we put off implementing this feature due to it's user interface complexity and we likely will still have to tweak it after we launch. <em>The feature itself wasn't very complex, with the code being only ~300 lines of code.</em></p>
+<p>I was initially hesitant to implement this feature due to the following three issues:</p>
+<ol>
+<li><a href="#the-ability-to-csrf-yourself">The ability to CSRF yourself.</a></li>
+<li><a href="#the-inability-to-use-more-than-one-container-for-a-website">The inability to use more than one container for a website.</a></li>
+<li><a href="#the-inability-to-grasp-why-containers-are-isolated">The inability to grasp why containers are isolated.</a></li>
+</ol>
+<h1>1. The ability to CSRF yourself</h1>
+<p>Websites often have paths or pages that supply capabilities that other pages can call.
+These capabilities could be <strong>paying someone</strong> or <strong>resetting a password</strong>.
+A <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">Cross Site Request Forgery</a> is an attack when a user unknowingly visits one of these paths without intending to.
+CSRF exploits usually require that a user is already authenticated to a website and then unknowingly gets sent to one of these capability URLs that performs a privileged action on the authenticated users behalf.</p>
+<p>For example:</p>
+<ol>
+<li>User visits <em>example.bank</em>.</li>
+<li>User logs in.</li>
+<li>User then visits <em>evil.example.com</em>.</li>
+<li><em>evil.example.com</em> redirects the user to <em>example.bank/makepayment?username=evil&amp;amount=1000</em> in an hidden frame that they can't see.</li>
+<li>Assuming <em>example.bank</em> doesn't protect against CSRF the user will have the money taken from their account.</li>
+</ol>
+<p>There are <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)_Prevention_Cheat_Sheet">lots</a> of <a href="https://scotthelme.co.uk/csrf-is-dead/">ways</a> a website can protect users from these forms of attacks, however in reality they still exist on the web today.</p>
+<p>Containers actually fix this issue so long as you log into services within a new container, lets take another look at that example:</p>
+<ol>
+<li>User opens a Finance container and logs into <em>example.bank</em>.</li>
+<li>User visits <em>bad.com</em> in the default "No container" new tab.</li>
+<li><em>bad.com</em> redirects user to <em>example.bank/makepayment?username=evil&amp;amount=1000</em> in an hidden frame that they can't see.</li>
+<li><em>example.bank</em> in "No container" isn't logged in and doesn't know about the user so refuses to pay evil user.</li>
+</ol>
+<p>Now if we had assigned the bank to go into the Finance container we would be not protected either.</p>
+<p>Furthermore single use <a href="https://www.w3.org/TR/capability-urls/#risk-of-exposure">capability URLs can actually leak in the referrer header too</a>.</p>
+<h1>2. The inability to use more than one container for a website</h1>
+<p>Users won't get the advantage of having multiple mail clients in different containers (Work and Personal mail)</p>
+<h1>3. The inability to grasp why containers are isolated</h1>
+<p>My other issue with container assignment  would be that a user wouldn't see the immediate advantage of using containers if they always get teleported into a certain container.</p>
+<p>Users might suffer from their search engine and mail provider all being lumped into the same container.
+This would mean the website could still track across all these properties.
+One of the design goals of containers was to limit the amount of tracking users had whilst browsing the internet and helping users shatter their <a href="https://en.wikipedia.org/wiki/Filter_bubble">filter bubble</a>.</p>
+<p>If a website can force a user into a container for another site they potentially can continue to track the user.</p>
+<p>Lets take a look at an example of a staff member leaking his information across the web:</p>
+<ol>
+<li>User visits <em>https://work.example.com</em> in a work container and assigns it to always open in work.</li>
+<li>User opens a new tab and opens <em>https://example.clinic</em>.</li>
+<li>User searches on <em>example.clinic</em> for something they don't want their work to know about.</li>
+<li><em>horrible.example.marketing</em> sends a cookie to the browser with a unique identifier <strong>"hey-we-heard-you-had-medical-issues"</strong>.</li>
+<li><em>https://example.clinic</em> forces the user to load <em>https://work.example.com/?tracking-id=<strong>"hey-we-heard-you-had-medical-issues"</strong></em>.</li>
+<li>Browser redirects work.example.com "No container" into a work container with the same path.</li>
+<li><em>horrible.example.marketing</em> script is also loaded on <em>work.example.com</em> domain which resends a cookie based upon the GET tracking-id parameter.</li>
+</ol>
+<ul>
+<li><em>horrible.example.marketing</em> are now able to link together the two sites across a container.</li>
+</ul>
+<ol start="8">
+<li><em>work.example.com</em> decides to not promote staff that may push up insurance premiums.</li>
+</ol>
+<p>Whenever you assign an origin into a container you risk leaking your browsing history like this unsuspecting person did. This might seem extreme but there is however <a href="https://www.eff.org/deeplinks/2015/01/healthcare.gov-sends-personal-data">evidence to suggest medical information often leaks from one website to another</a>.</p>
+<h2>How we solved these issues</h2>
+<ol>
+<li>We decided to warn users with a prompt which can be dismissed with a checkbox.</li>
+</ol>
+<ul>
+<li>I also prevented form submission across containers unless they are using a GET method.
+<ul>
+<li>GET method forms shouldn't have capabilities like withdrawing money.</li>
+<li>This will cause some breakage however it should prevent the worst of these attacks.</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li>
+<p>Issue two is currently left unresolved due to wanting the users to have the ability to hide the warning.</p>
+</li>
+<li>
+<p>After checking out many URLs we decided that websites still often split their services enough by subdomain that we could assign containers based upon the <a href="https://en.wikipedia.org/wiki/Same-origin_policy">Same Origin Policy</a>.</p>
+</li>
+</ol>
+<ul>
+<li>This means <em>mail.example.com</em> and <em>www.example.com</em> would be treated differently.</li>
+<li>Assigning sites based upon the Same Origin Policy also gave us isolation against HTTP based attacks. Unless users had explicitly assigned the insecure version too, however we had to decide if users would want this behaviour...</li>
+</ul>
+<h3>Deciding on HTTP website assignment</h3>
+<p>We had a hard balance between separating HTTP vs HTTPS assignment of a website.</p>
+<h4>Advantages</h4>
+<ul>
+<li>This would prevent <em><strong>http</strong>://example.bank/makepayment?username=evil&amp;amount=1000</em> redirecting to <em><strong>https</strong>://example.bank/makepayment?username=evil&amp;amount=1000</em>.
+<ul>
+<li>Which would harm some websites that don't use a redirect however we now provide <a href="https://developer.mozilla.org/en-US/docs/Web/Security/Insecure_passwords">insecure password warnings for these</a> so users should be less tempted to login to the HTTP version of a website now.</li>
+</ul>
+</li>
+<li>Further down rating of HTTP traffic.</li>
+</ul>
+<h4>Disadvantages</h4>
+<ul>
+<li>Users might click a link to a HTTP version of the website expecting not to have their history leak into the container they are currently in.</li>
+<li>Users are unsure why they have to assign both HTTP and HTTPS, this wouldn't be easy to explain in UI.</li>
+<li>Display of the protocol for both <em>https://example.com</em> and <em>http://example.com</em> would add further UI barriers.</li>
+</ul>
+<h4>Decision</h4>
+<p>Despite the risk of HTTP over insecure networks we decided that there was enough websites this would break right now and the usability disadvantages were pretty bad. The containers project as a whole has been a hard balance of usability and stricter security settings. There are already places where containers are imperfect for preventing tracking such as:</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Online_Certificate_Status_Protocol">OCSP</a></li>
+<li><a href="https://en.wikipedia.org/wiki/HTTP_Strict_Transport_Security">HSTS flags</a> see <a href="http://www.radicalresearch.co.uk/lab/hstssupercookies">HSTS supercookies</a> for tracking technique.</li>
+<li><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1249348">Security exceptions for invalid certs</a>.</li>
+</ul>
+<p>Containers isn't considered the most robust security and privacy measure we have within the browser, it's a compromise of usability and robust security. At risk users should consider the patches Mozilla is working on as part of the <a href="https://wiki.mozilla.org/Security/Tor_Uplift">Tor uplift project</a> namely "first party isolation" and the anti fingerprinting techniques Tor browser uses.</p>
+<h1>Outstanding questions</h1>
+<p>One of the advantages of us running the test pilot experiment is it allows us to measure the usage of containers to gauge how people are using it, we often struggle to do wild experiments within Firefox like this because we can't gather as much information as we likely would want.</p>
+<ul>
+<li>Do users end up with too many of the same containers?</li>
+<li>Should we remove the ctrl/cmd + click links from being in the same container?</li>
+<li>With the ability to assign websites to be in a container, opening links in a new tab likely should be in "No container" to reduce the leakage of authenticated internet back into third party sites.</li>
+<li>Should we use instead/as well use <code>rel="noreferrer"</code>, <code>rel="noopener"</code>, <code>rel="nofollow"</code> links be treated as an indicator for a "No container"?
+<ul>
+<li>When a website indicates it isn't a strong relationship to each other perhaps we should consider it to be a different container.</li>
+</ul>
+</li>
+</ul>
+<h1>Feedback and bugs welcome</h1>
+<p>Feedback is always welcome at <a href="mailto:containers@mozilla.com">containers@mozilla.com</a> where all the other developers involved in the experiment and the underlying platform changes will be notified.</p>
+<ul>
+<li><a href="https://github.com/mozilla/testpilot-containers/issues/new">Bugs via our GitHub repo are always welcome too</a></li>
+<li><a href="https://bugzilla.mozilla.org/enter_bug.cgi?assigned_to=nobody%40mozilla.org&amp;blocked=ContextualIdentity&amp;bug_file_loc=http%3A%2F%2F&amp;bug_ignored=0&amp;bug_severity=normal&amp;bug_status=NEW&amp;cc=tanvi%40mozilla.com&amp;cf_blocking_b2g=---&amp;cf_blocking_fennec=---&amp;cf_feature_b2g=---&amp;cf_fx_iteration=---&amp;cf_fx_points=---&amp;cf_status_b2g_2_0=---&amp;cf_status_b2g_2_0m=---&amp;cf_status_b2g_2_1=---&amp;cf_status_b2g_2_1_s=---&amp;cf_status_b2g_2_2=---&amp;cf_status_b2g_2_2r=---&amp;cf_status_b2g_2_5=---&amp;cf_status_b2g_2_6=---&amp;cf_status_b2g_master=---&amp;cf_status_firefox47=---&amp;cf_status_firefox48=---&amp;cf_status_firefox49=---&amp;cf_status_firefox50=---&amp;cf_status_firefox_esr38=---&amp;cf_status_firefox_esr45=---&amp;cf_status_thunderbird_esr38=---&amp;cf_status_thunderbird_esr45=---&amp;cf_tracking_b2g=---&amp;cf_tracking_e10s=---&amp;cf_tracking_firefox47=---&amp;cf_tracking_firefox48=---&amp;cf_tracking_firefox49=---&amp;cf_tracking_firefox50=---&amp;cf_tracking_firefox_esr38=---&amp;cf_tracking_firefox_esr45=---&amp;cf_tracking_firefox_relnote=---&amp;cf_tracking_relnote_b2g=---&amp;cf_tracking_thunderbird_esr38=---&amp;cf_tracking_thunderbird_esr45=---&amp;component=DOM%3A%20Security&amp;contenttypemethod=autodetect&amp;contenttypeselection=text%2Fplain&amp;defined_groups=1&amp;flag_type-203=X&amp;flag_type-37=X&amp;flag_type-4=X&amp;flag_type-41=X&amp;flag_type-5=X&amp;flag_type-607=X&amp;flag_type-720=X&amp;flag_type-721=X&amp;flag_type-737=X&amp;flag_type-781=X&amp;flag_type-787=X&amp;flag_type-799=X&amp;flag_type-800=X&amp;flag_type-803=X&amp;flag_type-835=X&amp;flag_type-846=X&amp;flag_type-855=X&amp;flag_type-863=X&amp;flag_type-864=X&amp;flag_type-875=X&amp;flag_type-889=X&amp;flag_type-892=X&amp;flag_type-901=X&amp;flag_type-905=X&amp;flag_type-908=X&amp;form_name=enter_bug&amp;maketemplate=Remember%20values%20as%20bookmarkable%20template&amp;op_sys=Unspecified&amp;priority=--&amp;product=Core&amp;rep_platform=Unspecified&amp;status_whiteboard=%5BuserContextId%5D%5Bdomsecurity-backlog%5D&amp;target_milestone=---&amp;version=unspecified">Bugs about the platform feature which is in nightly</a></li>
+</ul>
+<p>Feel free to reach out on twitter <a href="https://twitter.com/kingstonTime">@KingstonTime</a></p>
+<p>I want to highlight, despite this being a feature I worked on many others have been involved with the experiment.</p>
+<p>The team responsible for getting the Test pilot live:</p>
+<ul>
+<li><a href="https://github.com/bakulf">Andrea Marchesini</a></li>
+<li><a href="https://twitter.com/johnmgruen">John Gruen</a> and the <a href="https://twitter.com/FxTestPilot">Test Pilot team</a></li>
+<li><a href="https://twitter.com/KamilJozwiak">Kamil Jozwiak</a></li>
+<li><a href="https://twitter.com/groovecoder">Luke Crouch</a></li>
+<li><a href="https://twitter.com/TanviHacks">Tanvi Vyas</a></li>
+</ul>
+<p>Existing platform team responsible for working on getting <a href="https://wiki.mozilla.org/Security/Contextual_Identity_Project/Containers">containers</a> and origin attributes into Nightly.</p>
+<ul>
+<li><a href="https://github.com/bakulf">Andrea Marchesini</a></li>
+<li><a href="https://twitter.com/brampitoyo">Bram Pitoyo</a></li>
+<li><a href="http://christophkerschbaumer.com/">Christoph Kerschbaumer</a></li>
+<li><a href="https://twitter.com/dwhuseby">Dave Huseby</a></li>
+<li><a href="https://twitter.com/AhsinTseng">Ethan Tsengo</a></li>
+<li>Jonathan Hao</li>
+<li><a href="https://twitter.com/KamilJozwiak">Kamil Jozwiak</a></li>
+<li><a href="https://twitter.com/creativemisuse">Paul Theriault</a></li>
+<li><a href="https://twitter.com/s_englehardt">Steven Englehardt</a></li>
+<li><a href="https://twitter.com/TanviHacks">Tanvi Vyas</a></li>
+<li>Tim Huang</li>
+<li>Yoshi Huang</li>
+</ul>
+<p>Past Research:</p>
+<ul>
+<li><a href="http://www.ieee-security.org/TC/W2SP/2013/papers/s1p2.pdf">http://www.ieee-security.org/TC/W2SP/2013/papers/s1p2.pdf</a></li>
+<li><a href="https://web.archive.org/web/20161107220901/https://blog.mozilla.org/ladamski/2010/07/contextual-identity/">https://web.archive.org/web/20161107220901/https://blog.mozilla.org/ladamski/2010/07/contextual-identity/</a></li>
+</ul>
+<p><a href="https://twitter.com/Cejaeger">Carolyn Jaeger</a> who created the stunning gif in this article.</p>
+<p>I'm sure many others have been missed too!</p>
+
+          </div>
+        
+        </article>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+    <p>
+      <a class="page-link" href="https://jotter.jonathankingston.co.uk/pages/ai-tips/">AI Tips</a>
+    </p>
+    <ul class="social-media-list">
+      
+      <li>
+        <a href="https://github.com/jonathankingston"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">jonathankingston</span></a>
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" href="https://www.linkedin.com/in/jonathan-kingston/" aria-label="LinkedIn">
+  <span class="icon icon--linkedin"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7 0h3.84v2.05h.05c.53-1.01 1.84-2.08 3.79-2.08 4.05 0 4.8 2.67 4.8 6.14V23h-4v-7.7c0-1.84-.03-4.2-2.56-4.2-2.56 0-2.95 2-2.95 4.06V23h-4V8z"/>
+</svg>
+</span>
+  <span class="username">jonathan-kingston</span>
+</a>
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" href="https://bsky.app/profile/kingstontime.bsky.social" aria-label="Bluesky">
+  <span class="icon icon--bluesky"><svg viewBox="0 0 600 530" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <!-- Source: https://commons.wikimedia.org/wiki/File:Bluesky_Logo.svg -->
+  <path d="m135.72 44.03c66.496 49.921 138.02 151.14 164.28 205.46 26.262-54.316 97.782-155.54 164.28-205.46 47.98-36.021 125.72-63.892 125.72 24.795 0 17.712-10.155 148.79-16.111 170.07-20.703 73.984-96.144 92.854-163.25 81.433 117.3 19.964 147.14 86.092 82.697 152.22-122.39 125.59-175.91-31.511-189.63-71.766-2.514-7.3797-3.6904-10.832-3.7077-7.8964-0.0174-2.9357-1.1937 0.51669-3.7077 7.8964-13.714 40.255-67.233 197.36-189.63 71.766-64.444-66.128-34.605-132.26 82.697-152.22-67.108 11.421-142.55-7.4491-163.25-81.433-5.9562-21.282-16.111-152.36-16.111-170.07 0-88.687 77.742-60.816 125.72-24.795z"/>
+</svg>
+</span>
+  <span class="username">kingstontime.bsky.social</span>
+</a>
+
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" rel="me" href="https://mastodon.social/@jkt" aria-label="Mastodon">
+  <span class="icon icon--mastodon"><svg viewBox="0 0 216.4144 232.00976" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <!-- Source: https://commons.wikimedia.org/wiki/File:Mastodon_Logotype_(Simple).svg -->
+  <path d="M211.80734 139.0875c-3.18125 16.36625-28.4925 34.2775-57.5625 37.74875-15.15875 1.80875-30.08375 3.47125-45.99875 2.74125-26.0275-1.1925-46.565-6.2125-46.565-6.2125 0 2.53375.15625 4.94625.46875 7.2025 3.38375 25.68625 25.47 27.225 46.39125 27.9425 21.11625.7225 39.91875-5.20625 39.91875-5.20625l.8675 19.09s-14.77 7.93125-41.08125 9.39c-14.50875.7975-32.52375-.365-53.50625-5.91875C9.23234 213.82 1.40609 165.31125.20859 116.09125c-.365-14.61375-.14-28.39375-.14-39.91875 0-50.33 32.97625-65.0825 32.97625-65.0825C49.67234 3.45375 78.20359.2425 107.86484 0h.72875c29.66125.2425 58.21125 3.45375 74.8375 11.09 0 0 32.975 14.7525 32.975 65.0825 0 0 .41375 37.13375-4.59875 62.915"/>
+  <!-- Force the inner 'M' to match the page background so it stays a cutout. -->
+  <path style="fill:#fdfdfd" d="M177.50984 80.077v60.94125h-24.14375v-59.15c0-12.46875-5.24625-18.7975-15.74-18.7975-11.6025 0-17.4175 7.5075-17.4175 22.3525v32.37625H96.20734V85.42325c0-14.845-5.81625-22.3525-17.41875-22.3525-10.49375 0-15.74 6.32875-15.74 18.7975v59.15H38.90484V80.077c0-12.455 3.17125-22.3525 9.54125-29.675 6.56875-7.3225 15.17125-11.07625 25.85-11.07625 12.355 0 21.71125 4.74875 27.8975 14.2475l6.01375 10.08125 6.015-10.08125c6.185-9.49875 15.54125-14.2475 27.8975-14.2475 10.6775 0 19.28 3.75375 25.85 11.07625 6.36875 7.3225 9.54 17.22 9.54 29.675"/>
+</svg>
+</span>
+  <span class="username">@jkt@mastodon.social</span>
+</a>
+
+
+      </li>
+      
+
+      
+      <li>
+        <span class="social-link social-link--retired" aria-label="Twitter (retired)">
+  <span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span>
+  <span class="username"><s>kingstonTime</s></span>
+</span>
+
+      </li>
+      
+    </ul>
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

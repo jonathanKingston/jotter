@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="theme-color" content="#454545">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Stop asking junior engineers to struggle harder</title>
+  
+  
+  
+    
+  
+  
+
+  
+  
+
+  
+
+  
+
+  
+  <meta name="description" content="Four pieces landed in the past two weeks that circle the same problem from different altitudes.">
+
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon-48x48.png" type="image/png" sizes="48x48">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon-192x192.png" type="image/png" sizes="192x192">
+  <link rel="icon" href="https://jotter.jonathankingston.co.uk/favicon.ico" type="image/x-icon">
+  <link rel="apple-touch-icon" href="https://jotter.jonathankingston.co.uk/apple-touch-icon.png" sizes="180x180">
+
+  <link rel="stylesheet" href="https://jotter.jonathankingston.co.uk/css/main.css?v=cb4cec6">
+  <link rel="canonical" href="https://jotter.jonathankingston.co.uk/blog/2026/03/03/stop-asking-junior-engineers-to-struggle-harder/">
+  <link rel="alternate" type="application/rss+xml" title="Jonathan Kingston" href="https://jotter.jonathankingston.co.uk/feed.xml">
+</head>
+
+
+  <body>
+
+    <header class="site-header">
+  <div class="wrapper">
+    <a class="site-title" href="https://jotter.jonathankingston.co.uk/">Jonathan Kingston</a>
+    <nav class="site-nav">
+      <a class="page-link" href="https://jonathankingston.co.uk">About me</a>
+    </nav>
+  </div>
+</header>
+
+
+    <div class="page-content">
+      <div class="wrapper">
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+        
+          <header class="post-header">
+            <h1 class="post-title" itemprop="name headline">Stop asking junior engineers to struggle harder</h1>
+            <p class="post-meta">
+              
+              <time datetime="2026-03-03 00:00:00 +0000" itemprop="datePublished">Mar 3, 2026</time>
+              
+              
+            </p>
+          </header>
+        
+          <div class="post-content" itemprop="articleBody">
+            <p>Four pieces landed in the past two weeks that circle the same problem from different altitudes.</p>
+<p>Ivan Turkovic's <a href="https://www.ivanturkovic.com/2026/02/25/ai-made-writing-code-easier-engineering-harder/">"AI Made Writing Code Easier. It Made Being an Engineer Harder."</a> is the systemic view. The baseline moved. Expectations rose without announcement. He names something important: the supervision paradox, where reviewing AI-generated code is often harder than writing it yourself, because you inherit the output without the reasoning.</p>
+<p>Daniel at Be a Better Dev takes <a href="https://www.beabetterdev.com/2026/03/01/ai-is-making-junior-devs-useless/">the opposite approach</a>, starting with a title - "AI is Making Junior Devs Useless" - that does his own argument a disservice. The content is more thoughtful than the headline: manufacture the struggle, never ship code you can't defend, prompt for the why not the answer. But the framing tells juniors they're the problem before the first paragraph starts.</p>
+<p>Geoffrey Huntley, in <a href="https://ghuntley.com/real/">"Software development now costs less than the wage of a minimum wage worker"</a>, pushes the economic argument furthest. He argues software economics have collapsed, org charts are flattening, and model-first companies are eating incumbents on margin.</p>
+<p>And the ACM piece <a href="https://dl.acm.org/doi/10.1145/3779312">"Redefining the Software Engineering Profession for AI"</a> gives this a precise name: <strong>seniority-biased technological change</strong>. AI amplifies engineers who already possess systems judgement while imposing drag on early-in-career developers who lack the context to steer, verify, and integrate output.</p>
+<img class="image-framed" src="/images/ai/junior-four-views-blind-spot.webp" alt="Retro propaganda poster showing four suited figures on pillars looking outward through telescopes while a small worker stands unseen in the gap below.">
+<p>Four perspectives. One gap: none of them land on a structural fix for the people at the bottom of the experience ladder.</p>
+<h2>The willpower problem</h2>
+<img class="basic-alignment right flex-content" src="/images/ai/junior-struggle-harder.webp" alt="Propaganda poster of a suited figure giving a thumbs up holding a Struggle Harder sign while a worker is overwhelmed by AI velocity machinery behind them.">
+<p>Daniel's advice is good advice. It fails under real conditions.</p>
+<p>"Manufacture the struggle" assumes a junior engineer has autonomy to slow down when their team is shipping at AI-accelerated pace. It assumes their manager measures learning, not velocity. It assumes peer pressure from teammates who <em>are</em> pasting everything into Claude won't override good intentions within a week.</p>
+<p>Huntley's argument makes this worse. If software development is getting priced this aggressively, pressure to produce at AI-accelerated rates isn't just a cultural problem you can resist with discipline. It's a market force. The space Daniel asks juniors to carve out for deliberate practice is the first thing that gets squeezed.</p>
+<p>The acceleration trap is self-reinforcing: faster output creates higher expectations, higher expectations demand more AI reliance, less time for the deliberate practice Daniel is prescribing.</p>
+<p>Telling juniors to struggle harder inside a system that punishes struggling is not a strategy. It's a coping mechanism dressed up as career advice.</p>
+<h2>The verification gap</h2>
+<img class="basic-alignment left flex-content" src="/images/ai/junior-verification-gap.webp" alt="Split propaganda poster: experienced worker sees bugs and warnings in code while junior sees only LGTM. Caption: what you can't see can ship.">
+<p>The ACM paper gives us the frame: AI amplifies engineers who already have systems judgement and drags on those who don't. This isn't a temporary imbalance. It's a property of how the technology works.</p>
+<p>Jason Wei's <a href="https://www.jasonwei.net/blog/asymmetry-of-verification-and-verifiers-law">asymmetry of verification</a> - that AI training effectiveness correlates with how easily you can verify the output - applies just as well to AI <em>usage</em>. Call it Verifier's Law for the practitioner side: AI is a force multiplier for your ability to verify, not a replacement for it.</p>
+<p>The Project Societas example in the ACM piece illustrates this. The authors report seven part-time engineers, 110,000 lines of code, and 98% AI-generated output. Human work shifted to directing: specifying goals, verifying correctness, integrating output. That's a story about people who already knew what good code looked like. It is not a template for how a junior should work.</p>
+<p>A senior reviews AI-generated code and spots the subtle race condition, the missing edge case, the architectural choice that will hurt in six months. A junior reviews the same code and it looks... fine. It compiles. The tests pass. The PR gets approved. The bug ships three sprints later.</p>
+<p>We're putting junior engineers in a role - AI output verifier - that requires the exact expertise they haven't built yet. A junior shipping AI output never sees the fifteen minutes a senior spent reasoning before writing the first line, the approaches considered and rejected. They see the output. They ship the output. They never learn the process that makes the output trustworthy.</p>
+<h2>Wrong seat, not wrong person</h2>
+<img class="basic-alignment left flex-content" src="/images/ai/junior-right-seat-right-work.webp" alt="Retro poster showing five doors: unsupervised AI output crossed out with a warning symbol, and four open doors for research, failure analysis, tooling, and mentored review.">
+<p>Huntley's flattened org chart - senior ICs directing AI agents, middle management dissolved - is probably directionally correct for some greenfield companies. But most of the industry has existing systems, existing teams, and existing junior engineers already on the payroll. The question isn't whether to hire juniors in an AI-native startup. It's what to do with the ones you have.</p>
+<p>This suggests a different starting point: reconsider whether AI-assisted production work should be a junior engineer's primary role. And when they do work on production code, give them room to fail safely - with guardrails, not blame.</p>
+<p>Failure is how expertise gets built. The senior engineer who spots the bad architectural choice learned to spot it by making that choice themselves three years ago and living with the consequences. If we shield juniors from failure by having AI do the work, or punish them for failing by measuring only velocity, we're cutting off the only path to the judgement everyone agrees they need.</p>
+<p><strong>Research and exploration.</strong> Someone needs to evaluate whether that new library does what the README claims. Someone needs to spike on three approaches before the team commits to one. This builds deep understanding, has clear verification, and doesn't carry production risk.</p>
+<p><strong>Failure analysis.</strong> AI is consuming the traditional junior training ground of small bugs and well-defined tasks. But there's work AI is terrible at: understanding <em>why</em> something broke in a specific system's history. Post-mortems, incident analysis, debugging production issues with a senior pairing alongside - this is where intuition gets built.</p>
+<p><strong>Tooling and developer experience.</strong> Internal tools, build pipelines, test infrastructure. Contained scope, tight feedback loops, and the person doing it ends up understanding the system's internals better than anyone.</p>
+<p><strong>Structured verification.</strong> Instead of expecting juniors to verify AI output alone, make it a mentored activity. A senior writes the prompt, a junior reviews the output with the senior walking through what to look for. Progressive disclosure of complexity. The junior builds verification skills <em>on</em> AI output rather than despite it.</p>
+<h2>Guardrails as infrastructure</h2>
+<img class="basic-alignment right flex-content" src="/images/ai/junior-guardrails.webp" alt="Propaganda poster showing a worker protected by scaffolding labeled CI, Tests, Rules, and Review Gates, contrasted with a crossed-out scene of a boss just pointing a finger.">
+<p>I wrote about this <a href="/blog/2025/12/23/breaking-into-realism-with-ai/">back in December</a>: staff engineers should be helping juniors build verification skills by adding guardrails so AI assists rather than replacing judgement. The practical version of that looks like engineering infrastructure, not mentoring programmes.</p>
+<p>CI that rejects bad output, templates that narrow the problem space, review gates that intervene before mistakes ship. Project-level rules for AI agents (system prompts, <a href="https://docs.cursor.com/context/rules">MDC rules</a>, or equivalent) that encode what "good" looks like so agents produce consistent output. The junior gets the speed boost. The system catches what they miss.</p>
+<p>The pattern is always the same: documentation, tooling, and direct support designed to develop independent capability. Not "here's the ticket, use AI, ship it." More like "here's the context, here's how the pieces connect, here's what to look for when it breaks."</p>
+<p>None of this requires telling anyone to struggle harder. It requires building environments where the right kind of struggle is the natural consequence of the work itself.</p>
+<h2>Where this can work</h2>
+<p>There are teams where junior AI-assisted shipping <em>does</em> work well: narrow domains, strong test coverage, strict review culture, and clear architectural boundaries. In those environments, juniors can move fast with AI and still build judgement because errors are caught early and discussed explicitly.</p>
+<p>But that's the point. Success there comes from infrastructure and supervision quality, not from personal willpower alone. If those conditions are missing, "just struggle harder" still fails.</p>
+<h2>What this means for teams</h2>
+<img src="/images/ai/junior-engineers-or-operators.webp" alt="Propaganda poster of a balance scale overloaded with implement-with-AI tickets on one side and investigate, evaluate, explore cards on the other. Caption: engineers or prompt operators?">
+<p>Look at what your junior engineers are actually doing:</p>
+<ul>
+<li>How many tickets are "implement with AI assistance" versus "investigate/evaluate/explain"?</li>
+<li>How often are juniors doing mentored verification instead of solo verification?</li>
+<li>Which guardrails fail fast (CI, tests, policy checks) before review?</li>
+<li>Where can juniors own low-risk exploration with clear feedback loops?</li>
+<li>Are you measuring only velocity, or learning signals too?</li>
+</ul>
+<p>Those answers tell you whether you're building engineers or building prompt operators.</p>
+<p>And this matters beyond your current team. Every generation of engineers has reshaped the profession by arriving with different instincts. If we let the junior role collapse into unsupervised AI output verification - the one task they're least equipped for - we lose that pipeline entirely.</p>
+<p>Give them the right work. Build the guardrails. Let them explore, break things, and build the judgement that makes AI actually useful. The investment pays for itself.</p>
+<hr />
+<p><strong>References</strong></p>
+<p>[1] Turkovic, I. "AI Made Writing Code Easier. It Made Being an Engineer Harder." 2026. <a href="https://www.ivanturkovic.com/2026/02/25/ai-made-writing-code-easier-engineering-harder/">https://www.ivanturkovic.com/2026/02/25/ai-made-writing-code-easier-engineering-harder/</a></p>
+<p>[2] Daniel. "AI is Making Junior Devs Useless." 2026. <a href="https://www.beabetterdev.com/2026/03/01/ai-is-making-junior-devs-useless/">https://www.beabetterdev.com/2026/03/01/ai-is-making-junior-devs-useless/</a></p>
+<p>[3] Huntley, G. "Software development now costs less than the wage of a minimum wage worker." 2026. <a href="https://ghuntley.com/real/">https://ghuntley.com/real/</a></p>
+<p>[4] Russinovich, M. and Hanselman, S. "Redefining the Software Engineering Profession for AI." Communications of the ACM, Online First, 2026. <a href="https://dl.acm.org/doi/10.1145/3779312">https://dl.acm.org/doi/10.1145/3779312</a></p>
+<p>[5] Wei, J. "Asymmetry of verification and verifier's law." 2026. <a href="https://www.jasonwei.net/blog/asymmetry-of-verification-and-verifiers-law">https://www.jasonwei.net/blog/asymmetry-of-verification-and-verifiers-law</a></p>
+
+          </div>
+        
+        </article>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrapper">
+    <p>
+      <a class="page-link" href="https://jotter.jonathankingston.co.uk/pages/ai-tips/">AI Tips</a>
+    </p>
+    <ul class="social-media-list">
+      
+      <li>
+        <a href="https://github.com/jonathankingston"><span class="icon icon--github"><svg viewBox="0 0 16 16"><path fill="#828282" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761 c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32 c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472 c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037 C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65 c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261 c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082 c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129 c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/></svg>
+</span><span class="username">jonathankingston</span></a>
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" href="https://www.linkedin.com/in/jonathan-kingston/" aria-label="LinkedIn">
+  <span class="icon icon--linkedin"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <path d="M4.98 3.5C4.98 4.88 3.86 6 2.48 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8h4V23h-4V8zm7 0h3.84v2.05h.05c.53-1.01 1.84-2.08 3.79-2.08 4.05 0 4.8 2.67 4.8 6.14V23h-4v-7.7c0-1.84-.03-4.2-2.56-4.2-2.56 0-2.95 2-2.95 4.06V23h-4V8z"/>
+</svg>
+</span>
+  <span class="username">jonathan-kingston</span>
+</a>
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" href="https://bsky.app/profile/kingstontime.bsky.social" aria-label="Bluesky">
+  <span class="icon icon--bluesky"><svg viewBox="0 0 600 530" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <!-- Source: https://commons.wikimedia.org/wiki/File:Bluesky_Logo.svg -->
+  <path d="m135.72 44.03c66.496 49.921 138.02 151.14 164.28 205.46 26.262-54.316 97.782-155.54 164.28-205.46 47.98-36.021 125.72-63.892 125.72 24.795 0 17.712-10.155 148.79-16.111 170.07-20.703 73.984-96.144 92.854-163.25 81.433 117.3 19.964 147.14 86.092 82.697 152.22-122.39 125.59-175.91-31.511-189.63-71.766-2.514-7.3797-3.6904-10.832-3.7077-7.8964-0.0174-2.9357-1.1937 0.51669-3.7077 7.8964-13.714 40.255-67.233 197.36-189.63 71.766-64.444-66.128-34.605-132.26 82.697-152.22-67.108 11.421-142.55-7.4491-163.25-81.433-5.9562-21.282-16.111-152.36-16.111-170.07 0-88.687 77.742-60.816 125.72-24.795z"/>
+</svg>
+</span>
+  <span class="username">kingstontime.bsky.social</span>
+</a>
+
+
+      </li>
+      
+
+      
+      <li>
+        <a class="social-link" rel="me" href="https://mastodon.social/@jkt" aria-label="Mastodon">
+  <span class="icon icon--mastodon"><svg viewBox="0 0 216.4144 232.00976" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+  <!-- Source: https://commons.wikimedia.org/wiki/File:Mastodon_Logotype_(Simple).svg -->
+  <path d="M211.80734 139.0875c-3.18125 16.36625-28.4925 34.2775-57.5625 37.74875-15.15875 1.80875-30.08375 3.47125-45.99875 2.74125-26.0275-1.1925-46.565-6.2125-46.565-6.2125 0 2.53375.15625 4.94625.46875 7.2025 3.38375 25.68625 25.47 27.225 46.39125 27.9425 21.11625.7225 39.91875-5.20625 39.91875-5.20625l.8675 19.09s-14.77 7.93125-41.08125 9.39c-14.50875.7975-32.52375-.365-53.50625-5.91875C9.23234 213.82 1.40609 165.31125.20859 116.09125c-.365-14.61375-.14-28.39375-.14-39.91875 0-50.33 32.97625-65.0825 32.97625-65.0825C49.67234 3.45375 78.20359.2425 107.86484 0h.72875c29.66125.2425 58.21125 3.45375 74.8375 11.09 0 0 32.975 14.7525 32.975 65.0825 0 0 .41375 37.13375-4.59875 62.915"/>
+  <!-- Force the inner 'M' to match the page background so it stays a cutout. -->
+  <path style="fill:#fdfdfd" d="M177.50984 80.077v60.94125h-24.14375v-59.15c0-12.46875-5.24625-18.7975-15.74-18.7975-11.6025 0-17.4175 7.5075-17.4175 22.3525v32.37625H96.20734V85.42325c0-14.845-5.81625-22.3525-17.41875-22.3525-10.49375 0-15.74 6.32875-15.74 18.7975v59.15H38.90484V80.077c0-12.455 3.17125-22.3525 9.54125-29.675 6.56875-7.3225 15.17125-11.07625 25.85-11.07625 12.355 0 21.71125 4.74875 27.8975 14.2475l6.01375 10.08125 6.015-10.08125c6.185-9.49875 15.54125-14.2475 27.8975-14.2475 10.6775 0 19.28 3.75375 25.85 11.07625 6.36875 7.3225 9.54 17.22 9.54 29.675"/>
+</svg>
+</span>
+  <span class="username">@jkt@mastodon.social</span>
+</a>
+
+
+      </li>
+      
+
+      
+      <li>
+        <span class="social-link social-link--retired" aria-label="Twitter (retired)">
+  <span class="icon icon--twitter"><svg viewBox="0 0 16 16"><path fill="#828282" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27 c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767 c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206 C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271 c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469 c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/></svg>
+</span>
+  <span class="username"><s>kingstonTime</s></span>
+</span>
+
+      </li>
+      
+    </ul>
+  </div>
+
+</footer>
+
+
+  </body>
+
+</html>

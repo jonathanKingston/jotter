@@ -3,7 +3,7 @@ title: "The trifecta tells you what an agent can do"
 categories:
   - AI
   - Security
-is_draft: true
+is_draft: false
 data:
   updated: "2026-06-08 00:00"
 ---

@@ -34,15 +34,15 @@ Leibo et al.'s *A theory of appropriateness with applications to generative AI* 
 
 The company's image and the consumer's welfare are both inside "safety", and they are not the same thing. Brand and consumer are distinct loss functions, and they do not move together. Send an alcohol offer to a recovering alcoholic and both welfare and brand lose immediately. Run engagement-maximising dark patterns and the short-term metric wins while the consumer loses; brand damage is slower and diffused. Mis-chosen support content for someone in domestic abuse is mainly a welfare and competence failure; brand harm arrives only if the mistake becomes public.
 
-So "safety" here is a bundle of incommensurable objectives (consumer welfare, legal exposure, brand, task success) whose weighting is itself company-specific and jurisdiction-specific. That is why eval and safety are task-specific and company-specific: the stakeholder set and its weighting are, not a footnote.
+So "safety" here is a bundle of objectives — consumer welfare, legal exposure, brand, task success — that do not share one scale, and the weighting is itself company-specific and jurisdiction-specific. That is why eval and safety are task-specific and company-specific: the stakeholder set and its weighting are, not a footnote.
 
 ## What better models cannot close
 
 Two limits keep the gap open, and they are not the same problem.
 
-**Epistemic limits.** Per-tool checks work because they target properties you can confirm mechanically: "no payment without confirmation." Appropriateness harms need the opposite kind of check. Verifying "is this offer harmful to this specific person right now" needs the recipient's hidden state and a judgment across facts the system cannot observe. The alcohol and domestic-abuse examples at the top fail here before any trade-off between stakeholders enters the picture. This is [Verifier's Law](https://www.jasonwei.net/blog/asymmetry-of-verification-and-verifiers-law) again: AI amplifies verification where verification is tractable, not where it is not. Appropriateness sits in the second bucket, so better models do not close that gap.
+**Epistemic limits.** Per-tool checks work because they target properties you can confirm mechanically: "no payment without confirmation." Appropriateness harms need the opposite kind of check. Verifying "is this offer harmful to this specific person right now" needs the recipient's hidden state and a judgment across facts the system cannot observe. The alcohol and domestic-abuse examples at the top fail here before any trade-off between stakeholders enters the picture. This is [Verifier's Law](https://www.jasonwei.net/blog/asymmetry-of-verification-and-verifiers-law) again: AI amplifies verification where verification is tractable, not where it is not. Appropriateness is not, so better models do not close that gap.
 
-**Normative limits.** Even with perfect visibility into the recipient, appropriateness still would not reduce to one number. Consumer welfare, legal exposure, brand, and task success pull in different directions, as the section above argued. The weighting across those objectives is company-specific and jurisdiction-specific. That incommensurability is what the title means by "cannot mechanise": not that every check is hard to automate, but that no single metric finishes the judgment call.
+**Normative limits.** Even with perfect visibility into the recipient, appropriateness still would not reduce to one number. Consumer welfare, legal exposure, brand, and task success pull in different directions. The weighting across those objectives is company-specific and jurisdiction-specific. That is what the title means by "cannot mechanise": not that every check is hard to automate, but that no single metric finishes the judgment call.
 
 Consent sits adjacent to both limits. The consumer is a principal whose boundary is being crossed with no channel to have expressed it. That is the gap [verifiable consent](https://jotter.jonathankingston.co.uk/blog/2026/02/22/consent-is-all-you-need/) is meant to close. Consent helps; it does not replace judgment. The vulnerable person often cannot or will not articulate the boundary in advance, and the company is a separate principal with its own stake. Even perfect consent enforcement leaves calls about fit for this person that someone must make and own, and those calls cannot be made deterministic.
 
@@ -52,14 +52,12 @@ Different harm types need different checks: capability, contextual integrity and
 
 Each check needs its own mechanism, and the mechanisms overlap. CI-Work already showed that utility and privacy trade off in practice. Whether the outcome fits the person never fully mechanises.
 
-The trifecta check tells you what the agent can do. An eval scored against your deployment's policy files tells you whether it should, here, for you. Above both sits a judgment about whether the outcome is appropriate for *this* person on behalf of *these* stakeholders that no benchmark retires. Build the controls from part one because each check catches a class the others miss. Do not expect appropriateness alone to finish the job.
+The trifecta check tells you what the agent can do. An eval scored against your deployment's policy files tells you whether it is allowed under your rules. Above both sits a judgment about whether the outcome is appropriate for *this* person on behalf of *these* stakeholders that no benchmark resolves. Build the controls from part one because each check catches a class the others miss.
 
 ---
 
 ## References
 
-- [The trifecta tells you what an agent can do](https://jotter.jonathankingston.co.uk/blog/2026/06/08/the-trifecta-tells-you-what-an-agent-can-do/). Jonathan Kingston, 2026.
-- [Consent is all you need](https://jotter.jonathankingston.co.uk/blog/2026/02/22/consent-is-all-you-need/). Jonathan Kingston, 2026.
 - Helen Nissenbaum. *Privacy in Context: Technology, Policy, and the Integrity of Social Life.* Stanford University Press, 2009.
 - Wenjie Fu et al. "CI-Work." 2026. arXiv:2604.21308.
 - Ido Levy et al. "ST-WebAgentBench." arXiv:2410.06703.

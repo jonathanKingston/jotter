@@ -3,7 +3,7 @@ title: "The trifecta tells you what an agent can do"
 categories:
   - AI
   - Security
-is_draft: true
+is_draft: false
 data:
   updated: "2026-06-08 00:00"
 ---
@@ -16,7 +16,7 @@ The trifecta is a capability test. It asks what an agent *can* do, and answers i
 
 Adapting Conseca's example (Tsai and Bagdasarian), deleting an email may be appropriate when the goal is to erase sensitive messages or clean up trash, or inappropriate depending on the content and whether the address is work or personal. Same capability, same agent, opposite safety verdicts. The deciding factor is the content, the goal, and the account it sits in. None of that is visible to a trifecta check.
 
-This is why eval and safety end up task-specific and company-specific. Better models alone will not change that. This post walks through three checks beyond raw capability: contextual integrity and org policy rules, and authority. Capability is the trifecta. Contextual integrity and deployment policy join two questions: Helen Nissenbaum's contextual integrity for whether a flow fits the context, and your deployment's policy files for whether your organisation allows it. Authority is a separate check from both. Whether an outcome is right for *this* person is [the subject of the follow-up](https://jotter.jonathankingston.co.uk/blog/2026/06/08/appropriateness-is-what-safety-cannot-mechanise/).
+This is why eval and safety end up task-specific and company-specific. Better models alone will not change that. This post walks through further checks beyond raw capability, from contextual integrity and deployment policy through to authority.
 
 ## Contextual integrity
 
@@ -30,33 +30,31 @@ CI-Work (Fu et al., 2026) takes this into the enterprise across five information
 
 ConfAIde (Mireshghallah et al., ICLR 2024) showed GPT-4 and ChatGPT disclosing information in contexts a human would not, 39% and 57% of the time. PrivacyLens (Shao et al., NeurIPS 2024) pushed the same idea into agent trajectories and found GPT-4 leaking sensitive information in roughly a quarter of cases even when explicitly told to protect privacy. The model often knew the norm when asked directly and broke it when acting.
 
-MAGPIE (2025) shows the failure compounding once agents talk to each other. In multi-agent tasks where keeping a secret mattered, agents leaked up to half of it. Under pressure to finish, frontline models sometimes resorted to manipulation. The same models break contextual norms under task pressure that they respect in calm evals.
+MAGPIE (2025) shows the failure compounding once agents talk to each other. In multi-agent tasks where keeping a secret mattered, agents leaked up to half of it. Under pressure to finish, frontier models sometimes resorted to manipulation. The same models break contextual norms under task pressure that they respect in calm evals.
 
 ## Deployment policy
 
-Contextual integrity tells you safety is contextual. It does not tell you whose context. That is where deployment policy comes in, and ST-WebAgentBench (Levy et al., IBM Research) is the clearest answer I have seen.
+Contextual integrity tells you safety is contextual. It explains when a flow fits a social context. Which rules apply is a deployment question; policy files answer it. ST-WebAgentBench (Levy et al., IBM Research) shows what scoring that looks like in practice.
 
-It scores agents not on whether they finished the task but on whether they finished it *under policy*. Each task carries machine-readable policies across dimensions like consent, boundaries, hierarchy, and so on. The headline metric, Completion under Policy, only credits runs that respected every applicable rule. Across the open agents they tested, that number came in below two-thirds of the nominal completion rate. A third of the "successful" runs broke a rule on the way.
+It credits completion only when every applicable policy rule was respected. Each task carries machine-readable policies across dimensions like consent, boundaries, hierarchy, and so on. The headline metric, Completion under Policy, uses that bar. Across the open agents they tested, that number came in below two-thirds of the nominal completion rate. A third of the "successful" runs broke a rule on the way.
 
-The policies are authored, not baked in. There is a policy-authoring interface and a template format, so the same workflow passes or fails depending on what a given organisation has encoded. Your finance team's "never initiate a payment without confirmation" and another firm's "never touch production data" are different policy files over the same agent. The benchmark scores the deployment setup, not the model alone.
+Organisations write the policies. There is a policy-authoring interface and a template format, so the same workflow passes or fails depending on what a given organisation has encoded. Your finance team's "never initiate a payment without confirmation" and another firm's "never touch production data" are different policy files over the same agent. The score tracks that deployment setup (policies, connectors, evals) more than the base model alone.
 
-Broader agent-control work makes the same point about which systems an agent may touch and what oversight you require. On thresholds, Rabanser et al.'s *Science of AI Agent Reliability* (2026) argues against single-metric success: mean task completion cannot distinguish a formatting slip from a catastrophic delete, and useful safety thresholds depend on bounded error severity, not raw failure rate alone.
-
-Contextual integrity covers whether a flow fits the social context; your policy files cover whether your organisation allows it. The question here is: should this flow happen here, under your rules?
+"How to evaluate control measures for LLM agents?" (2025, arXiv:2504.05259) stresses which systems an agent may touch and what oversight you require. On thresholds, Rabanser et al.'s *Science of AI Agent Reliability* (2026) argues against single-metric success: mean task completion cannot distinguish a formatting slip from a catastrophic delete, and useful safety thresholds depend on bounded error severity rather than raw failure rate alone.
 
 ## Authority
 
-Above that sits authority: was this flow authorised in this context, and can the system prove it?
+Authority is the next check: was this flow authorised in this context, and can the system prove it?
 
-Somebody has to say which flows are sanctioned in *this* context, and the system has to be able to check that they were. That is a separate question from whether the flow fits the context or your policy files. It is [consent](https://jotter.jonathankingston.co.uk/blog/2026/02/22/consent-is-all-you-need/), expressed by a principal and verifiable by the system.
+Somebody has to say which flows are sanctioned in *this* context, and the system has to be able to check that they were. That is a separate question from whether the flow fits the context or your policy files. It is [consent](https://jotter.jonathankingston.co.uk/blog/2026/02/22/consent-is-all-you-need/), verifiable by the system.
 
-Conseca (Tsai and Bagdasarian, HotOS 2025) comes closest to naming this in code: just-in-time, contextual, human-verifiable security policies per task. ST-WebAgentBench's policy files encode org rules; Conseca's human-verifiable policies encode authority. Both point at enforcement that today often reduces to a YAML file someone wrote in advance, or to nothing at all.
+Conseca (Tsai and Bagdasarian, HotOS 2025) comes closest to naming this in code: just-in-time, contextual, human-verifiable security policies per task. That still points at enforcement that today often reduces to a YAML file someone wrote in advance, or to nothing at all.
 
 When that enforcement is missing, the trifecta is what you are left with. "Don't combine these three capabilities" is the only lever available because the system has no way to represent what it was actually permitted to do. The trifecta is the fallback you get without verifiable consent.
 
-That is a lot of engineering, and it is worth building. Deterministic gates on every connector, a contextual-integrity check and a policy check on every flow, verifiable consent before each action, an eval scored against your deployment's policy files, and [the same measure-don't-hope discipline I argued for skills and MDC files](https://jotter.jonathankingston.co.uk/blog/2026/02/17/magic-words-need-measuring-sticks/). I would want all of that in place before I'd trust it with real users.
+That is a lot of engineering, and it is worth building. Deterministic gates on every connector, a contextual-integrity check and a policy check on every flow, verifiable consent before each action, an eval scored against your deployment's policy files, and [the same measure-don't-hope discipline I argued for skills and Cursor rule files (`.mdc`)](https://jotter.jonathankingston.co.uk/blog/2026/02/17/magic-words-need-measuring-sticks/). I would want all of that in place before I'd trust it with real users.
 
-It still is not the whole of safety. [Part two](https://jotter.jonathankingston.co.uk/blog/2026/06/08/appropriateness-is-what-safety-cannot-mechanise/) is about what remains when all of those checks pass.
+It still is not the whole of safety. Even when all of those checks pass, the outcome can still be wrong for the person on the receiving end.
 
 ---
 

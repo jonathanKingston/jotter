@@ -18,7 +18,7 @@ This post is about the case where every one of those checks passes and the recip
 
 Picture a marketing agent that sends a personalised alcohol offer to a recovering alcoholic. Or a support agent that, asked for help, surfaces a poorly chosen example to someone living with domestic abuse. Walk the checks from part one in order. The flow fits the context and your policy files. The action was authorised. The capability is benign: send a message, cite an example. No trifecta violation, no contextual-integrity breach in Nissenbaum's sense, no missing authorisation. Every check passes. And the act is still harmful.
 
-The user record is accurate, the offer is valid, nothing leaked. The harm sits in the match between *this content* and *this recipient's state* (the alcoholism, the abuse), something the system cannot observe.
+The user record is accurate, the offer is valid, nothing leaked. The harm is the match between *this content* and *this recipient's state* (the alcoholism, the abuse), something the system cannot observe.
 
 **Structural gates catch local tool misuse.** Deterministic per-connector gates are excellent for the enumerable, local, structural harms: don't delete prod, don't wire money without confirmation, don't exfiltrate. Those checks are cheap to automate and should absolutely exist as defence in depth. They catch one class of harm only. The alcohol harm emerges across the trajectory, not in any single tool call. It is about meaning, not structure, and it turns on facts about the recipient the system cannot see. No number of per-call checks adds up to that.
 
@@ -38,13 +38,13 @@ So "safety" here is a bundle of objectives (consumer welfare, legal exposure, br
 
 ## What better models cannot close
 
-Two limits keep the gap open, and they are not the same problem.
+Better models still leave a gap for two separate reasons.
 
 **Visibility limits.** Per-tool checks work because they target properties you can confirm mechanically: "no payment without confirmation." Appropriateness harms need the opposite kind of check. Verifying "is this offer harmful to this specific person right now" needs the recipient's hidden state and a judgment across facts the system cannot observe. The alcohol and domestic-abuse examples at the top fail here before any trade-off between stakeholders enters the picture. This is [Verifier's Law](https://www.jasonwei.net/blog/asymmetry-of-verification-and-verifiers-law) again: AI amplifies verification where it is tractable. Appropriateness verification is not, so better models do not close that gap.
 
 **Normative limits.** Even with perfect visibility into the recipient, appropriateness still would not reduce to one number. Consumer welfare, legal exposure, brand, and task success pull in different directions, on scales that do not combine into one score. The weighting is company-specific and jurisdiction-specific. No single metric finishes the judgment call, which is what the title means by "cannot mechanise".
 
-Consent sits adjacent to both limits. The consumer is a principal whose boundary is being crossed with no channel to have expressed it. That is the gap [verifiable consent](https://jotter.jonathankingston.co.uk/blog/2026/02/22/consent-is-all-you-need/) is meant to close. Consent helps; it does not replace judgment. The vulnerable person often cannot or will not articulate the boundary in advance, and the company is a separate principal with its own stake. Even perfect consent enforcement leaves calls about fit for this person that someone must make and own, and those calls cannot be made deterministic.
+Consent bears on both limits. The consumer is a principal whose boundary is being crossed with no channel to have expressed it. That is the gap [verifiable consent](https://jotter.jonathankingston.co.uk/blog/2026/02/22/consent-is-all-you-need/) is meant to close. Consent helps; it does not replace judgment. The vulnerable person often cannot or will not articulate the boundary in advance, and the company is a separate principal with its own stake. Even perfect consent enforcement leaves calls about fit for this person that someone must make and own, and those calls cannot be made deterministic.
 
 Different harm types need different checks: capability, contextual integrity and org policy rules, authority, and whether the outcome fits the person.
 
@@ -52,7 +52,7 @@ Different harm types need different checks: capability, contextual integrity and
 
 Each check needs its own mechanism, and the mechanisms overlap. CI-Work already showed that utility and privacy trade off in practice. Whether the outcome fits the person never fully mechanises.
 
-The trifecta check tells you what the agent can do. An eval scored against your deployment's policy files tells you whether it is allowed under your rules. Above both sits a judgment about whether the outcome is appropriate for *this* person on behalf of *these* stakeholders that no benchmark resolves. Build the controls from part one because each check catches a class the others miss.
+The trifecta check tells you what the agent can do. An eval scored against your deployment's policy files tells you whether it is allowed under your rules. Neither resolves whether the outcome is appropriate for *this* person on behalf of *these* stakeholders. Build the controls from part one because each check catches a class the others miss.
 
 ---
 

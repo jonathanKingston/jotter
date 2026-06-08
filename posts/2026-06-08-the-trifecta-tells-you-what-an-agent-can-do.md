@@ -16,7 +16,7 @@ The trifecta is a capability test. It asks what an agent *can* do, and answers i
 
 Adapting Conseca's example (Tsai and Bagdasarian), deleting an email may be appropriate when the goal is to erase sensitive messages or clean up trash, or inappropriate depending on the content and whether the address is work or personal. Same capability, same agent, opposite safety verdicts. The deciding factor is the content, the goal, and the account it sits in. None of that is visible to a trifecta check.
 
-This is why eval and safety end up task-specific and company-specific. Better models alone will not change that. This post walks through three checks beyond raw capability: contextual integrity and org policy rules, and authority. Capability is the trifecta. Contextual integrity and deployment policy join two questions: Helen Nissenbaum's contextual integrity for whether a flow fits the context, and your deployment's policy files for whether your organisation allows it. Authority is a separate check from both. Whether an outcome is right for *this* person is [the subject of the follow-up](https://jotter.jonathankingston.co.uk/blog/2026/06/08/appropriateness-is-what-safety-cannot-mechanise/).
+This is why eval and safety end up task-specific and company-specific. Better models alone will not change that. This post walks through three checks beyond raw capability: contextual integrity, org policy, and authority.
 
 ## Contextual integrity
 
@@ -34,7 +34,7 @@ MAGPIE (2025) shows the failure compounding once agents talk to each other. In m
 
 ## Deployment policy
 
-Contextual integrity tells you safety is contextual. It does not tell you whose context. That is where deployment policy comes in, and ST-WebAgentBench (Levy et al., IBM Research) is the clearest answer I have seen.
+Contextual integrity tells you safety is contextual. It does not tell you whose context. That is where deployment policy comes in; benchmarks such as ST-WebAgentBench (Levy et al., IBM Research) are good illustrations.
 
 It scores agents not on whether they finished the task but on whether they finished it *under policy*. Each task carries machine-readable policies across dimensions like consent, boundaries, hierarchy, and so on. The headline metric, Completion under Policy, only credits runs that respected every applicable rule. Across the open agents they tested, that number came in below two-thirds of the nominal completion rate. A third of the "successful" runs broke a rule on the way.
 
@@ -42,15 +42,13 @@ The policies are authored, not baked in. There is a policy-authoring interface a
 
 Broader agent-control work makes the same point about which systems an agent may touch and what oversight you require. On thresholds, Rabanser et al.'s *Science of AI Agent Reliability* (2026) argues against single-metric success: mean task completion cannot distinguish a formatting slip from a catastrophic delete, and useful safety thresholds depend on bounded error severity, not raw failure rate alone.
 
-Contextual integrity covers whether a flow fits the social context; your policy files cover whether your organisation allows it. The question here is: should this flow happen here, under your rules?
-
 ## Authority
 
 Above that sits authority: was this flow authorised in this context, and can the system prove it?
 
-Somebody has to say which flows are sanctioned in *this* context, and the system has to be able to check that they were. That is a separate question from whether the flow fits the context or your policy files. It is [consent](https://jotter.jonathankingston.co.uk/blog/2026/02/22/consent-is-all-you-need/), expressed by a principal and verifiable by the system.
+Somebody has to say which flows are sanctioned in *this* context, and the system has to be able to check that they were. That is a separate question from whether the flow fits the context or your policy files. It is [consent](https://jotter.jonathankingston.co.uk/blog/2026/02/22/consent-is-all-you-need/), verifiable by the system.
 
-Conseca (Tsai and Bagdasarian, HotOS 2025) comes closest to naming this in code: just-in-time, contextual, human-verifiable security policies per task. ST-WebAgentBench's policy files encode org rules; Conseca's human-verifiable policies encode authority. Both point at enforcement that today often reduces to a YAML file someone wrote in advance, or to nothing at all.
+Conseca (Tsai and Bagdasarian, HotOS 2025) comes closest to naming this in code: just-in-time, contextual, human-verifiable security policies per task. That still points at enforcement that today often reduces to a YAML file someone wrote in advance, or to nothing at all.
 
 When that enforcement is missing, the trifecta is what you are left with. "Don't combine these three capabilities" is the only lever available because the system has no way to represent what it was actually permitted to do. The trifecta is the fallback you get without verifiable consent.
 
